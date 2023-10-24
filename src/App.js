@@ -1,13 +1,14 @@
+import { useEffect } from 'react';
 import './App.css';
-import Heading from './components/Heading';
-import Paragraph from './components/Paragraph';
-import Nav from './components/Nav';
-import Button from './components/Button';
+
+import Form from './components/Form';
+import Giftcard from './components/Giftcard';
 
 function App() {
   return (
     <div className="App">
-    <Button />
+    <Form />
+    <Giftcard/>
     </div>
   );
 }
