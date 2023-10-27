@@ -1,23 +1,36 @@
 import {useState,useEffect} from "react";
+import axios from "axios";
 
 
 export default function FetchCM() {
-    const [carrymarkData, setCarrymarkData] = useState([]);
+    const [carrymarkData, setCarrymarkData] = useState(null);
+    useEffect( () =>  {
+        FetchData();
+        }, []);
 
-    const FetchData = () => {
-        fetch(`http://localhost:5555/carrymark`)
-        .then((response)=> response.json())
-        .then((jsonData) => setCarrymarkData(jsonData))
-        .catch((error) => console.log(error));
+
+    const FetchData = async () =>  {
+         await axios({
+            method: 'get',
+            url: 'http://localhost:5555/carrymark',
+            responseType: 'stream'
+        })
+        .then(function(response){
+            setCarrymarkData(JSON.parse(response.data))
+        }).catch((e) => {
+            console.log(e);
+        },[]);
+
     }
 
-    useEffect(() =>  {
-    FetchData();
-    }, []);
+    if(!carrymarkData) return null
+
+    
     
     return (
         <div>
-        <h1> ID : {carrymarkData[0].id} </h1>
+        {console.log(carrymarkData[0].id)}
+         <h1> ID : {carrymarkData[0].id} </h1>
         <h1> test1 : {carrymarkData[0].test1} </h1>
         <h1> test2 : {carrymarkData[0].test2} </h1>
         </div>)
