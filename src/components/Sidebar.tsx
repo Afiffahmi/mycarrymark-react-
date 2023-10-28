@@ -18,7 +18,7 @@ import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
+import AccountBoxRoundedIcon from '@mui/icons-material/AccountBox';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
@@ -27,13 +27,17 @@ import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
+import ScienceRoundedIcon from '@mui/icons-material/Science'
+import SmartToyRoundedIcon from '@mui/icons-material/SmartToy'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import JoyOrderDashboardTemplate from '../App';
 import MuiLogo from './MuiLogo';
+import SmartToy from '@mui/icons-material/SmartToy';
+
+
 
 function Toggler({
   defaultExpanded = false,
@@ -67,7 +71,13 @@ function Toggler({
   );
 }
 //@ts-ignore
-export default function Sidebar({handleLogout}) {
+export default function Sidebar({handleLogout,setActiveComponent,token}:SidebarProps) {
+const handleSideBtn:any = (componentName:string) =>{
+  setActiveComponent(componentName);
+}
+
+const user = JSON.parse(token);
+console.log(user);
   return (
     <Sheet
       className="Sidebar"
@@ -155,16 +165,16 @@ export default function Sidebar({handleLogout}) {
             <ListItemButton>
               <HomeRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Home</Typography>
+                <Typography level="title-sm" onClick={() => handleSideBtn('Home')}>Home</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
 
           <ListItem>
             <ListItemButton>
-              <DashboardRoundedIcon />
+              <GroupRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Dashboard</Typography>
+                <Typography level="title-sm" onClick={() => handleSideBtn('Class')}>Class</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -229,9 +239,10 @@ export default function Sidebar({handleLogout}) {
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <GroupRoundedIcon />
+                  <AccountBoxRoundedIcon />
                   <ListItemContent>
                     <Typography level="title-sm">Users</Typography>
+                    
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -246,11 +257,9 @@ export default function Sidebar({handleLogout}) {
                     component="a"
                     href="/joy-ui/getting-started/templates/profile-dashboard/"
                   >
-                    My profile
+                    My profile 
+                    {user.providerData[0].displayName && user.providerData[0].photoURL ?  '' : <Chip size='sm' variant='solid' color='primary'>1</Chip> }
                   </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Create a new user</ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton>Roles & permission</ListItemButton>
@@ -272,8 +281,12 @@ export default function Sidebar({handleLogout}) {
         >
           <ListItem>
             <ListItemButton>
-              <SupportRoundedIcon />
-              Support
+              <ScienceRoundedIcon/>
+              Grade prediction
+              <Chip size='sm' color='primary' variant='solid' >
+                Beta
+              </Chip>
+              {/* <ScienceRoundedIcon /> */}
             </ListItemButton>
           </ListItem>
           <ListItem>
@@ -299,7 +312,7 @@ export default function Sidebar({handleLogout}) {
           <Typography level="body-xs">
             Your team has used 80% of your available space. Need more?
           </Typography>
-          <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
+          <LinearProgress variant="outlined" value={100} determinate sx={{ my: 1 }} />
           <Button size="sm" variant="solid">
             Upgrade plan
           </Button>
@@ -310,11 +323,11 @@ export default function Sidebar({handleLogout}) {
         <Avatar
           variant="outlined"
           size="sm"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+          src={user.providerData[0].photoURL ? user.providerData[0].photoURL : 'https://cdn.stockmediaserver.com/smsimg35/pv/IsignstockContributors/ISS_25205_05557.jpg?token=kc5yi-VnuHFbAdHnvqM23y_gUHlcbgRXgO0EF9gnqh0&class=pv&smss=53&expires=4102358400'}
         />
         <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Siriwat K.</Typography>
-          <Typography level="body-xs">siriwatk@test.com</Typography>
+          <Typography level="title-sm">{user.providerData[0].displayName ? user.providerData[0].displayName : <Chip size='sm' color='danger'>Please update profile</Chip>}</Typography>
+          <Typography level="body-xs">{user.providerData[0].uid}</Typography>
         </Box>
         <Button size="sm" variant="plain" color="neutral" onClick={handleLogout}>
           <LogoutRoundedIcon />

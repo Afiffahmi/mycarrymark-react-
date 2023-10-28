@@ -9,7 +9,6 @@ import Typography from '@mui/joy/Typography';
 // icons
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 
 import useScript from './useScript';
 //@ts-ignore
@@ -25,6 +24,9 @@ import Login from './Login';
 import { useEffect,useState } from 'react';
 //@ts-ignore
 import Loader from './components/loader/Loader'
+import {Route, Routes} from "react-router-dom";
+import FetchCM from './components/FetchCM'
+import Classes from './components/Classes';
 
 
 
@@ -35,6 +37,7 @@ export default function JoyOrderDashboardTemplate() {
   const status = useScript(`https://unpkg.com/feather-icons`);
   const[token,setToken] = useState();
   const[isLoading,setIsLoading] = useState(true);
+  const[activeComponent, setActiveComponent] = useState('OrderTable');
   useEnhancedEffect(() => {
     // Feather icon setup: https://github.com/feathericons/feather#4-replace
     // @ts-ignore
@@ -44,9 +47,11 @@ export default function JoyOrderDashboardTemplate() {
     }
   }, [status]);
   useEffect(() =>{
+    console.log(activeComponent);
     const fakeDataFetch = () => {
       setTimeout(()=>{
         setIsLoading(false);
+
       },4000)
     }
 
@@ -74,12 +79,31 @@ export default function JoyOrderDashboardTemplate() {
     localStorage.clear();
   };
 
+  const renderComponent = () => {
+    switch(activeComponent){
+      case 'Home' :
+        return <FetchCM />
+      case 'Class' :
+        return <Classes />
+      default :
+        return <OrderTable/>
+    }
+
+
+  }
+
+  const setActiveComponents = (prop:string) => {
+    setActiveComponent(prop);
+  }
+
+
+
   return ( isLoading ? (<Loader/>) : (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
       <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
         <Header />
-        <Sidebar handleLogout={handleLogout}/>
+        <Sidebar handleLogout={handleLogout} setActiveComponent= {setActiveComponents} token={token}/>
         <Box
           component="main"
           className="MainContent"
@@ -116,22 +140,13 @@ export default function JoyOrderDashboardTemplate() {
               <Link
                 underline="none"
                 color="neutral"
-                href="#some-link"
+                onClick={() => {setActiveComponent('Home')}}
                 aria-label="Home"
               >
                 <HomeRoundedIcon />
               </Link>
-              <Link
-                underline="hover"
-                color="neutral"
-                href="#some-link"
-                fontSize={12}
-                fontWeight={500}
-              >
-                Dashboard
-              </Link>
               <Typography color="primary" fontWeight={500} fontSize={12}>
-                Orders
+                {activeComponent}
               </Typography>
             </Breadcrumbs>
           </Box>
@@ -146,17 +161,12 @@ export default function JoyOrderDashboardTemplate() {
               justifyContent: 'space-between',
             }}
           >
-            <Typography level="h2">Orders</Typography>
-            <Button
-              color="primary"
-              startDecorator={<DownloadRoundedIcon />}
-              size="sm"
-            >
-              Download PDF
-            </Button>
+            <Typography level="h2">{activeComponent}</Typography>
+            
           </Box>
-          <OrderTable />
-          <OrderList />
+          
+          {renderComponent()}
+          {/* <OrderList /> */}
         </Box>
       </Box>
     </CssVarsProvider>

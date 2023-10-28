@@ -34,13 +34,16 @@ import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+
 
 const rows = [
   {
     id: 'INV-1234',
-    date: 'Feb 3, 2023',
+    course: 'CSC662',
+    class: 'A4CS230',
     status: 'Refunded',
-    test1:  '50',
+    students:  '50',
     student: {
       initial: 'O',
       name: 'Olivia Ryhe',
@@ -109,7 +112,7 @@ function RowMenu() {
   );
 }
 
-export default function OrderTable() {
+export default function Classes() {
   const [order, setOrder] = React.useState<Order>('desc');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [open, setOpen] = React.useState(false);
@@ -138,19 +141,12 @@ export default function OrderTable() {
           <Option value="debit">Debit</Option>
         </Select>
       </FormControl>
-
-      <FormControl size="sm">
-        <FormLabel>Customer</FormLabel>
-        <Select size="sm" placeholder="All">
-          <Option value="all">All</Option>
-          <Option value="olivia">Olivia Rhye</Option>
-          <Option value="steve">Steve Hampton</Option>
-          <Option value="ciaran">Ciaran Murray</Option>
-          <Option value="marina">Marina Macdonald</Option>
-          <Option value="charles">Charles Fulton</Option>
-          <Option value="jay">Jay Hoper</Option>
-        </Select>
-      </FormControl>
+      <Button
+              color="primary"
+              size="sm"
+            >
+              Create new class
+            </Button>
     </React.Fragment>
   );
   return (
@@ -216,7 +212,7 @@ export default function OrderTable() {
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for order</FormLabel>
+          <FormLabel>Search for class</FormLabel>
           <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
         </FormControl>
         {renderFilters()}
@@ -283,12 +279,12 @@ export default function OrderTable() {
                     },
                   }}
                 >
-                  Invoice
+                  Class ID
                 </Link>
               </th>
-             
-              <th style={{ width: 140, padding: '12px 6px' }}>Date</th>
-              <th style={{ width: 140, padding: '12px 6px' }}>test1</th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Course</th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Class</th>
+              <th style={{ width: 140, padding: '12px 6px' }}>No.Students</th>
               <th style={{ width: 140, padding: '12px 6px' }}>Status</th>
               <th style={{ width: 240, padding: '12px 6px' }}>Student Name</th>
               <th style={{ width: 140, padding: '12px 6px' }}> </th>
@@ -317,10 +313,13 @@ export default function OrderTable() {
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.date}</Typography>
+                  <Typography level="body-xs">{row.course}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.test1}</Typography>
+                  <Typography level="body-xs">{row.class}</Typography>
+                </td>
+                <td>
+                  <Typography level="body-xs">{row.students}</Typography>
                 </td>
                 <td>
                   <Chip
