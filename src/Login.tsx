@@ -16,11 +16,17 @@ import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import PropTypes from 'prop-types'
+import { Alert } from '@mui/joy';
 // @ts-ignore
 import GoogleIcon from './components/GoogleIcon.tsx';
+//@ts-ignore
 import logo from './logomcm.svg';
+//@ts-ignore
 import logodark from './logomcm-dark.svg';
-import sideimage from './mycarrymark.svg';
+//@ts-ignore
+import Loader from './components/loader/Loader.js';
+import JoyOrderDashboardTemplate from './App';
+
 
 
 
@@ -73,7 +79,7 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
                 <Box
                 component='img'
                 sx={{
-                  height:290,
+                  height:280,
                   width: 350,
                   alignItems: 'center',
                   justifyContent:'right'
@@ -85,11 +91,17 @@ function ColorSchemeToggle({ onClick, ...props }: IconButtonProps) {
               </Box>
   );
 }
-
+//@ts-ignore
 export default function JoySignInSideTemplate({setToken}) {
+  const [noacc, setNoAcc] = React.useState(false);
+
+  const NoAccChecker = () =>{
+    setNoAcc(true);
+  }
   return (
       <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
         <CssBaseline />
+        
         <GlobalStyles
           styles={{
             ':root': {
@@ -164,11 +176,16 @@ export default function JoySignInSideTemplate({setToken}) {
                 },
               }}
             >
+              
+              
+              {noacc && <Alert variant='outlined' color="danger">
+          Invalid Account!
+        </Alert>}
               <Stack gap={4} sx={{ mb: 2 }}>
                 <Stack gap={1}>
                   <Typography level="h3">Sign in</Typography>
                   <Typography level="body-sm">
-                    New to company?{' '}
+                    New to Mycarrymark?{' '}
                     <Link href="#replace-with-a-link" level="title-sm">
                       Sign up!
                     </Link>
@@ -225,22 +242,17 @@ export default function JoySignInSideTemplate({setToken}) {
                     })
                     .then((response)=>response.json())
                     .then((responseData) => { 
-                      if(responseData.email === data.email) {
+                      if(responseData.uid != null) {
                       const userJson = JSON.stringify(responseData)
-                  
                       setToken(userJson)
-                      console.log(userJson);
-                     
-                    }else{ alert("invalid account or password") 
+                      console.log(userJson);  
                     }
 
                     })
                     .catch((error) => {
                       console.log(error);
+                      NoAccChecker()
                     })
-                    
-                    
-                  
                   }}
                 >
                   <FormControl required>
@@ -273,7 +285,7 @@ export default function JoySignInSideTemplate({setToken}) {
             </Box>
             <Box component="footer" sx={{ py: 3 }}>
               <Typography level="body-xs" textAlign="center">
-                © Your company {new Date().getFullYear()}
+                © BennyApp {new Date().getFullYear()}
               </Typography>
             </Box>
           </Box>
@@ -294,10 +306,10 @@ export default function JoySignInSideTemplate({setToken}) {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundImage:
-              `url(https://cdn.discordapp.com/attachments/1167483960692056216/1167493724251631626/mycarrymark_3.png?ex=654e5442&is=653bdf42&hm=7a661bf066fdd2a3a1cc047c189cdcb274d1097ceb28d7f027346674dc0d0f04&)`,
+              `url(https://cdn.discordapp.com/attachments/1167483960692056216/1167496486884479067/2.png?ex=654e56d5&is=653be1d5&hm=74654ed39dc141f1a483a17ce4ad2526ca7f499f4e8fee4eb61209101a3d0248&)`,
             [theme.getColorSchemeSelector('dark')]: {
               backgroundImage:
-                'url(https://cdn.discordapp.com/attachments/1167483960692056216/1167494499686162462/mycarrymark_4.png?ex=654e54fb&is=653bdffb&hm=d9b74edc800d205a50919a0f497c1fd3fead7426e9dcaaefe11b5737fa1ee1ab&)',
+                'url(https://cdn.discordapp.com/attachments/1167483960692056216/1167496486435696871/1.png?ex=654e56d5&is=653be1d5&hm=2eec158740360660712a3000bcbd049e61511bcfdb93654c07d041d58ce6e3a0&)',
             },
           })}
         />

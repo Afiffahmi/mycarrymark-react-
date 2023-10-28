@@ -12,7 +12,9 @@ const Loader = () => {
 
  return(
     <div className="loader">
+    
         <div className="svg-wrapper">
+        
         <svg className="active"
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -267,8 +269,10 @@ const Loader = () => {
       </g>
     </g>
   </svg>
+  
         </div>
-<div className="texts-container">
+
+        <div className="texts-container">
 <span>From</span>
 <span>Student,</span>
 <span>To</span>
@@ -277,6 +281,7 @@ const Loader = () => {
 </div>
 
     </div>
+    
  );
 }
 
