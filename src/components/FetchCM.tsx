@@ -1,161 +1,207 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import * as React from 'react';
-import { ColorPaletteProp } from '@mui/joy/styles';
-import Avatar from '@mui/joy/Avatar';
-import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Chip from '@mui/joy/Chip';
-import Divider from '@mui/joy/Divider';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Link from '@mui/joy/Link';
-import Input from '@mui/joy/Input';
-import Modal from '@mui/joy/Modal';
-import ModalDialog from '@mui/joy/ModalDialog';
-import ModalClose from '@mui/joy/ModalClose';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
-import Table from '@mui/joy/Table';
-import Sheet from '@mui/joy/Sheet';
-import Checkbox from '@mui/joy/Checkbox';
-import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
-import Typography from '@mui/joy/Typography';
-import Menu from '@mui/joy/Menu';
-import MenuButton from '@mui/joy/MenuButton';
-import MenuItem from '@mui/joy/MenuItem';
-import Dropdown from '@mui/joy/Dropdown';
-// icons
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import SearchIcon from '@mui/icons-material/Search';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import BlockIcon from '@mui/icons-material/Block';
-import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import * as React from "react";
+import AspectRatio from "@mui/joy/AspectRatio";
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import Divider from "@mui/joy/Divider";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
+import Input from "@mui/joy/Input";
+import IconButton from "@mui/joy/IconButton";
+import Textarea from "@mui/joy/Textarea";
+import Stack from "@mui/joy/Stack";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+import Typography from "@mui/joy/Typography";
+import Tabs from "@mui/joy/Tabs";
+import TabList from "@mui/joy/TabList";
+import Tab, { tabClasses } from "@mui/joy/Tab";
+import Breadcrumbs from "@mui/joy/Breadcrumbs";
+import Link from "@mui/joy/Link";
+import Card from "@mui/joy/Card";
+import CardActions from "@mui/joy/CardActions";
+import CardOverflow from "@mui/joy/CardOverflow";
 
-const rows = [
-  {
-    id: 'INV-1234',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    test1:  '50',
-    student: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  }
-];
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded";
+import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
+import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+import DropZone from "./DropZone";
+import FileUpload from "./FileUpload";
+import CountrySelector from "./CountrySelector";
+import EditorToolbar from "./EditorToolbar";
+import Chart from 'chart.js/auto';
 
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-function RowMenu() {
+export default function MyProfile() {
   return (
-    <Dropdown>
-      <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'sm' } }}
+    <Box
+      sx={{
+        flex: 1,
+        width: "100%",
+      }}
+    >
+      <Stack
+        spacing={4}
+        direction="row"
+        sx={{
+          maxWidth: "500px",
+          px: {
+            xs: 2,
+            md: 6,
+          },
+          py: {
+            xs: 2,
+            md: 3,
+          },
+        }}
       >
-        <MoreHorizRoundedIcon />
-      </MenuButton>
-      <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Edit</MenuItem>
-        <MenuItem>Rename</MenuItem>
-        <MenuItem>Move</MenuItem>
-        <Divider />
-        <MenuItem color="danger">Delete</MenuItem>
-      </Menu>
-    </Dropdown>
-  );
-}
+        <Card>
+          <Box sx={{ mb: 1 }}>
+            <Typography level="title-md">Personal info</Typography>
+            <Typography level="body-sm">
+              Customize how your profile information will apper to the networks.
+            </Typography>
+          </Box>
+          <Divider />
+          <Stack
+            direction="row"
+            spacing={3}
+            sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
+          >
+            <Stack spacing={2} sx={{ flexGrow: 1 }}>
+              <Stack spacing={1}></Stack>
 
-export default function OrderTable() {
-  const [order, setOrder] = React.useState<Order>('desc');
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
-  const [open, setOpen] = React.useState(false);
-  const renderFilters = () => (
-    <React.Fragment>
-      <FormControl size="sm">
-        <FormLabel>Status</FormLabel>
-        <Select
-          size="sm"
-          placeholder="Filter by status"
-          slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
-        >
-          <Option value="paid">Paid</Option>
-          <Option value="pending">Pending</Option>
-          <Option value="refunded">Refunded</Option>
-          <Option value="cancelled">Cancelled</Option>
-        </Select>
-      </FormControl>
+              <div>
+                //chart here
+              
+              </div>
+              <div></div>
+            </Stack>
+          </Stack>
+          <Stack
+            direction="column"
+            spacing={2}
+            sx={{ display: { xs: "flex", md: "none" }, my: 1 }}
+          >
+            <Stack direction="row" spacing={2}>
+              <Stack direction="column" spacing={1}>
+                <AspectRatio
+                  ratio="1"
+                  maxHeight={108}
+                  sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                    loading="lazy"
+                    alt=""
+                  />
+                </AspectRatio>
+                <IconButton
+                  aria-label="upload new picture"
+                  size="sm"
+                  variant="outlined"
+                  color="neutral"
+                  sx={{
+                    bgcolor: "background.body",
+                    position: "absolute",
+                    zIndex: 2,
+                    borderRadius: "50%",
+                    left: 85,
+                    top: 180,
+                    boxShadow: "sm",
+                  }}
+                >
+                  <EditRoundedIcon />
+                </IconButton>
+              </Stack>
+              <Stack spacing={1} sx={{ flexGrow: 1 }}>
+                <FormLabel>Name</FormLabel>
+                <FormControl
+                  sx={{
+                    display: {
+                      sm: "flex-column",
+                      md: "flex-row",
+                    },
+                    gap: 2,
+                  }}
+                >
+                  <Input size="sm" placeholder="First name" />
+                  <Input size="sm" placeholder="Last name" />
+                </FormControl>
+              </Stack>
+            </Stack>
 
-      <FormControl size="sm">
-        <FormLabel>Category</FormLabel>
-        <Select size="sm" placeholder="All">
-          <Option value="all">All</Option>
-          <Option value="refund">Refund</Option>
-          <Option value="purchase">Purchase</Option>
-          <Option value="debit">Debit</Option>
-        </Select>
-      </FormControl>
+            <FormControl>
+              <FormLabel>Role</FormLabel>
+              <Input size="sm" defaultValue="UI Developer" />
+            </FormControl>
+            <FormControl sx={{ flexGrow: 1 }}>
+              <FormLabel>Email</FormLabel>
+              <Input
+                size="sm"
+                type="email"
+                startDecorator={<EmailRoundedIcon />}
+                placeholder="email"
+                defaultValue="siriwatk@test.com"
+                sx={{ flexGrow: 1 }}
+              />
+            </FormControl>
 
-      <FormControl size="sm">
-        <FormLabel>Customer</FormLabel>
-        <Select size="sm" placeholder="All">
-          <Option value="all">All</Option>
-          <Option value="olivia">Olivia Rhye</Option>
-          <Option value="steve">Steve Hampton</Option>
-          <Option value="ciaran">Ciaran Murray</Option>
-          <Option value="marina">Marina Macdonald</Option>
-          <Option value="charles">Charles Fulton</Option>
-          <Option value="jay">Jay Hoper</Option>
-        </Select>
-      </FormControl>
-    </React.Fragment>
-  );
-  return (
-    <React.Fragment>
-      
-    </React.Fragment>
+            <div>
+              <CountrySelector />
+            </div>
+            <div>
+              <FormControl sx={{ display: { sm: "contents" } }}>
+                <FormLabel>Timezone</FormLabel>
+                <Select
+                  size="sm"
+                  startDecorator={<AccessTimeFilledRoundedIcon />}
+                  defaultValue="1"
+                >
+                  <Option value="1">
+                    Indochina Time (Bangkok){" "}
+                    <Typography textColor="text.tertiary" ml={0.5}>
+                      — GMT+07:00
+                    </Typography>
+                  </Option>
+                  <Option value="2">
+                    Indochina Time (Ho Chi Minh City){" "}
+                    <Typography textColor="text.tertiary" ml={0.5}>
+                      — GMT+07:00
+                    </Typography>
+                  </Option>
+                </Select>
+              </FormControl>
+            </div>
+          </Stack>
+        </Card>
+        <Card>
+          <Box sx={{ mb: 1 }}>
+            <Typography level="title-md">Bio</Typography>
+            <Typography level="body-sm">
+              Write a short introduction to be displayed on your profile
+            </Typography>
+          </Box>
+          <Divider />
+          <Stack spacing={2} sx={{ my: 1 }}>
+            <EditorToolbar />
+            <Textarea
+              size="sm"
+              minRows={4}
+              sx={{ mt: 1.5 }}
+              defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
+            />
+            <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
+              275 characters left
+            </FormHelperText>
+          </Stack>
+        </Card>
+      </Stack>
+    </Box>
   );
 }
