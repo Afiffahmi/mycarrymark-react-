@@ -35,14 +35,14 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-
+import AddClass from './AddClass'
 
 const rows = [
   {
     id: 'INV-1234',
     course: 'CSC662',
     class: 'A4CS230',
-    status: 'Refunded',
+    status: 'On Going',
     students:  '50',
     student: {
       initial: 'O',
@@ -117,7 +117,10 @@ export default function Classes() {
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [open, setOpen] = React.useState(false);
   const renderFilters = () => (
+
+    
     <React.Fragment>
+      
       <FormControl size="sm">
         <FormLabel>Status</FormLabel>
         <Select
@@ -141,12 +144,7 @@ export default function Classes() {
           <Option value="debit">Debit</Option>
         </Select>
       </FormControl>
-      <Button
-              color="primary"
-              size="sm"
-            >
-              Create new class
-            </Button>
+      <AddClass />
     </React.Fragment>
   );
   return (
@@ -350,14 +348,6 @@ export default function Classes() {
                       <Typography level="body-xs">{row.student.name}</Typography>
                       <Typography level="body-xs">{row.student.email}</Typography>
                     </div>
-                  </Box>
-                </td>
-                <td>
-                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Link level="body-xs" component="button">
-                      Download
-                    </Link>
-                    <RowMenu />
                   </Box>
                 </td>
               </tr>

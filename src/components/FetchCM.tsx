@@ -10,31 +10,38 @@ import Input from "@mui/joy/Input";
 import IconButton from "@mui/joy/IconButton";
 import Textarea from "@mui/joy/Textarea";
 import Stack from "@mui/joy/Stack";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
 import Typography from "@mui/joy/Typography";
-import Tabs from "@mui/joy/Tabs";
-import TabList from "@mui/joy/TabList";
-import Tab, { tabClasses } from "@mui/joy/Tab";
-import Breadcrumbs from "@mui/joy/Breadcrumbs";
-import Link from "@mui/joy/Link";
 import Card from "@mui/joy/Card";
-import CardActions from "@mui/joy/CardActions";
-import CardOverflow from "@mui/joy/CardOverflow";
+import Slider from "@mui/joy/Slider";
+import ListDivider from '@mui/joy/ListDivider';
+import Avatar from '@mui/joy/Avatar';
+import List from '@mui/joy/List';
+import { Alert, Chip, ListItem, ListItemDecorator } from "@mui/joy";
+import ListItemContent from "@mui/joy/ListItemContent";
+import AvatarGroup from '@mui/joy/AvatarGroup';
 
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRounded";
-import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
-import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+const marks = [
+  {
+    value: 0,
+    label: "Quiz 1",
+  },
+  {
+    value: 30,
+    label: "Test 1",
+  },
+  {
+    value: 60,
+    label: "Test 2",
+  },
+  {
+    value: 90,
+    label: "Project",
+  },
+];
 
-import DropZone from "./DropZone";
-import FileUpload from "./FileUpload";
-import CountrySelector from "./CountrySelector";
-import EditorToolbar from "./EditorToolbar";
-import Chart from 'chart.js/auto';
+function valueText(value: number) {
+  return `${value}°C`;
+}
 
 export default function MyProfile() {
   return (
@@ -59,146 +66,104 @@ export default function MyProfile() {
           },
         }}
       >
-        <Card>
+        <Card size="lg">
+          
           <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Personal info</Typography>
+            <Typography level="title-md">Track your progress</Typography>
             <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
+              Display currently upcoming assessment
             </Typography>
+            <Stack direction='row'>
+            <Alert variant="outlined" color="danger" size="sm">CSC662</Alert>
+            <Alert color="danger" size="sm">Test 1 due 12 November 2023</Alert>
+            </Stack>
           </Box>
           <Divider />
           <Stack
             direction="row"
-            spacing={3}
+            spacing={2}
             sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
           >
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}></Stack>
-
+              <Typography>Progression</Typography>
               <div>
-                //chart here
-              
-              </div>
-              <div></div>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="column"
-            spacing={2}
-            sx={{ display: { xs: "flex", md: "none" }, my: 1 }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Stack direction="column" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={108}
-                  sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                    loading="lazy"
-                    alt=""
+                <Box sx={{ width: 400 }}>
+                  <Slider
+                    aria-label="Always visible"
+                    defaultValue={30}
+                    getAriaValueText={valueText}
+                    step={30}
+                    marks={marks}
+                    disabled
                   />
-                </AspectRatio>
-                <IconButton
-                  aria-label="upload new picture"
-                  size="sm"
-                  variant="outlined"
-                  color="neutral"
-                  sx={{
-                    bgcolor: "background.body",
-                    position: "absolute",
-                    zIndex: 2,
-                    borderRadius: "50%",
-                    left: 85,
-                    top: 180,
-                    boxShadow: "sm",
-                  }}
-                >
-                  <EditRoundedIcon />
-                </IconButton>
-              </Stack>
-              <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{
-                    display: {
-                      sm: "flex-column",
-                      md: "flex-row",
-                    },
-                    gap: 2,
-                  }}
-                >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" />
-                </FormControl>
-              </Stack>
+                </Box>
+              </div>
             </Stack>
-
-            <FormControl>
-              <FormLabel>Role</FormLabel>
-              <Input size="sm" defaultValue="UI Developer" />
-            </FormControl>
-            <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Email</FormLabel>
-              <Input
-                size="sm"
-                type="email"
-                startDecorator={<EmailRoundedIcon />}
-                placeholder="email"
-                defaultValue="siriwatk@test.com"
-                sx={{ flexGrow: 1 }}
-              />
-            </FormControl>
-
-            <div>
-              <CountrySelector />
-            </div>
-            <div>
-              <FormControl sx={{ display: { sm: "contents" } }}>
-                <FormLabel>Timezone</FormLabel>
-                <Select
-                  size="sm"
-                  startDecorator={<AccessTimeFilledRoundedIcon />}
-                  defaultValue="1"
-                >
-                  <Option value="1">
-                    Indochina Time (Bangkok){" "}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                  <Option value="2">
-                    Indochina Time (Ho Chi Minh City){" "}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                </Select>
-              </FormControl>
-            </div>
           </Stack>
         </Card>
         <Card>
           <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Bio</Typography>
+            <Typography level="title-md">Assignment Submmission</Typography>
             <Typography level="body-sm">
-              Write a short introduction to be displayed on your profile
+              Students turned in the assignment
             </Typography>
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
-            <EditorToolbar />
-            <Textarea
-              size="sm"
-              minRows={4}
-              sx={{ mt: 1.5 }}
-              defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-            />
-            <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
-              275 characters left
-            </FormHelperText>
+          <Box sx={{ width: 320 }}>
+      <Typography
+        id="ellipsis-list-demo"
+        level="body-xs"
+        textTransform="uppercase"
+        sx={{ letterSpacing: '0.15rem' }}
+      >
+        Students
+      </Typography>
+      <List
+        aria-labelledby="ellipsis-list-demo"
+        sx={{ '--ListItemDecorator-size': '56px' }}
+        
+      >
+        <ListItem>
+          <ListItemDecorator>
+            <Avatar src="https://cdn.uitm.edu.my/gambar_warga/3fcc9a6758c8adca9d980bb1a012d075.png" />
+          </ListItemDecorator>
+          <ListItemContent>
+            <Typography level="title-sm">Muhammad Syafiq Kheruddin</Typography>
+            <Stack direction='row'>
+            <Chip color="primary" size="sm">CSC662</Chip>
+            <Typography level="body-sm" noWrap>
+              Submited assignment 1
+            </Typography>
+            </Stack>
+          </ListItemContent>
+        </ListItem>
+        <ListItem>
+          <ListItemDecorator>
+            <Avatar src="https://cdn.uitm.edu.my/gambar_warga/c4bf2caecaed27a931c1f3968ad74cc9.png" />
+          </ListItemDecorator>
+          <ListItemContent>
+            <Typography level="title-sm">Nur Anis Khairina</Typography>
+            <Stack direction='row'>
+            <Chip color="primary" size="sm">CSC662</Chip>
+            <Typography level="body-sm" noWrap>
+              Submited assignment 1
+            </Typography>
+            </Stack>
+            
+          </ListItemContent>
+          
+         
+        </ListItem>
+         <AvatarGroup size="sm" sx={{ flexDirection: 'row-reverse' }}>
+      <Avatar>+3</Avatar>
+      <Avatar alt="Cindy Baker" src="https://cdn.uitm.edu.my/gambar_warga/92f42034219a8d85cac7c21169e8b1c4.png" />
+      <Avatar alt="Travis Howard" src="https://cdn.uitm.edu.my/gambar_warga/f4251db8ceea3f3f2eb6a79bfc4d8282.png" />
+      <Avatar alt="Remy Sharp" src="https://cdn.uitm.edu.my/gambar_warga/c4db5493fa57464b8c9e020aec691ab0.png" />
+    </AvatarGroup>
+      </List>
+    </Box>
           </Stack>
         </Card>
       </Stack>

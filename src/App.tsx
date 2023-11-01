@@ -37,7 +37,7 @@ export default function JoyOrderDashboardTemplate() {
   const status = useScript(`https://unpkg.com/feather-icons`);
   const[token,setToken] = useState();
   const[isLoading,setIsLoading] = useState(true);
-  const[activeComponent, setActiveComponent] = useState('OrderTable');
+  const[activeComponent, setActiveComponent] = useState('Home');
   useEnhancedEffect(() => {
     // Feather icon setup: https://github.com/feathericons/feather#4-replace
     // @ts-ignore
@@ -86,7 +86,7 @@ export default function JoyOrderDashboardTemplate() {
       case 'Class' :
         return <Classes />
       default :
-        return <OrderTable/>
+        return <FetchCM/>
     }
 
 

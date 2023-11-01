@@ -38,6 +38,24 @@ import MuiLogo from './MuiLogo';
 import SmartToy from '@mui/icons-material/SmartToy';
 
 
+let classSelect:boolean = false;
+let homeSelect:boolean = true;
+
+function onSelected(select:string){
+
+  homeSelect = false;
+  classSelect = false;
+  switch (select){
+    case 'home':
+      homeSelect = true;
+      break;
+    case 'class':
+      classSelect = true;
+      break;
+    default :
+      homeSelect = true;
+  }
+}
 
 function Toggler({
   defaultExpanded = false,
@@ -162,7 +180,7 @@ console.log(user);
           }}
         >
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => {onSelected('home')}} selected={homeSelect}>
               <HomeRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm" onClick={() => handleSideBtn('Home')}>Home</Typography>
@@ -171,7 +189,7 @@ console.log(user);
           </ListItem>
 
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => {onSelected('class')}} selected={classSelect}>
               <GroupRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm" onClick={() => handleSideBtn('Class')}>Class</Typography>
@@ -179,14 +197,6 @@ console.log(user);
             </ListItemButton>
           </ListItem>
 
-          <ListItem>
-            <ListItemButton selected>
-              <ShoppingCartRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Orders</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
 
           <ListItem nested>
             <Toggler

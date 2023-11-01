@@ -39,7 +39,7 @@ const rows = [
   {
     id: 'INV-1234',
     date: 'Feb 3, 2023',
-    status: 'Refunded',
+    status: 'On Going',
     test1:  '50',
     student: {
       initial: 'O',
