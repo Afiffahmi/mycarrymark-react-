@@ -49,7 +49,45 @@ const rows = [
       name: 'Olivia Ryhe',
       email: 'olivia@email.com',
     },
+  },
+  {
+    id: 'INV-1234',
+    course: 'CSC662',
+    class: 'A4CS230',
+    status: 'On Going',
+    students:  '50',
+    student: {
+      initial: 'O',
+      name: 'Olivia Ryhe',
+      email: 'olivia@email.com',
+    },
+  },
+  {
+    id: 'INV-1234',
+    course: 'CSC662',
+    class: 'A4CS230',
+    status: 'On Going',
+    students:  '50',
+    student: {
+      initial: 'O',
+      name: 'Olivia Ryhe',
+      email: 'olivia@email.com',
+    },
+  },
+  {
+    id: 'INV-1234',
+    course: 'CSC662',
+    class: 'A4CS230',
+    status: 'On Going',
+    students:  '50',
+    student: {
+      initial: 'O',
+      name: 'Olivia Ryhe',
+      email: 'olivia@email.com',
+    },
   }
+
+
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -349,6 +387,9 @@ export default function Classes() {
                       <Typography level="body-xs">{row.student.email}</Typography>
                     </div>
                   </Box>
+                </td>
+                <td>
+                  <RowMenu />
                 </td>
               </tr>
             ))}

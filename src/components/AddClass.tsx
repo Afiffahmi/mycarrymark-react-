@@ -30,7 +30,16 @@ export default function BasicModalDialog() {
       </Stack>
       
       <Modal open={open} onClose={() => setOpen(false)}>
-        <ModalDialog size='lg' >
+        <ModalDialog size='lg' sx={{
+          px: {
+            xs: 10,
+            md: 10,
+          },
+          py: {
+            xs: 2,
+            md: 4,
+          },
+        }}>
           <DialogTitle>Create new class</DialogTitle>
           <DialogContent>Fill in the information of the class.</DialogContent>
           <form
