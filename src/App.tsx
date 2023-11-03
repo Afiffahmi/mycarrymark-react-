@@ -14,19 +14,15 @@ import useScript from './useScript';
 //@ts-ignore
 import Sidebar from './components/Sidebar';
 //@ts-ignore
-import OrderTable from './components/OrderTable';
-//@ts-ignore
-import OrderList from './components/OrderList';
-//@ts-ignore
 import Header from './components/Header';
 //@ts-ignore
 import Login from './Login';
 import { useEffect,useState } from 'react';
 //@ts-ignore
 import Loader from './components/loader/Loader'
-import {Route, Routes} from "react-router-dom";
 import FetchCM from './components/FetchCM'
-import Classes from './components/Classes';
+import ClassList from './components/ClassList';
+import MyProfile from './components/MyProfile';
 
 
 
@@ -84,7 +80,9 @@ export default function JoyOrderDashboardTemplate() {
       case 'Home' :
         return <FetchCM />
       case 'Class' :
-        return <Classes />
+        return <ClassList />
+        case 'Profile':
+          return <MyProfile token={token} />
       default :
         return <FetchCM/>
     }

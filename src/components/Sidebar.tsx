@@ -15,15 +15,12 @@ import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton';
 import ListItemContent from '@mui/joy/ListItemContent';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import Stack from '@mui/joy/Stack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import AccountBoxRoundedIcon from '@mui/icons-material/AccountBox';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
-import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
@@ -251,7 +248,7 @@ console.log(user);
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <AccountBoxRoundedIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Users</Typography>
+                    <Typography level="title-sm" >Users</Typography>
                     
                   </ListItemContent>
                   <KeyboardArrowDownIcon
@@ -265,7 +262,7 @@ console.log(user);
                   <ListItemButton
                     role="menuitem"
                     component="a"
-                    href="/joy-ui/getting-started/templates/profile-dashboard/"
+                    onClick={() => handleSideBtn('Profile')}
                   >
                     My profile 
                     {user.providerData[0].displayName && user.providerData[0].photoURL ?  '' : <Chip size='sm' variant='solid' color='primary'>1</Chip> }

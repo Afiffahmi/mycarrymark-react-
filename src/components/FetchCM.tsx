@@ -29,7 +29,7 @@ import OrderTable from "./OrderTable";
 import { ClassMonitor } from "./ClassMonitor";
 
 
-export default function MyProfile() {
+export default function FetchCM() {
   const [index, setIndex] = React.useState(0);
   return (
     <Box
@@ -85,6 +85,9 @@ export default function MyProfile() {
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
           Assesment
         </Tab>
+        <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
+          Grade
+        </Tab>
       </TabList>
       <TabPanel value={0}>
         <Typography level="inherit">
@@ -118,6 +121,32 @@ export default function MyProfile() {
             })}
           >
             $49
+          </Typography>
+          $37*{' '}
+          <Typography fontSize="sm" textColor="text.secondary" fontWeight="md">
+            / dev / month
+          </Typography>
+        </Typography>
+      </TabPanel>
+      <TabPanel value={3}>
+        <Typography level="inherit">
+          The most advanced features for data-rich applications, as well as the
+          highest priority for support.
+        </Typography>
+        <Typography textColor="primary.400" fontSize="xl3" fontWeight="xl" mt={1}>
+          <Typography
+            fontSize="xl"
+            borderRadius="sm"
+            px={0.5}
+            mr={0.5}
+            sx={(theme) => ({
+              ...theme.variants.soft.danger,
+              color: 'danger.400',
+              verticalAlign: 'text-top',
+              textDecoration: 'line-through',
+            })}
+          >
+            $50
           </Typography>
           $37*{' '}
           <Typography fontSize="sm" textColor="text.secondary" fontWeight="md">

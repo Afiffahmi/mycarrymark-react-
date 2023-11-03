@@ -182,7 +182,6 @@ export default function Classes() {
           <Option value="debit">Debit</Option>
         </Select>
       </FormControl>
-      <AddClass />
     </React.Fragment>
   );
   return (
