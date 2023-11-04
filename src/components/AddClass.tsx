@@ -10,10 +10,22 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import Box from '@mui/joy/Box';
-import { Typography } from '@mui/joy';
+import { Alert, Typography } from '@mui/joy';
 import LinearProgress from '@mui/joy/LinearProgress';
 
-export default function BasicModalDialog() {
+interface FormElements extends HTMLFormControlsCollection {
+  coursename: HTMLInputElement;
+  coursecode: HTMLInputElement;
+  group : HTMLInputElement;
+  part : HTMLInputElement;
+}
+interface AddClassFormElement extends HTMLFormElement {
+  readonly elements: FormElements;
+}
+
+export default function BasicModalDialog({token}:any) {
+  const user = JSON.parse(token);
+
   const [open, setOpen] = React.useState<boolean>(false);
   const [progress, setProgress] = React.useState(0);
   const [coursename, setCoursename] = React.useState(false);
@@ -85,8 +97,36 @@ export default function BasicModalDialog() {
           <DialogTitle>Create new class</DialogTitle>
           <DialogContent>Fill in the information of the class.</DialogContent>
           <form
-            onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+            onSubmit={async(event: React.FormEvent<AddClassFormElement>) => {
               event.preventDefault();
+              const formElements = event.currentTarget.elements;
+              const data = {
+                email : user.email,
+                coursecode : formElements.coursename.value,
+                coursename : formElements.coursecode.value,
+                group : formElements.group.value,
+                part : formElements.part.value
+
+              };
+
+              const formAction = "http://localhost:5555/class/new"
+              const formMethod = "POST"
+
+              fetch(formAction,{
+                method: formMethod,
+                body: JSON.stringify(data),
+                headers: {
+                  "Content-Type" : "application/json"
+                },
+              }).then((response)=>response.json())
+              .then((responseData)=>{
+                console.log(responseData);
+                <Alert>{responseData}</Alert>
+              })
+              .catch((error)=>{
+                console.log(error);
+              })
+
               setOpen(false);
             }}
           >
@@ -95,7 +135,7 @@ export default function BasicModalDialog() {
               
               <FormControl>
                 <FormLabel>Course Code</FormLabel>
-                <Input name="coursecode" onChange={(e) => {progressBar(e.currentTarget)}} autoFocus required />
+                <Input className="coursecode" name="coursecode" onChange={(e) => {progressBar(e.currentTarget)}} autoFocus required />
               </FormControl>
               <FormControl>
                 <FormLabel>Group</FormLabel>
@@ -112,6 +152,7 @@ export default function BasicModalDialog() {
                 <FormLabel>Part</FormLabel>
                 <Input name="part" onChange={(e) => {progressBar(e.currentTarget)}} required />
               </FormControl>
+                
               </Stack>
               
               

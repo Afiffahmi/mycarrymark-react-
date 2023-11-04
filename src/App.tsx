@@ -80,7 +80,7 @@ export default function JoyOrderDashboardTemplate() {
       case 'Home' :
         return <FetchCM />
       case 'Class' :
-        return <ClassList />
+        return <ClassList token={token}/>
         case 'Profile':
           return <MyProfile token={token} />
       default :

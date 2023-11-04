@@ -32,8 +32,8 @@ import GroupRounded from "@mui/icons-material/GroupRounded";
 import AddClass from './AddClass'
 
 
-export default function ClassList() {
-
+export default function ClassList({token}:any) {
+    const user = JSON.parse(token);
   return (
     <Box
       sx={{
@@ -42,7 +42,7 @@ export default function ClassList() {
       }}
     >
     <Stack direction='row' spacing={10}>
-      <AddClass />
+      <AddClass token={token}/>
     </Stack>
     <Box height={10}/>
         

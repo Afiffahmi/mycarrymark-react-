@@ -27,6 +27,7 @@ import TabPanel from '@mui/joy/TabPanel';
 import Classes from "./Classes";
 import OrderTable from "./OrderTable";
 import { ClassMonitor } from "./ClassMonitor";
+import PartitionCM from "./PartitionCM";
 
 
 export default function FetchCM() {
@@ -107,26 +108,7 @@ export default function FetchCM() {
           The most advanced features for data-rich applications, as well as the
           highest priority for support.
         </Typography>
-        <Typography textColor="primary.400" fontSize="xl3" fontWeight="xl" mt={1}>
-          <Typography
-            fontSize="xl"
-            borderRadius="sm"
-            px={0.5}
-            mr={0.5}
-            sx={(theme) => ({
-              ...theme.variants.soft.danger,
-              color: 'danger.400',
-              verticalAlign: 'text-top',
-              textDecoration: 'line-through',
-            })}
-          >
-            $49
-          </Typography>
-          $37*{' '}
-          <Typography fontSize="sm" textColor="text.secondary" fontWeight="md">
-            / dev / month
-          </Typography>
-        </Typography>
+        <PartitionCM />
       </TabPanel>
       <TabPanel value={3}>
         <Typography level="inherit">
