@@ -4,12 +4,14 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter,Routes, Route } from 'react-router-dom';
 import JoyOrderDashboardTemplate from './App.tsx';
+import {AuthProvider} from './AuthProvider.tsx'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
   <Routes>
+
     <Route path="/" element={<JoyOrderDashboardTemplate/>}/>
 
   </Routes>

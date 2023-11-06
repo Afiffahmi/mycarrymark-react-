@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState,useEffect } from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import CardContent from '@mui/joy/CardContent';
@@ -13,27 +14,85 @@ import Textarea from "@mui/joy/Textarea";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
-import Slider from "@mui/joy/Slider";
-import ListDivider from '@mui/joy/ListDivider';
-import Avatar from '@mui/joy/Avatar';
-import List from '@mui/joy/List';
-import { Alert, CardOverflow, Chip, Grid, ListItem, ListItemDecorator, Tooltip } from "@mui/joy";
-import ListItemContent from "@mui/joy/ListItemContent";
-import AvatarGroup from '@mui/joy/AvatarGroup';
-import Badge, { badgeClasses } from '@mui/joy/Badge';
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab, { tabClasses } from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
-import Classes from "./Classes";
-import OrderTable from "./OrderTable";
-import { ClassMonitor } from "./ClassMonitor";
+import { Alert, CardOverflow, Chip, CircularProgress, Grid, ListItem, ListItemDecorator, Tooltip } from "@mui/joy";
 import GroupRounded from "@mui/icons-material/GroupRounded";
 import AddClass from './AddClass'
+import LinearProgress from "@mui/joy/LinearProgress";
+import Check from '@mui/icons-material/Check';
+import Close from '@mui/icons-material/Close';
+import Info from '@mui/icons-material/Info';
+import axios from 'axios';
+import Snackbar from "@mui/joy/Snackbar";
+import {motion} from 'framer-motion';
+
+
+
+interface Lecturer {
+  email: string;
+
+}
+interface Item {
+  id: string;
+  courseCode: string;
+  courseName: string;
+  group: string;
+  nStudent: number;
+  lecturers: Lecturer[];
+}
 
 
 export default function ClassList({token}:any) {
-    const user = JSON.parse(token);
+const [successful,setSuccessful] = React.useState(false);
+const [data, setData] = useState<Item[]>([]);
+const [loading, setLoading] = React.useState(true);
+const user = JSON.parse(token);
+let indexleng:boolean = false;
+
+const container = {
+  hidden: { opacity: 1, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const items = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1
+  }
+};
+
+useEffect(() => {
+  axios({
+    method: 'get',
+    url: 'http://localhost:5555/class/list',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    
+  }).then(response => {
+    setData(response.data)
+    setLoading(false);
+  
+  })
+   // Set up polling - fetch data every 5 seconds
+   const intervalId = setInterval(() => {
+    fetch('http://localhost:5555/class/list')
+      .then(response => response.json())
+      .then(data => Array.isArray(data) ? setData(data) : setData([]));
+  }, 5000);
+
+  // Clear interval on component unmount
+  return () => clearInterval(intervalId);
+
+}, [token]);
+
   return (
     <Box
       sx={{
@@ -41,81 +100,174 @@ export default function ClassList({token}:any) {
         width: "100%",
       }}
     >
+      
     <Stack direction='row' spacing={10}>
-      <AddClass token={token}/>
+  
+      <AddClass token={token} setSuccessful = {setSuccessful}/>
+      {(successful ? (<Snackbar open={true}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        size="lg"
+        color="success"
+        variant="solid"
+        invertedColors
+        startDecorator={
+          <AspectRatio
+            variant="solid"
+            ratio="1"
+            sx={{
+              minWidth: 40,
+              borderRadius: '50%',
+              boxShadow: '0 2px 12px 0 rgb(0 0 0/0.2)',
+            }}
+          >
+            <div>
+              <Check />
+            </div>
+          </AspectRatio>
+        }
+        endDecorator={
+          <IconButton
+          onClick={() => {setSuccessful(false)}}
+            variant="plain"
+            sx={{
+              '--IconButton-size': '32px',
+              transform: 'translate(0.5rem, -0.5rem)',
+            }}
+            
+          >
+            <Close />
+          </IconButton>
+        }
+        sx={{ alignItems: 'flex-start', overflow: 'hidden' }}
+      >
+        <div>
+          <Typography level="title-lg">Success</Typography>
+          <Typography level="body-sm">
+            Class successfully created.
+          </Typography>
+        </div>
+        <LinearProgress
+          variant="solid"
+          color="success"
+          value={40}
+          sx={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            borderRadius: 0,
+          }}
+        />
+      </Snackbar>) : null)}
     </Stack>
+    
     <Box height={10}/>
         
-    
-      <Grid container
-  spacing={{ xs: 2, md: 3 }}
-  columns={{ xs: 4, sm: 8, md: 14 }}
-  sx={{ flexGrow: 1 }}>
-      <Grid xs={2} sm={4} md={4} >
-      <Card variant="outlined" sx={{ width: 320 }}>
-      <CardOverflow>
-        <AspectRatio ratio="2">
-          <img
-            src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&fit=crop&w=318"
-            loading="lazy"
-            alt=""
-          />
-        </AspectRatio>
-      </CardOverflow>
-      <CardContent>
-        <Typography level="title-md">CSC662</Typography>
-        <Typography level="body-sm">Computer Security</Typography>
-      </CardContent>
-      <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
-        <Divider inset="context" />
-        <CardContent orientation="horizontal">
-          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-            <GroupRounded />
-          </Typography>
-          <Divider orientation="vertical" />
-          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-          33 Students
-          </Typography>
-        </CardContent>
-      </CardOverflow>
-    </Card>
-      
-      </Grid>
-      
-      <Grid xs={2} sm={4} md={4} >
-      <Card variant="outlined" sx={{ width: 320 }}>
-      <CardOverflow>
-        <AspectRatio ratio="2">
-          <img
-            src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&fit=crop&w=318"
-            loading="lazy"
-            alt=""
-          />
-        </AspectRatio>
-      </CardOverflow>
-      <CardContent>
-        <Typography level="title-md">CSC662</Typography>
-        <Typography level="body-sm">A4CS2306A</Typography>
-      </CardContent>
-      <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
-        <Divider inset="context" />
-        <CardContent orientation="horizontal">
-          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-            <GroupRounded />
-          </Typography>
-          <Divider orientation="vertical" />
-          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-          33 Students
-          </Typography>
-        </CardContent>
-      </CardOverflow>
-    </Card>
-      
-      </Grid>
+  
 
-      </Grid>
+    {(loading ? 
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <CircularProgress />
+      </Box> 
+      : 
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 4, md: 16 }} sx={{ flexGrow: 1 }}>
+        
+  {data.map((item, index) => (
+    item.lecturers[0].email === user.email ? (
+      <React.Fragment key={item.id}>
+        <Grid xs={2} sm={4} md={4} key={index}>
+          <motion.ul whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="container"
+    variants={container}
+    initial="hidden"
+    animate="visible">
+          <Card onClick={() => {console.log(item.id)}} variant="outlined" sx={{ width: 320 }} 
+           >
+            <CardOverflow>
+              <AspectRatio ratio="2">
+                <img
+                  src='https://media.tenor.com/4-oYk1qhxPkAAAAd/forrest-landscape.gif'
+                  loading="lazy"
+                  alt=""
+                />
+              </AspectRatio>
+            </CardOverflow>
+            <CardContent>
+            <motion.div key={index} className="item" variants={items} >
+              <Typography level="title-md">{item.courseCode}</Typography>
+              </motion.div>
+              <motion.div key={index} className="item" variants={items} >
+              <Typography level="body-sm">{item.courseName}</Typography></motion.div>
+            </CardContent>
+            <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
+              <Divider inset="context" />
+              <CardContent orientation="horizontal">
+                <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
+                  <GroupRounded />
+                </Typography>
+                <Divider orientation="vertical" />
+                <motion.div key={index} className="item" variants={items} >
+                <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
+                  {item.nStudent} Students
+                </Typography></motion.div>
+              </CardContent>
+            </CardOverflow>
+          </Card>
+          </motion.ul>
+        </Grid>
+      </React.Fragment>
+    ) : (null)))
+  }
+
+  {data.find(item => item.lecturers[0].email === user.email) ? null : indexleng = true }
+
+  
+</Grid>)}
       
+
+
+      <Box/>
+      <Box height={50}>
+      </Box>
+     
+
+      {!loading && indexleng ? (
+          <Alert
+            startDecorator={
+              <AspectRatio
+                variant="solid"
+                ratio="1"
+                sx={{
+                  minWidth: 40,
+                  borderRadius: '50%',
+                  boxShadow: '0 2px 12px 0 rgb(0 0 0/0.2)',
+                }}
+              >
+                <div>
+                  <Info />
+                </div>
+              </AspectRatio>
+            }
+            endDecorator={
+              <IconButton
+                onClick={() => {}}
+                variant="plain"
+                sx={{
+                  '--IconButton-size': '32px',
+                  transform: 'translate(0.5rem, -0.5rem)',
+                }}
+              >
+               
+              </IconButton>
+            }
+            sx={{ alignItems: 'flex-start', overflow: 'hidden' }}
+          >
+            <div>
+              <Typography level="title-lg">No classes found</Typography>
+              <Typography level="body-sm">
+                You are not assigned to any classes.
+              </Typography>
+            </div>
+          </Alert>
+        ) : null}
     </Box>
-    
-  );
-}
+)};

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Box  from "@mui/joy/Box";
 import { Button, FormControl, FormLabel, Input, Stack } from "@mui/joy";
 
+ 
 export default function PartitionCM() {
     const [ inputFields, setInputFields] = useState([
         {assessmentname: '',score:''}
@@ -36,6 +37,9 @@ export default function PartitionCM() {
         flex: 1,
         width: "100%",
       }}>
+
+      
+
     <form onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
               event.preventDefault();
               console.log(inputFields)}}>
@@ -46,6 +50,7 @@ export default function PartitionCM() {
     return (
         
     <Stack direction='row' key={index} spacing={2}>
+        
         <FormControl>
         <FormLabel>Assessment Name</FormLabel>
         <Input name="assessmentname" value={input.assessmentname} onChange={event => handleFormChange(index,event)} required/></FormControl>

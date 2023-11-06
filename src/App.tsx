@@ -23,7 +23,8 @@ import Loader from './components/loader/Loader'
 import FetchCM from './components/FetchCM'
 import ClassList from './components/ClassList';
 import MyProfile from './components/MyProfile';
-
+import { useContext } from 'react';
+import { AuthProvider } from './AuthProvider';
 
 
 const useEnhancedEffect =
@@ -96,7 +97,9 @@ export default function JoyOrderDashboardTemplate() {
 
 
 
-  return ( isLoading ? (<Loader/>) : (
+  return (
+    <AuthProvider>{(
+    isLoading ? (<Loader/>) : (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
       <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
@@ -168,6 +171,7 @@ export default function JoyOrderDashboardTemplate() {
         </Box>
       </Box>
     </CssVarsProvider>
-  ));
+  ))}</AuthProvider>);
+  
 }
 

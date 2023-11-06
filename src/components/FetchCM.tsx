@@ -1,47 +1,64 @@
-import * as React from "react";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
-import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import FormHelperText from "@mui/joy/FormHelperText";
-import Input from "@mui/joy/Input";
-import IconButton from "@mui/joy/IconButton";
-import Textarea from "@mui/joy/Textarea";
-import Stack from "@mui/joy/Stack";
-import Typography from "@mui/joy/Typography";
-import Card from "@mui/joy/Card";
-import Slider from "@mui/joy/Slider";
-import ListDivider from '@mui/joy/ListDivider';
-import Avatar from '@mui/joy/Avatar';
-import List from '@mui/joy/List';
-import { Alert, CardOverflow, Chip, Grid, ListItem, ListItemDecorator, Tooltip } from "@mui/joy";
-import ListItemContent from "@mui/joy/ListItemContent";
-import AvatarGroup from '@mui/joy/AvatarGroup';
-import Badge, { badgeClasses } from '@mui/joy/Badge';
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab, { tabClasses } from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
+import React, { useState, useEffect } from "react";
+import { AspectRatio, Box, Button, Divider, FormControl, FormLabel, FormHelperText, Input, IconButton, Textarea, Stack, Typography, Card, Slider, ListDivider, Avatar, List, Alert, CardOverflow, Chip, Grid, ListItem, ListItemDecorator, Tooltip, ListItemContent, AvatarGroup, Badge, badgeClasses, Tabs, TabList, Tab, tabClasses, TabPanel } from "@mui/joy";
 import Classes from "./Classes";
 import OrderTable from "./OrderTable";
 import { ClassMonitor } from "./ClassMonitor";
 import PartitionCM from "./PartitionCM";
+import OppositeContentTimeline from "./Timeline";
+import axios from 'axios';
 
+interface Item { 
+  id: string;
+  courseCode: string;
+  courseName: string;
+  group: string;
+  nStudent: number;
+  lecturers: Lecturer[];
 
-export default function FetchCM() {
+}
+interface Lecturer {
+  email: string;
+
+}
+
+export default function FetchCM(token:any) {
   const [index, setIndex] = React.useState(0);
+  const [data, setData] = useState<Item>({ id: '',
+  courseCode: '',
+  courseName: '',
+  group: '',
+  nStudent: 0,
+  lecturers: []
+});
+  React.useEffect(() => {
+    axios({
+      method: 'get',
+      url: 'http://localhost:5555/class/1ggfJ0eRxkdu132uB8dj',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    }).then(response => {
+      setData(response.data);
+    })
+  
+  })
+
+
   return (
+    
     <Box
       sx={{
         flex: 1,
-        width: "100%",
+        width: "90%",
       }}
     >
       
       <Grid>
+     
       <Grid>
+      <Typography>{data.courseCode}</Typography>
+      <Typography>{data.courseName}</Typography>
+      
       <Box
       sx={{
         flexGrow: 1,
@@ -115,31 +132,13 @@ export default function FetchCM() {
           The most advanced features for data-rich applications, as well as the
           highest priority for support.
         </Typography>
-        <Typography textColor="primary.400" fontSize="xl3" fontWeight="xl" mt={1}>
-          <Typography
-            fontSize="xl"
-            borderRadius="sm"
-            px={0.5}
-            mr={0.5}
-            sx={(theme) => ({
-              ...theme.variants.soft.danger,
-              color: 'danger.400',
-              verticalAlign: 'text-top',
-              textDecoration: 'line-through',
-            })}
-          >
-            $50
-          </Typography>
-          $37*{' '}
-          <Typography fontSize="sm" textColor="text.secondary" fontWeight="md">
-            / dev / month
-          </Typography>
-        </Typography>
+        <OppositeContentTimeline />
       </TabPanel>
     </Tabs>
     </Box>
       
       </Grid>
+  
       </Grid>
     </Box>
   );

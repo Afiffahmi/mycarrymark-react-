@@ -94,7 +94,7 @@ export const ClassMonitor = () => {
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
-          <Box sx={{ width: 400 }}>
+          <Box sx={{ width: 240 , height: 100 }}>
       <Typography
         id="ellipsis-list-demo"
         level="body-xs"
@@ -139,7 +139,7 @@ export const ClassMonitor = () => {
           
          
         </ListItem>
-        <Box height={80}></Box>
+        <Box height={10}></Box>
          <ListItem>
           <ListItemContent>
           <AvatarGroup size="sm" sx={{ flexDirection: 'row-reverse' }}>

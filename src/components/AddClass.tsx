@@ -13,6 +13,7 @@ import Box from '@mui/joy/Box';
 import { Alert, Typography } from '@mui/joy';
 import LinearProgress from '@mui/joy/LinearProgress';
 
+
 interface FormElements extends HTMLFormControlsCollection {
   coursename: HTMLInputElement;
   coursecode: HTMLInputElement;
@@ -23,7 +24,7 @@ interface AddClassFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-export default function BasicModalDialog({token}:any) {
+export default function BasicModalDialog({setSuccessful,token}:any) {
   const user = JSON.parse(token);
 
   const [open, setOpen] = React.useState<boolean>(false);
@@ -72,8 +73,8 @@ export default function BasicModalDialog({token}:any) {
     <React.Fragment>
       <Stack>
       <Button
-        variant="outlined"
-        color="neutral"
+        variant="solid"
+        color="primary"
         size='sm'
         startDecorator={<Add />}
         onClick={() => setOpen(true)}
@@ -102,8 +103,8 @@ export default function BasicModalDialog({token}:any) {
               const formElements = event.currentTarget.elements;
               const data = {
                 email : user.email,
-                coursecode : formElements.coursename.value,
-                coursename : formElements.coursecode.value,
+                coursecode : formElements.coursecode.value,
+                coursename : formElements.coursename.value,
                 group : formElements.group.value,
                 part : formElements.part.value
 
@@ -120,8 +121,12 @@ export default function BasicModalDialog({token}:any) {
                 },
               }).then((response)=>response.json())
               .then((responseData)=>{
-                console.log(responseData);
-                <Alert>{responseData}</Alert>
+                setCoursecode(false);
+                setCoursename(false);
+                setGroup(false);
+                setPart(false);
+                setSuccessful(true);
+                   
               })
               .catch((error)=>{
                 console.log(error);
@@ -132,10 +137,9 @@ export default function BasicModalDialog({token}:any) {
           >
             <Stack spacing={2} direction='row'>
               <Stack spacing={2}>
-              
               <FormControl>
                 <FormLabel>Course Code</FormLabel>
-                <Input className="coursecode" name="coursecode" onChange={(e) => {progressBar(e.currentTarget)}} autoFocus required />
+                <Input name="coursecode" onChange={(e) => {progressBar(e.currentTarget)}} autoFocus required />
               </FormControl>
               <FormControl>
                 <FormLabel>Group</FormLabel>
