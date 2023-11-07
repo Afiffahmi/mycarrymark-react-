@@ -46,21 +46,23 @@ export default function OppositeContentTimeline() {
   const items = [...moreItems];
 
   return (
-    <Grid sx={{ width: "100%", height: "100%" }}>
+    <Grid sx={{ width: "100%", height: 450 }}>
      <Stack direction='row' spacing={3}>
-    <Card color="neutral" variant="soft">
-      <Chrono
-        items={items}
-        theme={{
-          primary: "grey",
-          secondary: "#0B6BCB",
-          cardBgColor: "dde7ee",
-          titleColor: "black",
-          titleColorActive: "white",
-        }
-    }
-    mode="VERTICAL"
-      /></Card>
+    <Card color="neutral" variant="plain">
+      <div style={{ height: "400px", overflow: "auto" }}>
+        <Chrono
+          items={items}
+          theme={{
+            primary: "grey",
+            secondary: "#0B6BCB",
+            cardBgColor: "dde7ee",
+            titleColor: "black",
+            titleColorActive: "white",
+          }}
+          mode="VERTICAL"
+        />
+      </div>
+    </Card>
       <Card><PartitionCM /></Card>
     </Stack>
     </Grid>

@@ -6,12 +6,14 @@ import { ClassMonitor } from "./ClassMonitor";
 import PartitionCM from "./PartitionCM";
 import OppositeContentTimeline from "./Timeline";
 import axios from 'axios';
+import CardContent from "@mui/joy/CardContent";
+import {motion} from 'framer-motion';
 
 interface Item { 
   id: string;
   courseCode: string;
   courseName: string;
-  group: string;
+  groupClass: string;
   nStudent: number;
   lecturers: Lecturer[];
 
@@ -26,22 +28,23 @@ export default function FetchCM(token:any) {
   const [data, setData] = useState<Item>({ id: '',
   courseCode: '',
   courseName: '',
-  group: '',
+  groupClass: '',
   nStudent: 0,
   lecturers: []
 });
   React.useEffect(() => {
     axios({
       method: 'get',
-      url: 'http://localhost:5555/class/1ggfJ0eRxkdu132uB8dj',
+      url: 'http://localhost:5555/class/TBSU49VZ9kjX8dlCUlgD',
       headers: {
         'Authorization': `Bearer ${token}`
       },
     }).then(response => {
       setData(response.data);
+      console.log(response.data);
     })
   
-  })
+  },[token])
 
 
   return (
@@ -56,8 +59,6 @@ export default function FetchCM(token:any) {
       <Grid>
      
       <Grid>
-      <Typography>{data.courseCode}</Typography>
-      <Typography>{data.courseName}</Typography>
       
       <Box
       sx={{
@@ -67,6 +68,54 @@ export default function FetchCM(token:any) {
       }}
     >
       
+
+      <Box sx={{
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+      >
+        <Stack direction='row' alignItems='center' spacing={1}>
+        <Typography level="title-lg">{data.courseCode} |</Typography>
+        <Typography level="title-md" color="neutral">{data.courseName}</Typography>
+        </Stack>
+      </Box>
+      <Box
+        sx={{
+          p: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}>
+          <motion.div  whileTap={{ scale: 0.97 }} >
+          <Card orientation="horizontal" variant="outlined" sx={{ width: 340 }}>
+      <CardContent>
+        <Typography fontWeight="md" textColor="success.plainColor">
+          {data.id}
+        </Typography>
+        <Typography level="body-sm">{data.groupClass}</Typography>
+      </CardContent>
+      <CardOverflow
+        variant="soft"
+        color="primary"
+        sx={{
+          px: 0.2,
+          writingMode: 'vertical-rl',
+          textAlign: 'center',
+          fontSize: 'xs',
+          fontWeight: 'xl',
+          letterSpacing: '1px',
+          textTransform: 'uppercase',
+          borderLeft: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
+        CLASS ID
+      </CardOverflow>
+    </Card></motion.div>
+
+        </Box>
         <Tabs
       variant="outlined"
       aria-label="Pricing plan"

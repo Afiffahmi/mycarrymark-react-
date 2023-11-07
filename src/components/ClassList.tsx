@@ -176,7 +176,7 @@ useEffect(() => {
     item.lecturers[0].email === user.email ? (
       <React.Fragment key={item.id}>
         <Grid xs={2} sm={4} md={4} key={index}>
-          <motion.ul whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="container"
+          <motion.ul whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}  
     variants={container}
     initial="hidden"
     animate="visible">
