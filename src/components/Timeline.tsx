@@ -7,40 +7,34 @@ import PartitionCM from "./PartitionCM";
 export default function OppositeContentTimeline() {
   const moreItems = [
     {
-      title: "May 1940",
-      cardTitle: "Dunkirk",
+      title: "13/5/2023     ",
+      cardTitle: "Test 1",
       url: "http://www.history.com",
       cardDetailedText:
-        "Men of the British Expeditionary Force (BEF) wade out to..",
+        "Chapter 1 - 3.",
     },
     {
-      title: "May 1940",
-      cardTitle: "Dunkirk",
+      title: "12/11/2023",
+      cardTitle: "Test 2",
       url: "http://www.history.com",
       cardDetailedText:
-        "Men of the British Expeditionary Force (BEF) wade out to..",
+        "All chapter.",
     },
     {
-      title: "May 1940",
-      cardTitle: "Dunkirk",
+      title: "12/12/2023",
+      cardTitle: "Assignment 1",
       url: "http://www.history.com",
       cardDetailedText:
-        "Men of the British Expeditionary Force (BEF) wade out to..",
+        "Individual assignment.",
     },
     {
-      title: "May 1940",
-      cardTitle: "Dunkirk",
+      title: "21/12/2023        ",
+      cardTitle: "Group Project       ",
       url: "http://www.history.com",
       cardDetailedText:
-        "Men of the British Expeditionary Force (BEF) wade out to..",
+        "Group project.                ",
     },
-    {
-        title: "May 1940",
-        cardTitle: "Dunkirk",
-        url: "http://www.history.com",
-        cardDetailedText:
-          "Men of the British Expeditionary Force (BEF) wade out to..",
-      },
+
   ];
 
   const items = [...moreItems];

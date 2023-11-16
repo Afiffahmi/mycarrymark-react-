@@ -24,6 +24,7 @@ import Info from '@mui/icons-material/Info';
 import axios from 'axios';
 import Snackbar from "@mui/joy/Snackbar";
 import {motion} from 'framer-motion';
+import FetchCM from "./FetchCM";
 
 
 
@@ -45,6 +46,8 @@ export default function ClassList({token}:any) {
 const [successful,setSuccessful] = React.useState(false);
 const [data, setData] = useState<Item[]>([]);
 const [loading, setLoading] = React.useState(true);
+const [selectedId, setSelectedId] = useState('');
+const [showFetchCM, setShowFetchCM] = useState(false);
 const user = JSON.parse(token);
 let indexleng:boolean = false;
 
@@ -103,7 +106,7 @@ useEffect(() => {
       
     <Stack direction='row' spacing={10}>
   
-      <AddClass token={token} setSuccessful = {setSuccessful}/>
+    {showFetchCM ? null  : <AddClass token={token} setSuccessful = {setSuccessful}/>}
       {(successful ? (<Snackbar open={true}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         size="lg"
@@ -165,7 +168,7 @@ useEffect(() => {
         
   
 
-    {(loading ? 
+    {(showFetchCM ? <FetchCM selectedId={selectedId} /> : (loading ? 
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <CircularProgress />
       </Box> 
@@ -180,7 +183,7 @@ useEffect(() => {
     variants={container}
     initial="hidden"
     animate="visible">
-          <Card onClick={() => {console.log(item.id)}} variant="outlined" sx={{ width: 320 }} 
+          <Card onClick={() => {setShowFetchCM(true); setSelectedId(item.id);}} variant="outlined" sx={{ width: 320 }} 
            >
             <CardOverflow>
               <AspectRatio ratio="2">
@@ -221,8 +224,8 @@ useEffect(() => {
   {data.find(item => item.lecturers[0].email === user.email) ? null : indexleng = true }
 
   
-</Grid>)}
-      
+</Grid>))}
+
 
 
       <Box/>

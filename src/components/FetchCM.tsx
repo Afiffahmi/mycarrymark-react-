@@ -23,7 +23,7 @@ interface Lecturer {
 
 }
 
-export default function FetchCM(token:any) {
+export default function FetchCM({token,selectedId}:any) {
   const [index, setIndex] = React.useState(0);
   const [data, setData] = useState<Item>({ id: '',
   courseCode: '',
@@ -35,7 +35,7 @@ export default function FetchCM(token:any) {
   React.useEffect(() => {
     axios({
       method: 'get',
-      url: 'http://localhost:5555/class/TBSU49VZ9kjX8dlCUlgD',
+      url: `http://localhost:5555/class/${selectedId}`,
       headers: {
         'Authorization': `Bearer ${token}`
       },

@@ -138,8 +138,7 @@ export default function MyProfile({token}:any) {
                 sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                  srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                  src="https://cdn4.sharechat.com/img_467054_855c14b_1677775143880_sc.jpg?tenant=sc&referrer=pwa-sharechat-service&f=880_sc.jpg"
                   loading="lazy"
                   alt=""
                 />
@@ -181,7 +180,7 @@ export default function MyProfile({token}:any) {
               <Stack direction="row" spacing={2}>
                 <FormControl>
                   <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
+                  <Input size="sm" defaultValue="Senior Lecturer" />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Email</FormLabel>
@@ -190,7 +189,7 @@ export default function MyProfile({token}:any) {
                     type="email"
                     startDecorator={<EmailRoundedIcon />}
                     placeholder="email"
-                    defaultValue="siriwatk@test.com"
+                    defaultValue="afiffahmi@gmail.com"
                     sx={{ flexGrow: 1 }}
                   />
                 </FormControl>
