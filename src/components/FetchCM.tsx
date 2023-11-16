@@ -16,6 +16,7 @@ interface Item {
   groupClass: string;
   nStudent: number;
   lecturers: Lecturer[];
+  shortId: string;
 
 }
 interface Lecturer {
@@ -30,7 +31,8 @@ export default function FetchCM({token,selectedId}:any) {
   courseName: '',
   groupClass: '',
   nStudent: 0,
-  lecturers: []
+  lecturers: [],
+  shortId: '',
 });
   React.useEffect(() => {
     axios({
@@ -92,7 +94,7 @@ export default function FetchCM({token,selectedId}:any) {
           <Card orientation="horizontal" variant="outlined" sx={{ width: 340 }}>
       <CardContent>
         <Typography fontWeight="md" textColor="success.plainColor">
-          {data.id}
+          {data.shortId}
         </Typography>
         <Typography level="body-sm">{data.groupClass}</Typography>
       </CardContent>
@@ -114,7 +116,48 @@ export default function FetchCM({token,selectedId}:any) {
         CLASS ID
       </CardOverflow>
     </Card></motion.div>
-
+    <Tabs
+          defaultValue={0}
+          sx={{
+            bgcolor: 'transparent',
+          }}
+        >
+          <TabList
+            tabFlex={1}
+            size="sm"
+            sx={{
+              pl: {
+                xs: 0,
+                md: 4,
+              },
+              justifyContent: 'left',
+              [`&& .${tabClasses.root}`]: {
+                flex: 'initial',
+                bgcolor: 'transparent',
+                [`&.${tabClasses.selected}`]: {
+                  fontWeight: '600',
+                  '&::after': {
+                    height: '2px',
+                    bgcolor: 'primary.500',
+                  },
+                },
+              },
+            }}
+          >
+            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
+              Settings
+            </Tab>
+            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
+              Team
+            </Tab>
+            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
+              Plan
+            </Tab>
+            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
+              Billing
+            </Tab>
+          </TabList>
+        </Tabs>
         </Box>
         <Tabs
       variant="outlined"
