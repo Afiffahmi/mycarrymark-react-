@@ -224,7 +224,7 @@ export default function FetchCM({token,selectedId}:any) {
           The most advanced features for data-rich applications, as well as the
           highest priority for support.
         </Typography>
-        <OppositeContentTimeline />
+        <OppositeContentTimeline selectedId={selectedId} token={token}/>
       </TabPanel>
     </Tabs>
     </Box>

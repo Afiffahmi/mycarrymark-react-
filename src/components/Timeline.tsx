@@ -1,41 +1,45 @@
 import { Grid ,Card} from "@mui/joy";
-import React from "react";
+import React, { useEffect } from "react";
 import { Chrono } from "react-chrono";
 import Stack from "@mui/joy/Stack";
 import PartitionCM from "./PartitionCM";
+import axios from "axios";
 
-export default function OppositeContentTimeline() {
-  const moreItems = [
-    {
-      title: "13/5/2023     ",
-      cardTitle: "Test 1",
-      url: "http://www.history.com",
-      cardDetailedText:
-        "Chapter 1 - 3.",
-    },
-    {
-      title: "12/11/2023",
-      cardTitle: "Test 2",
-      url: "http://www.history.com",
-      cardDetailedText:
-        "All chapter.",
-    },
-    {
-      title: "12/12/2023",
-      cardTitle: "Assignment 1",
-      url: "http://www.history.com",
-      cardDetailedText:
-        "Individual assignment.",
-    },
-    {
-      title: "21/12/2023        ",
-      cardTitle: "Group Project       ",
-      url: "http://www.history.com",
-      cardDetailedText:
-        "Group project.                ",
-    },
+export default function OppositeContentTimeline({selectedId,token}:any) {
+const [coursework, setCoursework] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://localhost:5555/class/${selectedId}/coursework`,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    }).then(response => {
+      console.log(response.data);
+      const data = response.data;
 
-  ];
+      const updatedRows = data.map((item:any) => ({
+        coursework : item.coursework,
+        
+      }))
+      setCoursework(updatedRows);
+    })})
+
+
+  const moreItems = coursework.map((item:any) => ({
+    
+    title: item.coursework,
+    cardTitle: item.coursework,
+    cardSubtitle: item.coursework,
+    cardDetailedText: item.coursework,
+    media: {
+      type: "IMAGE",
+      source: {
+        url: "https://picsum.photos/seed/picsum/200/300",
+        alt: "random unsplash image",
+      },
+    },
+  }));
 
   const items = [...moreItems];
 
@@ -57,7 +61,7 @@ export default function OppositeContentTimeline() {
         />
       </div>
     </Card>
-      <Card><PartitionCM /></Card>
+      <Card><PartitionCM selectedId={selectedId} token={token}/></Card>
     </Stack>
     </Grid>
   );

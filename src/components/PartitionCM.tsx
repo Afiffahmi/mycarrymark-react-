@@ -1,12 +1,19 @@
 import { useState } from "react";
 import Box  from "@mui/joy/Box";
-import { Button, FormControl, FormLabel, Input, Stack } from "@mui/joy";
+import { Button, FormControl, FormLabel, Input, Stack ,AspectRatio} from "@mui/joy";
+import { Snackbar, Typography } from "@mui/joy";
+import LinearProgress from "@mui/joy/LinearProgress";
+import Check from '@mui/icons-material/Check';
+import Close from '@mui/icons-material/Close';
+import Info from '@mui/icons-material/Info';
+import { IconButton } from "@mui/joy";
 
  
 export default function PartitionCM({selectedId,token}:any) {
     const [ inputFields, setInputFields] = useState([
         {assessmentname: '',score:''}
     ])
+    const [successful,setSuccessful] = useState(false);
 
     const handleFormChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     
@@ -54,7 +61,10 @@ export default function PartitionCM({selectedId,token}:any) {
                     "Content-Type" : "application/json"
                     },
                 }).then((response)=>response.json()).then((responseData)=>{
-                    console.log(responseData);
+                    if(responseData.code === 200){
+                        setSuccessful(true);
+                    }
+
                  })
                 
                 .catch((error)=>{
@@ -68,7 +78,61 @@ export default function PartitionCM({selectedId,token}:any) {
     return (
         
     <Stack direction='row' key={index} spacing={2}>
-        
+        {(successful ? (<Snackbar open={true}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        size="lg"
+        color="success"
+        variant="solid"
+        invertedColors
+        startDecorator={
+          <AspectRatio
+            variant="solid"
+            ratio="1"
+            sx={{
+              minWidth: 40,
+              borderRadius: '50%',
+              boxShadow: '0 2px 12px 0 rgb(0 0 0/0.2)',
+            }}
+          >
+            <div>
+              <Check />
+            </div>
+          </AspectRatio>
+        }
+        endDecorator={
+          <IconButton
+          onClick={() => {setSuccessful(false)}}
+            variant="plain"
+            sx={{
+              '--IconButton-size': '32px',
+              transform: 'translate(0.5rem, -0.5rem)',
+            }}
+            
+          >
+            <Close />
+          </IconButton>
+        }
+        sx={{ alignItems: 'flex-start', overflow: 'hidden' }}
+      >
+        <div>
+          <Typography level="title-lg">Success</Typography>
+          <Typography level="body-sm">
+            Coursework setup finished.
+          </Typography>
+        </div>
+        <LinearProgress
+          variant="solid"
+          color="success"
+          value={40}
+          sx={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            borderRadius: 0,
+          }}
+        />
+      </Snackbar>) : null)}
         <FormControl>
         <FormLabel>Assessment Name</FormLabel>
         <Input name="assessmentname" value={input.assessmentname} onChange={event => handleFormChange(index,event)} required/></FormControl>
@@ -78,6 +142,10 @@ export default function PartitionCM({selectedId,token}:any) {
         </FormControl>
         </Stack>
         )})}
+        <FormControl>
+        <FormLabel>Score</FormLabel>
+        <Input type="date" name="Study Week Date"  required/>
+        </FormControl>
         <Box height={10}></Box>
         <Stack direction='row' spacing={2}>
         <Button onClick={addFields} >Add</Button>
