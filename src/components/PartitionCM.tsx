@@ -3,7 +3,7 @@ import Box  from "@mui/joy/Box";
 import { Button, FormControl, FormLabel, Input, Stack } from "@mui/joy";
 
  
-export default function PartitionCM() {
+export default function PartitionCM({selectedId,token}:any) {
     const [ inputFields, setInputFields] = useState([
         {assessmentname: '',score:''}
     ])
@@ -42,7 +42,25 @@ export default function PartitionCM() {
 
     <form onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
               event.preventDefault();
-              console.log(inputFields)}}>
+             console.log(inputFields);
+              const data ={coursework : inputFields};
+              const formAction = `http://localhost:5555/class/${selectedId}/setup`;
+              const formMethod = "POST";
+
+                fetch(formAction,{
+                    method: formMethod,
+                    body: JSON.stringify(data),
+                    headers: {
+                    "Content-Type" : "application/json"
+                    },
+                }).then((response)=>response.json()).then((responseData)=>{
+                    console.log(responseData);
+                 })
+                
+                .catch((error)=>{
+                    console.log(error);
+                })
+            }}>
     {inputFields.map((input,index)=> {
     
    

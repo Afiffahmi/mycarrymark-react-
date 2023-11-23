@@ -210,14 +210,14 @@ export default function FetchCM({token,selectedId}:any) {
           Best for professional developers building enterprise or data-rich
           applications.
         </Typography>
-        <Classes />
+        <Classes selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={2}>
         <Typography level="inherit">
           The most advanced features for data-rich applications, as well as the
           highest priority for support.
         </Typography>
-        <PartitionCM />
+        <PartitionCM selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={3}>
         <Typography level="inherit">

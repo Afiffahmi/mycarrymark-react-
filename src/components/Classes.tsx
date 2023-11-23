@@ -1,94 +1,42 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import * as React from 'react';
-import { ColorPaletteProp } from '@mui/joy/styles';
-import Avatar from '@mui/joy/Avatar';
-import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Chip from '@mui/joy/Chip';
-import Divider from '@mui/joy/Divider';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Link from '@mui/joy/Link';
-import Input from '@mui/joy/Input';
-import Modal from '@mui/joy/Modal';
-import ModalDialog from '@mui/joy/ModalDialog';
-import ModalClose from '@mui/joy/ModalClose';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
-import Table from '@mui/joy/Table';
-import Sheet from '@mui/joy/Sheet';
-import Checkbox from '@mui/joy/Checkbox';
-import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
-import Typography from '@mui/joy/Typography';
-import Menu from '@mui/joy/Menu';
-import MenuButton from '@mui/joy/MenuButton';
-import MenuItem from '@mui/joy/MenuItem';
-import Dropdown from '@mui/joy/Dropdown';
+import * as React from "react";
+import { ColorPaletteProp } from "@mui/joy/styles";
+import Avatar from "@mui/joy/Avatar";
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import Chip from "@mui/joy/Chip";
+import Divider from "@mui/joy/Divider";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Link from "@mui/joy/Link";
+import Input from "@mui/joy/Input";
+import Modal from "@mui/joy/Modal";
+import ModalDialog from "@mui/joy/ModalDialog";
+import ModalClose from "@mui/joy/ModalClose";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+import Table from "@mui/joy/Table";
+import Sheet from "@mui/joy/Sheet";
+import Checkbox from "@mui/joy/Checkbox";
+import IconButton, { iconButtonClasses } from "@mui/joy/IconButton";
+import Typography from "@mui/joy/Typography";
+import Menu from "@mui/joy/Menu";
+import MenuButton from "@mui/joy/MenuButton";
+import MenuItem from "@mui/joy/MenuItem";
+import Dropdown from "@mui/joy/Dropdown";
 // icons
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import SearchIcon from '@mui/icons-material/Search';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import BlockIcon from '@mui/icons-material/Block';
-import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import AddClass from './AddClass'
-
-const rows = [
-  {
-    id: 'INV-1234',
-    course: 'CSC662',
-    class: 'A4CS230',
-    status: 'On Going',
-    students:  '50',
-    student: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  },
-  {
-    id: 'INV-1234',
-    course: 'CSC662',
-    class: 'A4CS230',
-    status: 'On Going',
-    students:  '50',
-    student: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  },
-  {
-    id: 'INV-1234',
-    course: 'CSC662',
-    class: 'A4CS230',
-    status: 'On Going',
-    students:  '50',
-    student: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  },
-  {
-    id: 'INV-1234',
-    course: 'CSC662',
-    class: 'A4CS230',
-    status: 'On Going',
-    students:  '50',
-    student: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  }
-
-
-];
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import SearchIcon from "@mui/icons-material/Search";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import BlockIcon from "@mui/icons-material/Block";
+import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
+import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
+import AddClass from "./AddClass";
+import axios from "axios";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -100,16 +48,16 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
-type Order = 'asc' | 'desc';
+type Order = "asc" | "desc";
 
 function getComparator<Key extends keyof any>(
   order: Order,
-  orderBy: Key,
+  orderBy: Key
 ): (
   a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
+  b: { [key in Key]: number | string }
 ) => number {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -118,7 +66,10 @@ function getComparator<Key extends keyof any>(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
+function stableSort<T>(
+  array: readonly T[],
+  comparator: (a: T, b: T) => number
+) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -135,7 +86,7 @@ function RowMenu() {
     <Dropdown>
       <MenuButton
         slots={{ root: IconButton }}
-        slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'sm' } }}
+        slotProps={{ root: { variant: "plain", color: "neutral", size: "sm" } }}
       >
         <MoreHorizRoundedIcon />
       </MenuButton>
@@ -150,21 +101,54 @@ function RowMenu() {
   );
 }
 
-export default function Classes() {
-  const [order, setOrder] = React.useState<Order>('desc');
+interface Student {
+  id: string;
+  status: string
+  initial: string;
+  name: string;
+  email: string
+  studentid: string
+}
+
+export default function Classes({token,selectedId}:any) {
+  const [order, setOrder] = React.useState<Order>("desc");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [open, setOpen] = React.useState(false);
-  const renderFilters = () => (
+  const [rows, setRows] = React.useState<Student[]>([]);
 
-    
+  React.useEffect(() => {
+    axios({
+      method: "get",
+      url: `http://localhost:5555/class/${selectedId}/student`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then((response) => {
+      console.log(response.data);
+      const data = response.data;
+
+      const updatedRows = data.map((item: any) => ({
+        id: item.id,
+        status: item.status,
+        initial: item.name.charAt(0),
+        name: item.name,
+        email: item.email,
+        studentid: item.studentid,
+
+      }));
+
+      setRows(updatedRows);
+    });
+  }, [selectedId]);
+
+  const renderFilters = () => (
     <React.Fragment>
-      
       <FormControl size="sm">
         <FormLabel>Status</FormLabel>
         <Select
           size="sm"
           placeholder="Filter by status"
-          slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
+          slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
         >
           <Option value="paid">Paid</Option>
           <Option value="pending">Pending</Option>
@@ -190,8 +174,8 @@ export default function Classes() {
         className="SearchAndFilters-mobile"
         sx={{
           display: {
-            xs: 'flex',
-            sm: 'none',
+            xs: "flex",
+            sm: "none",
           },
           my: 1,
           gap: 1,
@@ -218,7 +202,7 @@ export default function Classes() {
               Filters
             </Typography>
             <Divider sx={{ my: 2 }} />
-            <Sheet sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Sheet sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {renderFilters()}
               <Button color="primary" onClick={() => setOpen(false)}>
                 Submit
@@ -230,25 +214,29 @@ export default function Classes() {
       <Box
         className="SearchAndFilters-tabletUp"
         sx={{
-          borderRadius: 'sm',
+          borderRadius: "sm",
           py: 2,
           display: {
-            xs: 'none',
-            sm: 'flex',
+            xs: "none",
+            sm: "flex",
           },
-          flexWrap: 'wrap',
+          flexWrap: "wrap",
           gap: 1.5,
-          '& > *': {
+          "& > *": {
             minWidth: {
-              xs: '120px',
-              md: '160px',
+              xs: "120px",
+              md: "160px",
             },
           },
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
           <FormLabel>Search for class</FormLabel>
-          <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
+          <Input
+            size="sm"
+            placeholder="Search"
+            startDecorator={<SearchIcon />}
+          />
         </FormControl>
         {renderFilters()}
       </Box>
@@ -256,11 +244,11 @@ export default function Classes() {
         className="OrderTableContainer"
         variant="outlined"
         sx={{
-          display: { xs: 'none', sm: 'initial' },
-          width: '100%',
-          borderRadius: 'sm',
+          display: { xs: "none", sm: "initial" },
+          width: "100%",
+          borderRadius: "sm",
           flexShrink: 1,
-          overflow: 'auto',
+          overflow: "auto",
           minHeight: 0,
         }}
       >
@@ -269,16 +257,20 @@ export default function Classes() {
           stickyHeader
           hoverRow
           sx={{
-            '--TableCell-headBackground': 'var(--joy-palette-background-level1)',
-            '--Table-headerUnderlineThickness': '1px',
-            '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
-            '--TableCell-paddingY': '4px',
-            '--TableCell-paddingX': '8px',
+            "--TableCell-headBackground":
+              "var(--joy-palette-background-level1)",
+            "--Table-headerUnderlineThickness": "1px",
+            "--TableRow-hoverBackground":
+              "var(--joy-palette-background-level1)",
+            "--TableCell-paddingY": "4px",
+            "--TableCell-paddingX": "8px",
           }}
         >
           <thead>
             <tr>
-              <th style={{ width: 48, textAlign: 'center', padding: '12px 6px' }}>
+              <th
+                style={{ width: 48, textAlign: "center", padding: "12px 6px" }}
+              >
                 <Checkbox
                   size="sm"
                   indeterminate={
@@ -287,105 +279,80 @@ export default function Classes() {
                   checked={selected.length === rows.length}
                   onChange={(event) => {
                     setSelected(
-                      event.target.checked ? rows.map((row) => row.id) : [],
+                      event.target.checked ? rows.map((row) => row.id) : []
                     );
                   }}
                   color={
                     selected.length > 0 || selected.length === rows.length
-                      ? 'primary'
+                      ? "primary"
                       : undefined
                   }
-                  sx={{ verticalAlign: 'text-bottom' }}
+                  sx={{ verticalAlign: "text-bottom" }}
                 />
               </th>
-              <th style={{ width: 120, padding: '12px 6px' }}>
+              <th style={{ width: 120, padding: "12px 6px" }}>
                 <Link
                   underline="none"
                   color="primary"
                   component="button"
-                  onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
+                  onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
                   fontWeight="lg"
                   endDecorator={<ArrowDropDownIcon />}
                   sx={{
-                    '& svg': {
-                      transition: '0.2s',
+                    "& svg": {
+                      transition: "0.2s",
                       transform:
-                        order === 'desc' ? 'rotate(0deg)' : 'rotate(180deg)',
+                        order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
                     },
                   }}
                 >
-                  Class ID
+                  Student ID
                 </Link>
               </th>
-              <th style={{ width: 140, padding: '12px 6px' }}>Course</th>
-              <th style={{ width: 140, padding: '12px 6px' }}>Class</th>
-              <th style={{ width: 140, padding: '12px 6px' }}>No.Students</th>
-              <th style={{ width: 140, padding: '12px 6px' }}>Status</th>
-              <th style={{ width: 240, padding: '12px 6px' }}>Student Name</th>
-              <th style={{ width: 140, padding: '12px 6px' }}> </th>
+              <th style={{ width: 140, padding: "12px 6px" }}>Student Name</th>
+              <th style={{ width: 240, padding: "12px 6px" }}>Status</th>
+              <th style={{ width: 140, padding: "12px 6px" }}> </th>
             </tr>
           </thead>
           <tbody>
-            {stableSort(rows, getComparator(order, 'id')).map((row) => (
+            {stableSort(rows, getComparator(order, "id")).map((row) => (
               <tr key={row.id}>
-                <td style={{ textAlign: 'center', width: 120 }}>
+                <td style={{ textAlign: "center", width: 120 }}>
                   <Checkbox
                     size="sm"
-                    checked={selected.includes(row.id)}
-                    color={selected.includes(row.id) ? 'primary' : undefined}
+                    checked={selected.includes(row.id)} // Changed rows.id to row.id
+                    color={selected.includes(row.id) ? "primary" : undefined} // Changed rows.id to row.id
                     onChange={(event) => {
                       setSelected((ids) =>
                         event.target.checked
-                          ? ids.concat(row.id)
-                          : ids.filter((itemId) => itemId !== row.id),
+                          ? ids.concat(row.id) // Changed rows.id to row.id
+                          : ids.filter((itemId) => itemId !== row.id)
                       );
                     }}
-                    slotProps={{ checkbox: { sx: { textAlign: 'left' } } }}
-                    sx={{ verticalAlign: 'text-bottom' }}
+                    slotProps={{ checkbox: { sx: { textAlign: "left" } } }}
+                    sx={{ verticalAlign: "text-bottom" }}
                   />
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.id}</Typography>
+                  <Typography level="body-xs">{row.studentid}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.course}</Typography>
-                </td>
-                <td>
-                  <Typography level="body-xs">{row.class}</Typography>
-                </td>
-                <td>
-                  <Typography level="body-xs">{row.students}</Typography>
-                </td>
-                <td>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={
-                      {
-                        Paid: <CheckRoundedIcon />,
-                        Refunded: <AutorenewRoundedIcon />,
-                        Cancelled: <BlockIcon />,
-                      }[row.status]
-                    }
-                    color={
-                      {
-                        Paid: 'success',
-                        Refunded: 'neutral',
-                        Cancelled: 'danger',
-                      }[row.status] as ColorPaletteProp
-                    }
-                  >
-                    {row.status}
-                  </Chip>
-                </td>
-                <td>
-                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Avatar size="sm">{row.student.initial}</Avatar>
+                  <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                    <Avatar size="sm">{row.initial}</Avatar> 
                     <div>
-                      <Typography level="body-xs">{row.student.name}</Typography>
-                      <Typography level="body-xs">{row.student.email}</Typography>
+                      <Typography level="body-xs">
+                        {row.name}
+                      </Typography>{" "}
+                   
+                      <Typography level="body-xs">
+                        {row.email}
+                      </Typography>{" "}
+                     
                     </div>
                   </Box>
+                </td>
+                <td>
+                  <Typography>{row.status}</Typography>
                 </td>
                 <td>
                   <RowMenu />
@@ -400,10 +367,10 @@ export default function Classes() {
         sx={{
           pt: 2,
           gap: 1,
-          [`& .${iconButtonClasses.root}`]: { borderRadius: '50%' },
+          [`& .${iconButtonClasses.root}`]: { borderRadius: "50%" },
           display: {
-            xs: 'none',
-            md: 'flex',
+            xs: "none",
+            md: "flex",
           },
         }}
       >
@@ -417,11 +384,11 @@ export default function Classes() {
         </Button>
 
         <Box sx={{ flex: 1 }} />
-        {['1', '2', '3', '…', '8', '9', '10'].map((page) => (
+        {["1", "2", "3", "…", "8", "9", "10"].map((page) => (
           <IconButton
             key={page}
             size="sm"
-            variant={Number(page) ? 'outlined' : 'plain'}
+            variant={Number(page) ? "outlined" : "plain"}
             color="neutral"
           >
             {page}
