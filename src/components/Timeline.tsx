@@ -1,4 +1,4 @@
-import { Grid, Card } from "@mui/joy";
+import { Grid, Card, Typography, Table } from "@mui/joy";
 import React, { useEffect } from "react";
 import { Chrono } from "react-chrono";
 import Stack from "@mui/joy/Stack";
@@ -44,10 +44,10 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
     const generateItems = () => {
       const itemsArray: any[] = [];
       coursework.forEach((item: Item) => {
-        console.log(item.coursework);
+        
         if (item.coursework) {
           item.coursework.forEach((courseworkItem) => {
-            console.log(courseworkItem.assessmentname);
+
             itemsArray.push({
               title: courseworkItem.assessmentname,
               cardTitle: courseworkItem.assessmentname,
@@ -64,23 +64,33 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
     generateItems();
   }, [coursework]);
 
-
   return (
     <Grid sx={{ width: "100%", height: 450 }}>
       <Stack direction="row" spacing={3}>
         <Card color="neutral" variant="plain">
           <div style={{ height: "400px", overflow: "auto" }}>
-            <Chrono
-              items={items}
-              theme={{
-                primary: "grey",
-                secondary: "#0B6BCB",
-                cardBgColor: "dde7ee",
-                titleColor: "black",
-                titleColorActive: "white",
-              }}
-              mode="VERTICAL"
-            />
+           
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Card Title</th>
+                    <th>Card Subtitle</th>
+                    <th>Card Detailed Text</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.title}</td>
+                      <td>{item.cardTitle}</td>
+                      <td>{item.cardSubtitle}</td>
+                      <td>{item.cardDetailedText}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+         
           </div>
         </Card>
         <Card>

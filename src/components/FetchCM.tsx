@@ -8,7 +8,8 @@ import OppositeContentTimeline from "./Timeline";
 import axios from 'axios';
 import CardContent from "@mui/joy/CardContent";
 import {motion} from 'framer-motion';
-
+import MyMessages from "./forum/MyMessages";
+import { FetchData } from "../data";
 interface Item { 
   id: string;
   courseCode: string;
@@ -35,6 +36,8 @@ export default function FetchCM({token,selectedId}:any) {
   shortId: '',
 });
   React.useEffect(() => {
+    const messages = FetchData();
+    console.log(messages);
     axios({
       method: 'get',
       url: `http://localhost:5555/class/${selectedId}`,
@@ -45,6 +48,8 @@ export default function FetchCM({token,selectedId}:any) {
       setData(response.data);
       console.log(response.data);
     })
+
+    
   
   },[token])
 
@@ -55,6 +60,8 @@ export default function FetchCM({token,selectedId}:any) {
       sx={{
         flex: 1,
         width: "90%",
+        
+        
       }}
     >
       
@@ -116,48 +123,7 @@ export default function FetchCM({token,selectedId}:any) {
         CLASS ID
       </CardOverflow>
     </Card></motion.div>
-    <Tabs
-          defaultValue={0}
-          sx={{
-            bgcolor: 'transparent',
-          }}
-        >
-          <TabList
-            tabFlex={1}
-            size="sm"
-            sx={{
-              pl: {
-                xs: 0,
-                md: 4,
-              },
-              justifyContent: 'left',
-              [`&& .${tabClasses.root}`]: {
-                flex: 'initial',
-                bgcolor: 'transparent',
-                [`&.${tabClasses.selected}`]: {
-                  fontWeight: '600',
-                  '&::after': {
-                    height: '2px',
-                    bgcolor: 'primary.500',
-                  },
-                },
-              },
-            }}
-          >
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
-              Settings
-            </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
-              Team
-            </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
-              Plan
-            </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
-              Billing
-            </Tab>
-          </TabList>
-        </Tabs>
+   
         </Box>
         <Tabs
       variant="outlined"
@@ -193,31 +159,21 @@ export default function FetchCM({token,selectedId}:any) {
           Class
         </Tab>
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
-          Assesment
+          Forum
         </Tab>
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
           Grade
         </Tab>
       </TabList>
       <TabPanel value={0}>
-        <Typography level="inherit">
-          Get started with the industry-standard React UI library, MIT-licensed.
-        </Typography>
         <ClassMonitor />
       </TabPanel>
       <TabPanel value={1}>
-        <Typography level="inherit">
-          Best for professional developers building enterprise or data-rich
-          applications.
-        </Typography>
+
         <Classes selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={2}>
-        <Typography level="inherit">
-          The most advanced features for data-rich applications, as well as the
-          highest priority for support.
-        </Typography>
-        <PartitionCM selectedId={selectedId} token={token}/>
+        <MyMessages/>
       </TabPanel>
       <TabPanel value={3}>
         <Typography level="inherit">

@@ -90,9 +90,14 @@ export default function BasicModalDialog({setSuccessful,token}:any) {
             md: 10,
           },
           py: {
-            xs: 2,
+            xs: 3,
             md: 4,
           },
+          mx: {
+            xs: 2,
+            md: 10,
+          },
+
         }}>
           <LinearProgress determinate value={progress}/>
           <DialogTitle>Create new class</DialogTitle>
