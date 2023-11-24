@@ -117,13 +117,16 @@ export default function Classes({token,selectedId}:any) {
   const [rows, setRows] = React.useState<Student[]>([]);
 
   React.useEffect(() => {
+    const fetchData = async () => {
+      try{
+      const response = await
     axios({
       method: "get",
       url: `http://localhost:5555/class/${selectedId}/student`,
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
-    }).then((response) => {
+    });
       console.log(response.data);
       const data = response.data;
 
@@ -135,11 +138,15 @@ export default function Classes({token,selectedId}:any) {
         email: item.email,
         studentid: item.studentid,
 
-      }));
+      }))
 
       setRows(updatedRows);
-    });
-  }, [selectedId]);
+    } catch (error) {
+      // Handle error
+      console.error("Error fetching data:", error);
+    }}
+    fetchData();
+  }, [selectedId,token]);
 
   const renderFilters = () => (
     <React.Fragment>
