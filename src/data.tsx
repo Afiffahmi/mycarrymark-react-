@@ -22,17 +22,6 @@ export async function FetchData() {
   }
 }
 
-// Example usage
-// fetchData()
-//   .then((chats: ChatProps[]) => {
-//     // Use chats data here
-//     console.log(chats);
-//   })
-//   .catch((error) => {
-//     // Handle error
-//     console.error(error);
-//   });
-
 (async () => {
   try {
     const fetchedChats = await FetchData();
@@ -40,8 +29,12 @@ export async function FetchData() {
     console.log(fetchedChats);
 
     // Assign fetchedChats to chats
-    const chats: ChatProps[] = fetchedChats;
-    return chats
+    const chats: ChatProps[] = fetchedChats.messages;
+    const users: UserProps[] = fetchedChats.users;
+    return chats;
+    
+    
+
   } catch (error) {
     // Handle error
     console.error(error);
@@ -56,7 +49,7 @@ let chats: ChatProps[] = [];
 FetchData()
   .then((fetchedChats) => {
     chats = fetchedChats;
-  })
+  })   
   .catch((error) => {
     // Handle error
     console.error(error);
