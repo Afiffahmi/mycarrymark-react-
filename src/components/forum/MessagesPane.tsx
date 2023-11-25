@@ -39,10 +39,10 @@ export default function MessagesPane({ chat }: MessagesPaneProps) {
           px: 2,
           py: 3,
           overflowY: 'scroll',
-          flexDirection: 'column-reverse',
+          flexDirection: 'column',
         }}
       >
-        <Stack spacing={2} justifyContent="flex-end">
+        <Stack spacing={2} justifyContent="flex-start">
           {chatMessages.map((message: MessageProps, index: number) => {
             const isYou = message.sender === 'You';
             return (

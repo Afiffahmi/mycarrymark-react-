@@ -5,8 +5,9 @@ import ChatsPane from './ForumPane';
 import { ChatProps } from '../../types';
 import { chats } from '../../data';
 
-export default function MyProfile() {
+export default function MyMessages({token}:any) {
   const [selectedChat, setSelectedChat] = React.useState<ChatProps>(chats[0]);
+  console.log(token);
   return (
     <Sheet
       sx={{
@@ -39,6 +40,7 @@ export default function MyProfile() {
         }}
       >
         <ChatsPane
+          token={token}
           chats={chats}
           selectedChatId={selectedChat.id}
           setSelectedChat={setSelectedChat}

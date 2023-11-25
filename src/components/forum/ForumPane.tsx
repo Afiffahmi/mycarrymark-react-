@@ -12,16 +12,21 @@ import { ChatProps } from '../../types';
 import { toggleMessagesPane } from '../../utils';
 
 type ChatsPaneProps = {
+  token: any;
   chats: ChatProps[];
   setSelectedChat: (chat: ChatProps) => void;
   selectedChatId: string;
 };
 
 export default function ChatsPane({
+  token,
   chats,
   setSelectedChat,
   selectedChatId,
 }: ChatsPaneProps) {
+
+  console.log(token);
+
   return (
     <Sheet
       sx={{

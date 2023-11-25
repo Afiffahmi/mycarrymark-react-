@@ -9,7 +9,7 @@ import axios from 'axios';
 import CardContent from "@mui/joy/CardContent";
 import {motion} from 'framer-motion';
 import MyMessages from "./forum/MyMessages";
-import { FetchData } from "../data";
+import { FetchUsers } from "../data";
 interface Item { 
   id: string;
   courseCode: string;
@@ -36,7 +36,7 @@ export default function FetchCM({token,selectedId}:any) {
   shortId: '',
 });
   React.useEffect(() => {
-    const messages = FetchData();
+    const messages = FetchUsers();
     console.log(messages);
     axios({
       method: 'get',
@@ -52,7 +52,6 @@ export default function FetchCM({token,selectedId}:any) {
     
   
   },[token])
-
 
   return (
     
@@ -173,7 +172,7 @@ export default function FetchCM({token,selectedId}:any) {
         <Classes selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={2}>
-        <MyMessages/>
+       <MyMessages token={token} />
       </TabPanel>
       <TabPanel value={3}>
         <Typography level="inherit">
