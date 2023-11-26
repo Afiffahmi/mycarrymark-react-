@@ -26,6 +26,7 @@ import MyProfile from './components/MyProfile';
 import { useContext } from 'react';
 import { AuthProvider } from './AuthProvider';
 import Stash from './components/Stash';
+import GradePrediction from './components/GradePrediction';
 
 
 const useEnhancedEffect =
@@ -80,7 +81,7 @@ export default function JoyOrderDashboardTemplate() {
   const renderComponent = () => {
     switch(activeComponent){
       case 'Home' :
-        return <FetchCM />
+        return <GradePrediction />
       case 'Class' :
         return <ClassList token={token}/>
       case 'Profile':
@@ -88,7 +89,7 @@ export default function JoyOrderDashboardTemplate() {
       case 'Stash':
           return <Stash token={token}/>
       default :
-        return <FetchCM/>
+        return <GradePrediction/>
     }
 
 
