@@ -34,14 +34,15 @@ import JoyOrderDashboardTemplate from '../App';
 import MuiLogo from './MuiLogo';
 import SmartToy from '@mui/icons-material/SmartToy';
 
-
 let classSelect:boolean = false;
 let homeSelect:boolean = true;
+let stashSelect:boolean = false;
 
 function onSelected(select:string){
 
   homeSelect = false;
   classSelect = false;
+  stashSelect = false;
   switch (select){
     case 'home':
       homeSelect = true;
@@ -49,8 +50,12 @@ function onSelected(select:string){
     case 'class':
       classSelect = true;
       break;
+    case 'stash':
+      stashSelect = true;
+      break;
     default :
       homeSelect = true;
+      break;
   }
 }
 
@@ -90,6 +95,12 @@ export default function Sidebar({handleLogout,setActiveComponent,token}:SidebarP
 const handleSideBtn:any = (componentName:string) =>{
   setActiveComponent(componentName);
 }
+
+React.useEffect(() => {
+
+  homeSelect= true;
+
+})
 
 const user = JSON.parse(token);
 console.log(user);
@@ -198,11 +209,11 @@ console.log(user);
             <ListItemButton
               role="menuitem"
               component="a"
-              href="/joy-ui/getting-started/templates/messages/"
+              onClick={() => {onSelected('stash')}} selected={stashSelect}
             >
               <FolderRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Stash</Typography>
+                <Typography level="title-sm" onClick={() => handleSideBtn('Stash')}>Stash</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>

@@ -155,13 +155,13 @@ export default function FetchCM({token,selectedId}:any) {
           Performance
         </Tab>
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
-          Class
+          People
         </Tab>
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
           Forum
         </Tab>
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
-          Grade
+          Carrymark Setup
         </Tab>
       </TabList>
       <TabPanel value={0}>

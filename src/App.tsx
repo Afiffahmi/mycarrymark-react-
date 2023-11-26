@@ -25,6 +25,7 @@ import ClassList from './components/ClassList';
 import MyProfile from './components/MyProfile';
 import { useContext } from 'react';
 import { AuthProvider } from './AuthProvider';
+import Stash from './components/Stash';
 
 
 const useEnhancedEffect =
@@ -82,8 +83,10 @@ export default function JoyOrderDashboardTemplate() {
         return <FetchCM />
       case 'Class' :
         return <ClassList token={token}/>
-        case 'Profile':
+      case 'Profile':
           return <MyProfile token={token} />
+      case 'Stash':
+          return <Stash token={token}/>
       default :
         return <FetchCM/>
     }
