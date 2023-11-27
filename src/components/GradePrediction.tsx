@@ -5,12 +5,12 @@ import CardContent from '@mui/joy/CardContent';
 import CheckCircleRounded from '@mui/icons-material/CheckCircleRounded';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Snackbar } from "@mui/material";
 
 function GradePrediction({token}:any) {
 
     return (
         <Sheet >
-            
            
             <Stack direction='row' alignItems='center' spacing={5} sx={({mx: {xs: 1, md: 1, sm:2}, pb:{xs: 4, md: 1, sm:4} , px:{xs:2 , md: 2}})}>
             

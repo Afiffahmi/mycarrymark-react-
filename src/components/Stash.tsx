@@ -40,13 +40,27 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-
+import Snackbar  from '@mui/joy/Snackbar';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import Modal from '@mui/joy/Modal';
+import ModalClose from '@mui/joy/ModalClose';
 // custom
 import Layout from './Layout';
 import TableFiles from './TableFiles';
+import { StepButton } from '@mui/joy';
+import { FormControl, FormLabel, Input,DialogTitle,DialogContent } from '@mui/joy';
+
+interface FormElements extends HTMLFormControlsCollection {
+  file : HTMLInputElement;
+}
+interface AddClassFormElement extends HTMLFormElement {
+  readonly elements: FormElements;
+}
 
 export default function FilesExample({token}:any) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -71,10 +85,11 @@ export default function FilesExample({token}:any) {
           borderColor: 'divider',
         }}
       >
+        
       </Stack>
  
             
-   
+  
           <Box
             sx={{
               display: 'grid',
@@ -82,6 +97,7 @@ export default function FilesExample({token}:any) {
               gap: 2,
             }}
           >
+             <Button sx={{mx: {md:5, xs:5}, pb:{md:1}, xs:{md:4}} } onClick={() => setOpen(true)}>Add</Button>
             {' '}
             <Sheet
               variant="outlined"
@@ -91,6 +107,72 @@ export default function FilesExample({token}:any) {
                 display: { xs: 'none', md: 'flex' },
               }}
             >
+              <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Sheet
+          variant="outlined"
+          sx={{
+            maxWidth: 500,
+            borderRadius: 'md',
+            p: 3,
+            boxShadow: 'lg',
+          }}
+        >
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <Typography
+            component="h2"
+            id="modal-title"
+            level="h4"
+            textColor="inherit"
+            fontWeight="lg"
+            mb={1}
+          >
+            Upload a file
+          </Typography>
+          <DialogContent>select any file to upload.</DialogContent>
+          <form
+            onSubmit={async(event: React.FormEvent<AddClassFormElement>) => {
+              event.preventDefault();
+              const formElements = event.currentTarget.elements;
+              const data = {
+                file : formElements.file.value,
+              };
+
+              const formAction = "http://localhost:5555/class/new"
+              const formMethod = "POST"
+
+              fetch(formAction,{
+                method: formMethod,
+                body: JSON.stringify(data),
+                headers: {
+                  "Content-Type" : "application/json"
+                },
+              }).then((response)=>response.json())
+              .catch((error)=>{
+                console.log(error);
+              })
+
+              setOpen(false);
+            }}
+          >
+            <Stack spacing={2} direction='row'>
+              <Stack spacing={2}>
+              <FormControl>
+                <FormLabel>Course Code</FormLabel>
+                <input type='file'></input>
+              </FormControl>
+              </Stack>
+              
+              
+            </Stack>
+          </form>
+        </Sheet>
+      </Modal>
               <TableFiles />
             </Sheet>
             <Sheet
