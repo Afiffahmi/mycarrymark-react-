@@ -52,7 +52,7 @@ import { StepButton } from '@mui/joy';
 import { FormControl, FormLabel, Input,DialogTitle,DialogContent } from '@mui/joy';
 
 interface FormElements extends HTMLFormControlsCollection {
-  file : HTMLInputElement;
+  filename : HTMLInputElement;
 }
 interface AddClassFormElement extends HTMLFormElement {
   readonly elements: FormElements;
@@ -140,10 +140,10 @@ export default function FilesExample({token}:any) {
               event.preventDefault();
               const formElements = event.currentTarget.elements;
               const data = {
-                file : formElements.file.value,
+                filename : formElements.filename.value,
               };
 
-              const formAction = "http://localhost:5555/class/new"
+              const formAction = "http://localhost:5555/auth/upload"
               const formMethod = "POST"
 
               fetch(formAction,{
@@ -164,7 +164,7 @@ export default function FilesExample({token}:any) {
               <Stack spacing={2}>
               <FormControl>
                 <FormLabel>Course Code</FormLabel>
-                <input type='file'></input>
+                <input type='filename' name='filename'></input>
               </FormControl>
               </Stack>
               
