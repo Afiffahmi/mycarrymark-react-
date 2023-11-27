@@ -3,6 +3,7 @@ import Avatar from '@mui/joy/Avatar';
 import AvatarGroup from '@mui/joy/AvatarGroup';
 import Typography from '@mui/joy/Typography';
 import Table from '@mui/joy/Table';
+import { Button, Link } from '@mui/joy';
 
 // Icons import
 import FolderRoundedIcon from '@mui/icons-material/FolderRounded';
@@ -10,7 +11,7 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 
 // custom
 
-function TableFiles() {
+function TableFiles({files}:any) {
   return (
     <div>
       <Table
@@ -26,18 +27,10 @@ function TableFiles() {
         <thead>
           <tr>
             <th>
-              <Typography level="title-sm">Folder</Typography>
+              <Typography level="title-sm">File</Typography>
             </th>
             <th>
-              <Typography
-                level="title-sm"
-                endDecorator={<ArrowDropDownRoundedIcon />}
-              >
-                Last modified
-              </Typography>
-            </th>
-            <th>
-              <Typography level="title-sm">Size</Typography>
+              <Typography level="title-sm">Type</Typography>
             </th>
             <th>
               <Typography level="title-sm">Action</Typography>
@@ -45,23 +38,24 @@ function TableFiles() {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {files.map((file:any, index: number) => (
+          <tr key={index}>
             <td>
               <Typography
                 level="title-sm"
                 startDecorator={<FolderRoundedIcon color="primary" />}
                 sx={{ alignItems: 'flex-start' }}
               >
-                Travel pictures
+                {file.name}
               </Typography>
             </td>
             <td>
-              <Typography level="body-sm">21 Oct 2023, 3PM</Typography>
+              <Typography level="body-sm">{file.type}</Typography>
             </td>
             <td>
-              <Typography level="body-sm">987.5MB</Typography>
+           <Link href={file.downloadURL} target="_blank" rel="noopener noreferrer" download>download</Link>
             </td>
-          </tr>
+          </tr>))}
         </tbody>
       </Table>
     </div>

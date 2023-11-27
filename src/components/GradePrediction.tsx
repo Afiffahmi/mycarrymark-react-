@@ -12,10 +12,10 @@ function GradePrediction({token}:any) {
     return (
         <Sheet >
            
-            <Stack direction='row' alignItems='center' spacing={5} sx={({mx: {xs: 1, md: 1, sm:2}, pb:{xs: 4, md: 1, sm:4} , px:{xs:2 , md: 2}})}>
+            <Stack direction='row' alignItems='center' justifyContent='flex-start' spacing={5}  >
             
 
-            <Card  sx={{display: 'flex',my: 1,flexDirection:{xs:'column', sm:'row'},alignItems: {xs:'start',sm:'center' } , width: '73%' }} variant="plain">
+            <Card  sx={{display: 'flex',my: 1,flexDirection:{xs:'column', sm:'row'},alignItems: {xs:'start',sm:'center' } , width: '65%' }} variant="plain">
                 <Stack spacing={2} direction="column" sx={{width: '100%'}}>
                 <Card sx={{ minHeight: '180px' }}>
             <CardCover>
@@ -47,8 +47,8 @@ function GradePrediction({token}:any) {
             </Card>
             <Typography>Select class to predict :</Typography>
             <Swiper
-            spaceBetween={50}
-            slidesPerView={3}
+            spaceBetween={100}
+            slidesPerView={2}
             onSlideChange={() => console.log('slide change')}
             onSwiper={(swiper) => console.log(swiper)}
             >

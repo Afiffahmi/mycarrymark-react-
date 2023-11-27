@@ -14,15 +14,6 @@ import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
 import Divider from '@mui/joy/Divider';
 import Sheet from '@mui/joy/Sheet';
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
-import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
-import ListDivider from '@mui/joy/ListDivider';
-import ListItemButton from '@mui/joy/ListItemButton';
-import ListItemContent from '@mui/joy/ListItemContent';
 import Stack from '@mui/joy/Stack';
 import Chip from '@mui/joy/Chip';
 import Dropdown from '@mui/joy/Dropdown';
@@ -31,11 +22,7 @@ import MenuButton from '@mui/joy/MenuButton';
 import MenuItem from '@mui/joy/MenuItem';
 
 // Icons import
-import FolderRoundedIcon from '@mui/icons-material/FolderRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
@@ -61,6 +48,50 @@ interface AddClassFormElement extends HTMLFormElement {
 export default function FilesExample({token}:any) {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [open, setOpen] = React.useState<boolean>(false);
+  const [file, setFile] = React.useState(null);
+  const [files, setFiles] = React.useState([]);
+
+  const user = JSON.parse(token);
+  
+
+  React.useEffect(() => {
+    fetch(`http://localhost:5555/auth/${user.email}/files`)
+      .then(response => response.json())
+      .then(data => setFiles(data))
+      .catch(error => console.error('Error:', error));
+  }, [user]);
+
+  const handleFileChange = (event:any) => {
+    setFile(event.target.files[0]);
+  };
+
+  const uploadFile = async (event:any) => {
+    event.preventDefault();
+
+    if(!file){
+      console.error("Please select a file");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('filename', file);
+  
+    const formAction = `http://localhost:5555/auth/${user.email}/upload`
+    const formMethod = "POST"
+
+    fetch(formAction,{
+      method: formMethod,
+      body: formData,
+    }).then((response)=>response.json()).then((data)=>{
+      console.log(data);
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+
+    setOpen(false);
+  }
+
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -136,36 +167,15 @@ export default function FilesExample({token}:any) {
           </Typography>
           <DialogContent>select any file to upload.</DialogContent>
           <form
-            onSubmit={async(event: React.FormEvent<AddClassFormElement>) => {
-              event.preventDefault();
-              const formElements = event.currentTarget.elements;
-              const data = {
-                filename : formElements.filename.value,
-              };
-
-              const formAction = "http://localhost:5555/auth/upload"
-              const formMethod = "POST"
-
-              fetch(formAction,{
-                method: formMethod,
-                body: JSON.stringify(data),
-                headers: {
-                  "Content-Type" : "application/json"
-                },
-              }).then((response)=>response.json())
-              .catch((error)=>{
-                console.log(error);
-              })
-
-              setOpen(false);
-            }}
+            onSubmit={uploadFile}
           >
             <Stack spacing={2} direction='row'>
               <Stack spacing={2}>
               <FormControl>
-                <FormLabel>Course Code</FormLabel>
-                <input type='filename' name='filename'></input>
+                <FormLabel>File : </FormLabel>
+                <input type='file' name='filename' onChange={handleFileChange}></input>
               </FormControl>
+              <Button type="submit">upload</Button>
               </Stack>
               
               
@@ -173,7 +183,7 @@ export default function FilesExample({token}:any) {
           </form>
         </Sheet>
       </Modal>
-              <TableFiles />
+              <TableFiles files = {files}/>
             </Sheet>
             <Sheet
               variant="outlined"
