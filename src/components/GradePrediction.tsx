@@ -6,8 +6,11 @@ import CheckCircleRounded from '@mui/icons-material/CheckCircleRounded';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Snackbar } from "@mui/material";
+import React from "react";
 
 function GradePrediction({token}:any) {
+const [grade, setGrade] = React.useState('');
+
 
     return (
         <Sheet >
@@ -224,14 +227,14 @@ function GradePrediction({token}:any) {
         <Typography level="title-lg">Shown predicted result below</Typography>
         <Divider />
         <Typography fontSize={90}>
-          A
+          {grade}
         </Typography>
       </CardContent>
     </Card>
     
                 </Stack>
             </Card>
-            <Prediction />
+            <Prediction setGrade = {setGrade} />
 
             
             </Stack>
