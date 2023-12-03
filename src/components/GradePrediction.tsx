@@ -6,18 +6,56 @@ import CheckCircleRounded from '@mui/icons-material/CheckCircleRounded';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Snackbar } from "@mui/material";
-import React from "react";
+import React, { useEffect,useState } from "react";
+import axios from "axios";
+import { LazyMotion, m } from "framer-motion"
+import { domAnimation } from "framer-motion"
+
+interface Lecturer {
+  email: string;
+
+}
+interface Item {
+  id: string;
+  courseCode: string;
+  courseName: string;
+  groupClass: string;
+  nStudent: number;
+  lecturers: Lecturer[];
+}
+
 
 function GradePrediction({token}:any) {
 const [grade, setGrade] = React.useState('');
+const [data, setData] = useState<Item[]>([]);
+const [loading, setLoading] = React.useState(true);
 
+useEffect(() => {
+  axios({
+    method: 'get',
+    url: 'http://localhost:5555/class/list',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    
+  }).then(response => {
+    setData(response.data)
+    setLoading(false);
+  
+  })
+
+}, [token]);
+
+
+
+const user = JSON.parse(token);
 
     return (
         <Sheet >
            
             <Stack direction='row' alignItems='center' justifyContent='flex-start' spacing={5}  >
             
-
+            <LazyMotion features={domAnimation}>
             <Card  sx={{display: 'flex',my: 1,flexDirection:{xs:'column', sm:'row'},alignItems: {xs:'start',sm:'center' } , width: '65%' }} variant="plain">
                 <Stack spacing={2} direction="column" sx={{width: '100%'}}>
                 <Card sx={{ minHeight: '180px' }}>
@@ -55,7 +93,8 @@ const [grade, setGrade] = React.useState('');
             onSlideChange={() => console.log('slide change')}
             onSwiper={(swiper) => console.log(swiper)}
             >
-            <SwiperSlide>
+              {data.map((item,index) =>  (item.lecturers[0].email === user.email ? ( <SwiperSlide>
+                
             <Card
       variant="outlined"
       orientation="horizontal"
@@ -74,10 +113,10 @@ const [grade, setGrade] = React.useState('');
       </AspectRatio>
       <CardContent>
         <Typography level="title-lg" id="card-description">
-          CSC662
+          {item.courseCode}
         </Typography>
         <Typography level="title-md" id="card-description">
-          Computer Security
+          {item.courseName}
         </Typography>
         <Typography level="body-sm" aria-describedby="card-description" mb={1}>
           <Link
@@ -86,122 +125,14 @@ const [grade, setGrade] = React.useState('');
             href="#interactive-card"
             sx={{ color: 'text.tertiary' }}
           >
-            A4CS2306A
+            {item.groupClass}
           </Link>
         </Typography>
       </CardContent>
     </Card>
-            </SwiperSlide>
-            <SwiperSlide>
-            <Card
-      variant="outlined"
-      orientation="horizontal"
-      sx={{
-        width: 320,
-        '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-      }}
-    >
-      <AspectRatio ratio="1" sx={{ width: 90 }}>
-        <img
-          src="https://cdn.pixabay.com/photo/2017/02/01/22/02/mountain-landscape-2031539_640.jpg"
-          srcSet="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90&dpr=2 2x"
-          loading="lazy"
-          alt=""
-        />
-      </AspectRatio>
-      <CardContent>
-        <Typography level="title-lg" id="card-description">
-          CSP600
-        </Typography>
-        <Typography level="title-md" id="card-description">
-          Final Year Project
-        </Typography>
-        <Typography level="body-sm" aria-describedby="card-description" mb={1}>
-          <Link
-            overlay
-            underline="none"
-            href="#interactive-card"
-            sx={{ color: 'text.tertiary' }}
-          >
-            A4CS2306A
-          </Link>
-        </Typography>
-      </CardContent>
-    </Card>
-            </SwiperSlide>
-            <SwiperSlide>
-            <Card
-      variant="outlined"
-      orientation="horizontal"
-      sx={{
-        width: 320,
-        '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-      }}
-    >
-      <AspectRatio ratio="1" sx={{ width: 90 }}>
-        <img
-          src="https://static.vecteezy.com/system/resources/previews/015/573/452/original/sunset-landscape-with-bird-silhouettes-free-vector.jpg"
-          loading="lazy"
-          alt=""
-        />
-      </AspectRatio>
-      <CardContent>
-        <Typography level="title-lg" id="card-description">
-          CST500
-        </Typography>
-        <Typography level="title-md" id="card-description">
-          Internship
-        </Typography>
-        <Typography level="body-sm" aria-describedby="card-description" mb={1}>
-          <Link
-            overlay
-            underline="none"
-            href="#interactive-card"
-            sx={{ color: 'text.tertiary' }}
-          >
-            A4CS2306A
-          </Link>
-        </Typography>
-      </CardContent>
-    </Card>
-            </SwiperSlide>
-            <SwiperSlide>
-            <Card
-      variant="outlined"
-      orientation="horizontal"
-      sx={{
-        width: 320,
-        '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-      }}
-    >
-      <AspectRatio ratio="1" sx={{ width: 90 }}>
-        <img
-          src="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90"
-          srcSet="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90&dpr=2 2x"
-          loading="lazy"
-          alt=""
-        />
-      </AspectRatio>
-      <CardContent>
-        <Typography level="title-lg" id="card-description">
-          CSC559
-        </Typography>
-        <Typography level="title-md" id="card-description">
-          Principle of Compiler
-        </Typography>
-        <Typography level="body-sm" aria-describedby="card-description" mb={1}>
-          <Link
-            overlay
-            underline="none"
-            href="#interactive-card"
-            sx={{ color: 'text.tertiary' }}
-          >
-            A4CS2306A
-          </Link>
-        </Typography>
-      </CardContent>
-    </Card>
-            </SwiperSlide>
+            </SwiperSlide>) : null))}
+            
+            
             </Swiper>
             <Card
       variant="outlined"
@@ -234,6 +165,7 @@ const [grade, setGrade] = React.useState('');
     
                 </Stack>
             </Card>
+            </LazyMotion>
             <Prediction setGrade = {setGrade} />
 
             

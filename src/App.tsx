@@ -81,7 +81,7 @@ export default function JoyOrderDashboardTemplate() {
   const renderComponent = () => {
     switch(activeComponent){
       case 'Home' :
-        return <GradePrediction />
+        return <GradePrediction token={token} />
       case 'Class' :
         return <ClassList token={token}/>
       case 'Profile':
