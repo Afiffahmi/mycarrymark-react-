@@ -51,7 +51,7 @@ export default function FetchCM({token,selectedId}:any) {
 
     
   
-  },[token])
+  },[token,selectedId])
 
   return (
     
