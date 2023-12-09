@@ -10,6 +10,7 @@ import React, { useEffect,useState } from "react";
 import axios from "axios";
 import { LazyMotion, m } from "framer-motion"
 import { domAnimation } from "framer-motion"
+import  Skeleton  from "@mui/joy/Skeleton";
 
 interface Lecturer {
   email: string;
@@ -130,7 +131,13 @@ const user = JSON.parse(token);
         </Typography>
       </CardContent>
     </Card>
-            </SwiperSlide>) : null))}
+            </SwiperSlide>) : <Box sx={{ m: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Skeleton variant="circular" width={48} height={48} />
+        <div>
+          <Skeleton variant="rectangular" width={200} height="1em" sx={{ mb: 1 }} />
+          <Skeleton variant="rectangular" width={140} height="1em" />
+        </div>
+      </Box>))}
             
             
             </Swiper>
