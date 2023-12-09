@@ -88,13 +88,13 @@ const user = JSON.parse(token);
             </CardContent>
             </Card>
             <Typography>Select class to predict :</Typography>
-            { loading ?  <Box sx={{ m: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+            { loading ?  <Card sx={{ m: 'auto', display: 'flex', gap: 2, width: 320,}}>
         <Skeleton variant="circular" width={48} height={48} />
         <div>
           <Skeleton variant="rectangular" width={200} height="1em" sx={{ mb: 1 }} />
           <Skeleton variant="rectangular" width={140} height="1em" />
         </div>
-      </Box> :
+      </Card> :
             <Swiper
             spaceBetween={100}
             slidesPerView={2}

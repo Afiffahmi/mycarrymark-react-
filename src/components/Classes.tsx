@@ -24,19 +24,14 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
-// icons
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import BlockIcon from "@mui/icons-material/Block";
-import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
-import AddClass from "./AddClass";
 import axios from "axios";
+import AddStudent from "./AddStudent";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -115,6 +110,7 @@ export default function Classes({token,selectedId}:any) {
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [open, setOpen] = React.useState(false);
   const [rows, setRows] = React.useState<Student[]>([]);
+  const user = JSON.parse(token);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -188,6 +184,7 @@ export default function Classes({token,selectedId}:any) {
           gap: 1,
         }}
       >
+        <AddStudent token={token} selectedId={selectedId}/>
         <Input
           size="sm"
           placeholder="Search"
