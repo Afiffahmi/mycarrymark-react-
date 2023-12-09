@@ -84,15 +84,7 @@ useEffect(() => {
     setLoading(false);
   
   })
-   // Set up polling - fetch data every 5 seconds
-   const intervalId = setInterval(() => {
-    fetch('https://mycarrymark-node-afiffahmis-projects.vercel.app/class/list')
-      .then(response => response.json())
-      .then(data => Array.isArray(data) ? setData(data) : setData([]));
-  }, 5000);
-
-  // Clear interval on component unmount
-  return () => clearInterval(intervalId);
+   
 
 }, [token]);
 
