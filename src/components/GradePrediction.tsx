@@ -10,7 +10,7 @@ import React, { useEffect,useState } from "react";
 import axios from "axios";
 import { LazyMotion, m } from "framer-motion"
 import { domAnimation } from "framer-motion"
-import  Skeleton  from "@mui/joy/Skeleton";
+import Skeleton from "@mui/material";
 
 interface Lecturer {
   email: string;
@@ -88,6 +88,13 @@ const user = JSON.parse(token);
             </CardContent>
             </Card>
             <Typography>Select class to predict :</Typography>
+            { loading ?  <Box sx={{ m: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Skeleton variant="circular" width={48} height={48} />
+        <div>
+          <Skeleton variant="rectangular" width={200} height="1em" sx={{ mb: 1 }} />
+          <Skeleton variant="rectangular" width={140} height="1em" />
+        </div>
+      </Box> :
             <Swiper
             spaceBetween={100}
             slidesPerView={2}
@@ -131,16 +138,10 @@ const user = JSON.parse(token);
         </Typography>
       </CardContent>
     </Card>
-            </SwiperSlide>) : <Box sx={{ m: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Skeleton variant="circular" width={48} height={48} />
-        <div>
-          <Skeleton variant="rectangular" width={200} height="1em" sx={{ mb: 1 }} />
-          <Skeleton variant="rectangular" width={140} height="1em" />
-        </div>
-      </Box>))}
+            </SwiperSlide>) : null))}
             
             
-            </Swiper>
+            </Swiper>}
             <Card
       variant="outlined"
       color="primary"
