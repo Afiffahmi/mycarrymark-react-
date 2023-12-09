@@ -24,7 +24,7 @@ interface AddClassFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-export default function BasicModalDialog({setSuccessful,token}:any) {
+export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
   const user = JSON.parse(token);
 
   const [open, setOpen] = React.useState<boolean>(false);
@@ -131,6 +131,7 @@ export default function BasicModalDialog({setSuccessful,token}:any) {
                 setGroup(false);
                 setPart(false);
                 setSuccessful(true);
+                setReload(true);
                    
               })
               .catch((error)=>{

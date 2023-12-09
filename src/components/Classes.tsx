@@ -110,38 +110,29 @@ export default function Classes({token,selectedId}:any) {
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [open, setOpen] = React.useState(false);
   const [rows, setRows] = React.useState<Student[]>([]);
+  const [reload, setReload] = React.useState(false);
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      try{
-      const response = await
-    axios({
-      method: "get",
-      url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/student`,
+    fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/student`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
-    });
-      console.log(response.data);
-      const data = response.data;
-
-      const updatedRows = data.map((item: any) => ({
-        id: item.id,
-        status: item.status,
-        initial: item.name.charAt(0),
-        name: item.name,
-        email: item.email,
-        studentid: item.studentid,
-
-      }))
-
-      setRows(updatedRows);
-    } catch (error) {
-      // Handle error
-      console.error("Error fetching data:", error);
-    }}
-    fetchData();
-  }, [token]);
+    })
+      .then(response => response.json())
+      .then(data => {
+        const updatedRows = data.map((item: any) => ({
+          id: item.id,
+          status: item.status,
+          initial: item.name.charAt(0),
+          name: item.name,
+          email: item.email,
+          studentid: item.studentid,
+        }));
+        setRows(updatedRows);
+        setReload(false);
+      })
+      .catch(error => console.error('Error:', error));
+  }, [reload, selectedId]);
 
   const renderFilters = () => (
     <React.Fragment>
@@ -215,7 +206,7 @@ export default function Classes({token,selectedId}:any) {
           </ModalDialog>
         </Modal>
       </Sheet>
-      <AddStudent token={token} selectedId={selectedId}/>
+      <AddStudent token={token} selectedId={selectedId} setReload = {setReload}/>
       <Box
         className="SearchAndFilters-tabletUp"
         sx={{
