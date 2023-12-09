@@ -110,7 +110,6 @@ export default function Classes({token,selectedId}:any) {
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [open, setOpen] = React.useState(false);
   const [rows, setRows] = React.useState<Student[]>([]);
-  const user = JSON.parse(token);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -142,7 +141,7 @@ export default function Classes({token,selectedId}:any) {
       console.error("Error fetching data:", error);
     }}
     fetchData();
-  }, [selectedId,token]);
+  }, [token]);
 
   const renderFilters = () => (
     <React.Fragment>
@@ -184,7 +183,7 @@ export default function Classes({token,selectedId}:any) {
           gap: 1,
         }}
       >
-        <AddStudent token={token} selectedId={selectedId}/>
+        
         <Input
           size="sm"
           placeholder="Search"
@@ -199,6 +198,7 @@ export default function Classes({token,selectedId}:any) {
         >
           <FilterAltIcon />
         </IconButton>
+        
         <Modal open={open} onClose={() => setOpen(false)}>
           <ModalDialog aria-labelledby="filter-modal" layout="fullscreen">
             <ModalClose />
@@ -215,6 +215,7 @@ export default function Classes({token,selectedId}:any) {
           </ModalDialog>
         </Modal>
       </Sheet>
+      <AddStudent token={token} selectedId={selectedId}/>
       <Box
         className="SearchAndFilters-tabletUp"
         sx={{

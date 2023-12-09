@@ -36,8 +36,6 @@ export default function FetchCM({token,selectedId}:any) {
   shortId: '',
 });
   React.useEffect(() => {
-    const messages = FetchUsers();
-    console.log(messages);
     axios({
       method: 'get',
       url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}`,

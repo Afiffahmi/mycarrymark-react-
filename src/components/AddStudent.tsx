@@ -14,7 +14,7 @@ import Add from '@mui/icons-material/Add';
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
-  username: HTMLInputElement;
+  studentid: HTMLInputElement;
   name : HTMLInputElement;
   avatar : HTMLInputElement;
   online : HTMLInputElement;
@@ -23,14 +23,13 @@ interface AddClassFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-export default function BasicModalDialog({token,selectedId}:any) {
+export default function AddStudent({token,selectedId}:any) {
   const [open, setOpen] = React.useState<boolean>(false);
-  const user = JSON.parse(token);
     
   
   return (
     <React.Fragment>
-      <Stack>
+
       <Button
         variant="solid"
         color="primary"
@@ -40,7 +39,7 @@ export default function BasicModalDialog({token,selectedId}:any) {
       >
         Add Student
       </Button>
-      </Stack>
+    
       
       <Modal open={open} onClose={() => setOpen(false)}>
         <ModalDialog size='lg' sx={{
@@ -67,7 +66,7 @@ export default function BasicModalDialog({token,selectedId}:any) {
               const data = {
                 name : formElements.name.value,
                 email : formElements.email.value,
-                username : formElements.username.value,
+                studentid : formElements.studentid.value,
                 avatar : 'https://i.pinimg.com/236x/9c/36/b1/9c36b1fd301f7d8b5c810e6bfaa2bf1a.jpg',
                 online : false
               };
@@ -100,8 +99,8 @@ export default function BasicModalDialog({token,selectedId}:any) {
                 <Input name="name"  autoFocus required />
               </FormControl>
               <FormControl>
-                <FormLabel>Username</FormLabel>
-                <Input name="username"  required />
+                <FormLabel>Student ID</FormLabel>
+                <Input name="studentid"  required />
               </FormControl>
               <Button type="submit">Submit</Button>
               </Stack>
