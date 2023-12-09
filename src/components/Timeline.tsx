@@ -18,7 +18,7 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
       try {
         const response = await axios({
           method: "get",
-          url: `http://localhost:5555/class/${selectedId}/coursework`,
+          url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/coursework`,
           headers: {
             Authorization: `Bearer ${token}`,
           },

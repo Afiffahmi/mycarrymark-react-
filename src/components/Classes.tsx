@@ -122,7 +122,7 @@ export default function Classes({token,selectedId}:any) {
       const response = await
     axios({
       method: "get",
-      url: `http://localhost:5555/class/${selectedId}/student`,
+      url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/student`,
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },

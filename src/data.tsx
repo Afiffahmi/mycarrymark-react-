@@ -9,7 +9,7 @@ export async function FetchForum() {
     const response = await axios(
       {
         method: "get",
-        url: `http://localhost:5555/class/1ggfJ0eRxkdu132uB8dj/forum`,
+        url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/1ggfJ0eRxkdu132uB8dj/forum`,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -28,7 +28,7 @@ export async function FetchUsers() {
     const response = await axios(
       {
         method: "get",
-        url: `http://localhost:5555/class/1ggfJ0eRxkdu132uB8dj/users`,
+        url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/1ggfJ0eRxkdu132uB8dj/users`,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

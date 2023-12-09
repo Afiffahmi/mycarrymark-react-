@@ -40,7 +40,7 @@ export default function FetchCM({token,selectedId}:any) {
     console.log(messages);
     axios({
       method: 'get',
-      url: `http://localhost:5555/class/${selectedId}`,
+      url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}`,
       headers: {
         'Authorization': `Bearer ${token}`
       },

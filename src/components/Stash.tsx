@@ -55,7 +55,7 @@ export default function FilesExample({token}:any) {
   
 
   React.useEffect(() => {
-    fetch(`http://localhost:5555/auth/${user.email}/files`)
+    fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/auth/${user.email}/files`)
       .then(response => response.json())
       .then(data => setFiles(data))
       .catch(error => console.error('Error:', error));
@@ -76,7 +76,7 @@ export default function FilesExample({token}:any) {
     const formData = new FormData();
     formData.append('filename', file);
   
-    const formAction = `http://localhost:5555/auth/${user.email}/upload`
+    const formAction = `https://mycarrymark-node-afiffahmis-projects.vercel.app/auth/${user.email}/upload`
     const formMethod = "POST"
 
     fetch(formAction,{

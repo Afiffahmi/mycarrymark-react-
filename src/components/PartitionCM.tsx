@@ -51,7 +51,7 @@ export default function PartitionCM({selectedId,token}:any) {
               event.preventDefault();
              console.log(inputFields);
               const data ={coursework : inputFields};
-              const formAction = `http://localhost:5555/class/${selectedId}/setup`;
+              const formAction = `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/setup`;
               const formMethod = "POST";
 
                 fetch(formAction,{

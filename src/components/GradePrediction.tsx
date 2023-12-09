@@ -33,7 +33,7 @@ const [loading, setLoading] = React.useState(true);
 useEffect(() => {
   axios({
     method: 'get',
-    url: 'http://localhost:5555/class/list',
+    url: 'https://mycarrymark-node-afiffahmis-projects.vercel.app/class/list',
     headers: {
       'Authorization': `Bearer ${token}`
     },

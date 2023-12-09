@@ -115,7 +115,7 @@ export default function BasicModalDialog({setSuccessful,token}:any) {
 
               };
 
-              const formAction = "http://localhost:5555/class/new"
+              const formAction = "https://mycarrymark-node-afiffahmis-projects.vercel.app/class/new"
               const formMethod = "POST"
 
               fetch(formAction,{
