@@ -25,6 +25,8 @@ import axios from 'axios';
 import Snackbar from "@mui/joy/Snackbar";
 import {motion} from 'framer-motion';
 import FetchCM from "./FetchCM";
+import Skeleton from '@mui/joy/Skeleton';
+
 
 
 
@@ -161,9 +163,22 @@ useEffect(() => {
   
 
     {(showFetchCM ? <FetchCM selectedId={selectedId} /> : (loading ? 
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <CircularProgress />
-      </Box> 
+       <Card variant="outlined" sx={{ width: 343, display: 'flex', gap: 2 }}>
+       <AspectRatio ratio="21/9">
+         <Skeleton variant="overlay">
+           <img
+             alt=""
+             src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+           />
+         </Skeleton>
+       </AspectRatio>
+       <Typography>
+         <Skeleton>
+           Lorem ipsum is placeholder text commonly used in the graphic, print, and
+           publishing industries.
+         </Skeleton>
+       </Typography>
+     </Card>
       : 
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 4, md: 16 }} sx={{ flexGrow: 1 }}>
         
