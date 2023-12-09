@@ -10,7 +10,7 @@ import React, { useEffect,useState } from "react";
 import axios from "axios";
 import { LazyMotion, m } from "framer-motion"
 import { domAnimation } from "framer-motion"
-import Skeleton from "@mui/material";
+import Skeleton from "@mui/joy/Skeleton";
 
 interface Lecturer {
   email: string;
