@@ -50,6 +50,7 @@ export default function FilesExample({token}:any) {
   const [open, setOpen] = React.useState<boolean>(false);
   const [file, setFile] = React.useState(null);
   const [files, setFiles] = React.useState([]);
+  const [reload, setReload] = React.useState(false);
 
   const user = JSON.parse(token);
   
@@ -57,9 +58,12 @@ export default function FilesExample({token}:any) {
   React.useEffect(() => {
     fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/auth/${user.email}/files`)
       .then(response => response.json())
-      .then(data => setFiles(data))
+      .then(data => {setFiles(data);
+        setReload(false);})
       .catch(error => console.error('Error:', error));
-  }, [user]);
+
+      console.log(files)
+  }, [reload]);
 
   const handleFileChange = (event:any) => {
     setFile(event.target.files[0]);
@@ -83,7 +87,7 @@ export default function FilesExample({token}:any) {
       method: formMethod,
       body: formData,
     }).then((response)=>response.json()).then((data)=>{
-      console.log(data);
+      setReload(true); 
     })
     .catch((error)=>{
       console.log(error);
