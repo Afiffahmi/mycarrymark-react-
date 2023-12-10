@@ -12,6 +12,7 @@ interface Item {
 export default function OppositeContentTimeline({ selectedId, token }: any) {
   const [coursework, setCoursework] = React.useState<Item[]>([]);
   const [items, setItems] = React.useState<any[]>([]);
+  const [reload, setReload] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +30,7 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
           coursework: item.coursework,
           // Add other properties if needed
         }));
-
+        setReload(false);
         setCoursework(updatedRows);
       } catch (error) {
         // Handle error
@@ -38,7 +39,7 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
     };
 
     fetchData();
-  }, [selectedId, token]);
+  }, [selectedId, token,reload]);
 
   useEffect(() => {
     const generateItems = () => {
@@ -91,7 +92,7 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
           </div>
         </Card>
         <Card>
-          <PartitionCM selectedId={selectedId} token={token} />
+          <PartitionCM selectedId={selectedId} token={token} setReload={setReload}/>
         </Card>
       </Stack>
     </Grid>

@@ -9,7 +9,7 @@ import Info from '@mui/icons-material/Info';
 import { IconButton } from "@mui/joy";
 
  
-export default function PartitionCM({selectedId,token}:any) {
+export default function PartitionCM({selectedId,token,setReload}:any) {
     const [ inputFields, setInputFields] = useState([
         {assessmentName: '',score:'',weighted:''}
     ])
@@ -25,7 +25,10 @@ export default function PartitionCM({selectedId,token}:any) {
         }else if(event.target.name === 'score'){
         data[index].score = event.target.value;
         setInputFields(data)
-        }
+        }else if(event.target.name === 'weighted'){
+          data[index].weighted = event.target.value;
+          setInputFields(data)
+          }
     }
 
     const addFields = () => {
@@ -63,6 +66,7 @@ export default function PartitionCM({selectedId,token}:any) {
                 }).then((response)=>response.json()).then((responseData)=>{
                     if(responseData.code === 200){
                         setSuccessful(true);
+                        setReload(true);
                     }
 
                  })
@@ -140,7 +144,7 @@ export default function PartitionCM({selectedId,token}:any) {
         </FormControl>
         <FormControl>
         <FormLabel>Weighted(%)</FormLabel>
-        <Input name="score" value={input.weighted}  onChange={event => handleFormChange(index,event)} required/>
+        <Input name="weighted" value={input.weighted}  onChange={event => handleFormChange(index,event)} required/>
         </FormControl>
         </Stack>
         )})}
