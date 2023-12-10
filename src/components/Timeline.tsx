@@ -6,7 +6,7 @@ import PartitionCM from "./PartitionCM";
 import axios from "axios";
 
 interface Item {
-  coursework: [{ assessmentname: string; score: number }];
+  coursework: [{ assessmentName: string; score: string; weighted: string }];
 }
 
 export default function OppositeContentTimeline({ selectedId, token }: any) {
@@ -49,10 +49,9 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
           item.coursework.forEach((courseworkItem) => {
 
             itemsArray.push({
-              title: courseworkItem.assessmentname,
-              cardTitle: courseworkItem.assessmentname,
-              cardSubtitle: courseworkItem.score,
-              cardDetailedText: courseworkItem.score,
+              assessmentName: courseworkItem.assessmentName,
+              score: courseworkItem.score,
+              weighted: courseworkItem.weighted,
             });
           });
         }
@@ -73,19 +72,17 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
               <Table>
                 <thead>
                   <tr>
-                    <th>Title</th>
-                    <th>Card Title</th>
-                    <th>Card Subtitle</th>
-                    <th>Card Detailed Text</th>
+                    <th>Assessment Name</th>
+                    <th>Score</th>
+                    <th>Weighted (%)</th>
                   </tr>
                 </thead>
                 <tbody>
                   {items.map((item, index) => (
                     <tr key={index}>
-                      <td>{item.title}</td>
-                      <td>{item.cardTitle}</td>
-                      <td>{item.cardSubtitle}</td>
-                      <td>{item.cardDetailedText}</td>
+                      <td>{item.assessmentName}</td>
+                      <td>{item.score}</td>
+                      <td>{item.weighted}</td>
                     </tr>
                   ))}
                 </tbody>

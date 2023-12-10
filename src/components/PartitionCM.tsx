@@ -11,7 +11,7 @@ import { IconButton } from "@mui/joy";
  
 export default function PartitionCM({selectedId,token}:any) {
     const [ inputFields, setInputFields] = useState([
-        {assessmentname: '',score:''}
+        {assessmentName: '',score:'',weighted:''}
     ])
     const [successful,setSuccessful] = useState(false);
 
@@ -20,7 +20,7 @@ export default function PartitionCM({selectedId,token}:any) {
 
         let data = [...inputFields];
         if(event.target.name === 'assessmentname'){
-        data[index].assessmentname = event.target.value;
+        data[index].assessmentName = event.target.value;
         setInputFields(data)
         }else if(event.target.name === 'score'){
         data[index].score = event.target.value;
@@ -29,7 +29,7 @@ export default function PartitionCM({selectedId,token}:any) {
     }
 
     const addFields = () => {
-        let newfield = {assessmentname: '',score:''};
+        let newfield = {assessmentName: '',score:'',weighted:''};
         setInputFields([...inputFields, newfield])
     }
 
@@ -73,8 +73,6 @@ export default function PartitionCM({selectedId,token}:any) {
             }}>
     {inputFields.map((input,index)=> {
     
-   
-
     return (
         
     <Stack direction='row' key={index} spacing={2}>
@@ -135,16 +133,19 @@ export default function PartitionCM({selectedId,token}:any) {
       </Snackbar>) : null)}
         <FormControl>
         <FormLabel>Assessment Name</FormLabel>
-        <Input name="assessmentname" value={input.assessmentname} onChange={event => handleFormChange(index,event)} required/></FormControl>
+        <Input name="assessmentname" value={input.assessmentName} onChange={event => handleFormChange(index,event)} required/></FormControl>
         <FormControl>
         <FormLabel>Score</FormLabel>
         <Input name="score" value={input.score}  onChange={event => handleFormChange(index,event)} required/>
+        </FormControl>
+        <FormControl>
+        <FormLabel>Weighted(%)</FormLabel>
+        <Input name="score" value={input.weighted}  onChange={event => handleFormChange(index,event)} required/>
         </FormControl>
         </Stack>
         )})}
         <FormControl>
         <FormLabel>Score</FormLabel>
-        <Input type="date" name="Study Week Date"  required/>
         </FormControl>
         <Box height={10}></Box>
         <Stack direction='row' spacing={2}>

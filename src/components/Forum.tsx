@@ -22,6 +22,7 @@ interface Forums {
 
 export default function Forum({token,selectedId}:any) {
     const [forum, setForum] = React.useState<Forums[]>([]);
+    const[reload,setReload] = React.useState(false);
     
 
     useEffect(() => {
@@ -34,13 +35,14 @@ export default function Forum({token,selectedId}:any) {
         }).then((response) => {
             setForum(response.data);
             console.log(response.data);
+            setReload(false);
         });
     
         
-      }, [token,selectedId]);
+      }, [token,selectedId,reload]);
 
   return (
-    <Box><AddForum token={token} selectedId={selectedId}/>
+    <Box><AddForum token={token} selectedId={selectedId} setReload = {setReload}/>
       <Stack spacing={2} direction='row'>
       
       <Card>
