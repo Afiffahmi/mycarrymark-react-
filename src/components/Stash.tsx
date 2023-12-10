@@ -35,8 +35,8 @@ import ModalClose from '@mui/joy/ModalClose';
 // custom
 import Layout from './Layout';
 import TableFiles from './TableFiles';
-import { StepButton } from '@mui/joy';
-import { FormControl, FormLabel, Input,DialogTitle,DialogContent } from '@mui/joy';
+import { FormControl, FormLabel,DialogContent } from '@mui/joy';
+import Skeleton from '@mui/joy/Skeleton';
 
 interface FormElements extends HTMLFormControlsCollection {
   filename : HTMLInputElement;
@@ -51,6 +51,7 @@ export default function FilesExample({token}:any) {
   const [file, setFile] = React.useState(null);
   const [files, setFiles] = React.useState([]);
   const [reload, setReload] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   const user = JSON.parse(token);
   
@@ -59,7 +60,8 @@ export default function FilesExample({token}:any) {
     fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/auth/${user.email}/files`)
       .then(response => response.json())
       .then(data => {setFiles(data);
-        setReload(false);})
+        setReload(false);
+      setLoading(false);})
       .catch(error => console.error('Error:', error));
 
       console.log(files)
@@ -187,7 +189,7 @@ export default function FilesExample({token}:any) {
           </form>
         </Sheet>
       </Modal>
-              <TableFiles files = {files}/>
+              <TableFiles files = {files} loading = {loading}/>
             </Sheet>
             <Sheet
               variant="outlined"

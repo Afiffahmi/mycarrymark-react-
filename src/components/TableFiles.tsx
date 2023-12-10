@@ -8,10 +8,12 @@ import { Button, Link } from '@mui/joy';
 // Icons import
 import FolderRoundedIcon from '@mui/icons-material/FolderRounded';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import { Skeleton,Box } from '@mui/joy';
 
 // custom
 
-function TableFiles({files}:any) {
+function TableFiles({files,loading}:any) {
+  
   return (
     <div>
       <Table
@@ -37,6 +39,13 @@ function TableFiles({files}:any) {
             </th>
           </tr>
         </thead>
+        {loading ? <Box sx={{ m: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Skeleton variant="circular" width={48} height={48} />
+        <div>
+          <Skeleton variant="rectangular" width={200} height="1em" sx={{ mb: 1 }} />
+          <Skeleton variant="rectangular" width={140} height="1em" />
+        </div>
+      </Box>:
         <tbody>
           {files.map((file:any, index: number) => (
           <tr key={index}>
@@ -56,7 +65,7 @@ function TableFiles({files}:any) {
            <Link href={file.downloadURL} target="_blank" rel="noopener noreferrer" download>download</Link>
             </td>
           </tr>))}
-        </tbody>
+        </tbody>}
       </Table>
     </div>
   );
