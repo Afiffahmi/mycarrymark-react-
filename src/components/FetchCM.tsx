@@ -9,6 +9,7 @@ import axios from 'axios';
 import CardContent from "@mui/joy/CardContent";
 import {motion} from 'framer-motion';
 import Forum from './Forum'
+import GradingView from "./Grading";
 interface Item { 
   id: string;
   courseCode: string;
@@ -164,6 +165,9 @@ export default function FetchCM({token,selectedId}:any) {
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
           Carrymark Setup
         </Tab>
+        <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
+          Grading
+        </Tab>
       </TabList>
       <TabPanel value={0}>
         <ClassMonitor />
@@ -181,6 +185,13 @@ export default function FetchCM({token,selectedId}:any) {
           highest priority for support.
         </Typography>
         <OppositeContentTimeline selectedId={selectedId} token={token}/>
+      </TabPanel>
+      <TabPanel value={4}>
+        <Typography level="inherit">
+          The most advanced features for data-rich applications, as well as the
+          highest priority for support.
+        </Typography>
+        <GradingView/>
       </TabPanel>
     </Tabs>
     </Box>
