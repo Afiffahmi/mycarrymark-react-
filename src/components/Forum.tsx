@@ -9,12 +9,8 @@ import Typography from '@mui/joy/Typography';
 import { Card, Divider, Stack } from '@mui/joy';
 import { useEffect } from 'react';
 import axios from 'axios';
-import IconButton from '@mui/joy/IconButton';
-import Sheet from '@mui/joy/Sheet';
-import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
-
+import AddForum from './AddForum';
+import { store } from '../redux/store';
 interface Forums {
     avatar: string;
     name: string
@@ -26,6 +22,7 @@ interface Forums {
 
 export default function Forum({token,selectedId}:any) {
     const [forum, setForum] = React.useState<Forums[]>([]);
+    
 
     useEffect(() => {
         axios({
@@ -43,7 +40,9 @@ export default function Forum({token,selectedId}:any) {
       }, [token,selectedId]);
 
   return (
+    <Box><AddForum token={token} selectedId={selectedId}/>
       <Stack spacing={2} direction='row'>
+      
       <Card>
       <Typography
         id="ellipsis-list-demo"
@@ -116,5 +115,6 @@ export default function Forum({token,selectedId}:any) {
         
       </Card>
       </Stack>
+      </Box>
   );
 }

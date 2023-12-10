@@ -24,8 +24,9 @@ import logo from './logomcm.svg';
 //@ts-ignore
 import logodark from './logomcm-dark.svg';
 //@ts-ignore
-import Loader from './components/loader/Loader.js';
-import JoyOrderDashboardTemplate from './App';
+import {store} from './redux/store';
+import { loginUser } from './redux/AuthReducer';
+
 
 
 
@@ -244,6 +245,7 @@ export default function JoySignInSideTemplate({setToken}) {
                     .then((responseData) => { 
                       if(responseData.uid != null) {
                       const userJson = JSON.stringify(responseData)
+                      store.dispatch(loginUser(userJson));
                       setToken(userJson)
                       console.log(userJson);  
                     }
