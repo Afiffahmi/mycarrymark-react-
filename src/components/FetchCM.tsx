@@ -8,8 +8,7 @@ import OppositeContentTimeline from "./Timeline";
 import axios from 'axios';
 import CardContent from "@mui/joy/CardContent";
 import {motion} from 'framer-motion';
-import MyMessages from "./forum/MyMessages";
-import { FetchUsers } from "../data";
+import Forum from './Forum'
 interface Item { 
   id: string;
   courseCode: string;
@@ -25,6 +24,7 @@ interface Lecturer {
 
 }
 
+
 export default function FetchCM({token,selectedId}:any) {
   const [index, setIndex] = React.useState(0);
   const [data, setData] = useState<Item>({ id: '',
@@ -35,6 +35,8 @@ export default function FetchCM({token,selectedId}:any) {
   lecturers: [],
   shortId: '',
 });
+
+
   React.useEffect(() => {
     axios({
       method: 'get',
@@ -46,6 +48,7 @@ export default function FetchCM({token,selectedId}:any) {
       setData(response.data);
       console.log(response.data);
     })
+    
 
     
   
@@ -170,7 +173,7 @@ export default function FetchCM({token,selectedId}:any) {
         <Classes selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={2}>
-       <MyMessages token={token} />
+        <Forum selectedId={selectedId} token={token} />
       </TabPanel>
       <TabPanel value={3}>
         <Typography level="inherit">

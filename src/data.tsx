@@ -2,14 +2,15 @@ import { ChatProps, UserProps } from './types';
 import axios, { AxiosResponse } from 'axios';
 
 
+const selectedId = '1ggfJ0eRxkdu132uB8dj';
 
 // Function to fetch data using Axios
-export async function FetchForum() {
+export async function FetchForum({selectedId}:any) {
   try {
     const response = await axios(
       {
         method: "get",
-        url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/1ggfJ0eRxkdu132uB8dj/forum`,
+        url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/forum`,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -23,12 +24,12 @@ export async function FetchForum() {
 }
 
 // Function to fetch data using Axios
-export async function FetchUsers() {
+export async function FetchUsers({selectedId}:any) {
   try {
     const response = await axios(
       {
         method: "get",
-        url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/1ggfJ0eRxkdu132uB8dj/users`,
+        url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}}/users`,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -43,7 +44,7 @@ export async function FetchUsers() {
 
 (async () => {
   try {
-    const fetchedChats = await FetchForum();
+    const fetchedChats = await FetchForum(selectedId);
     // Use fetchedChats data here
     console.log(fetchedChats);
 
@@ -61,7 +62,7 @@ export async function FetchUsers() {
 
 (async () => {
   try {
-    const fetchedUsers = await FetchUsers();
+    const fetchedUsers = await FetchUsers(selectedId);
     // Use fetchedChats data here
     console.log(fetchedUsers);
 
@@ -78,11 +79,11 @@ export async function FetchUsers() {
 })();
 
 // Exporting chats as a Promise that resolves with the fetched data
-export const chatsPromise: Promise<ChatProps[]> = FetchForum();
+export const chatsPromise: Promise<ChatProps[]> = FetchForum(selectedId);
 
 // Alternatively, if you want to export chats after it's resolved, you can use the then method
 let chats: ChatProps[] = [];
-FetchForum()
+FetchForum(selectedId)
   .then((fetchedChats) => {
     chats = fetchedChats;
   })   
@@ -96,11 +97,11 @@ export { chats };
 
 
 // Exporting chats as a Promise that resolves with the fetched data
-export const usersPromise: Promise<UserProps[]> = FetchForum();
+export const usersPromise: Promise<UserProps[]> = FetchForum(selectedId);
 
 // Alternatively, if you want to export chats after it's resolved, you can use the then method
 let users: UserProps[] = [];
-FetchForum()
+FetchForum(selectedId)
   .then((fetchedChats) => {
     chats = fetchedChats;
   })   
