@@ -19,10 +19,6 @@ interface FormElements extends HTMLFormControlsCollection {
   test2: HTMLInputElement;
   assignment1: HTMLInputElement;
   assignment2: HTMLInputElement;
-  taking_notes : HTMLInputElement;
-  attendance : HTMLInputElement;
-  listening : HTMLInputElement;
-
 }
 interface AddClassFormElement extends HTMLFormElement {
   readonly elements: FormElements;
@@ -34,17 +30,16 @@ const Prediction = ({setGrade}:any) => {
       onSubmit={async (event: React.FormEvent<AddClassFormElement>) => {
         event.preventDefault();
         const formElements = event.currentTarget.elements;
-        const data = {
-          quiz1: formElements.quiz1.value,
-          test1: formElements.test1.value,
-          test2: formElements.test2.value,
-          assignment1: formElements.assignment1.value,
-          assignment2: formElements.assignment2.value,
-          listening: 2,
-          taking_notes: 2,
-          attendance: 2,
-          carrymark: formElements.quiz1.value + formElements.test1.value + formElements.test2.value + formElements.assignment1.value + formElements.assignment2.value
-        };
+        const data = [{
+          quiz1: Number(formElements.quiz1.value),
+          test1: Number(formElements.test1.value),
+          test2: Number(formElements.test2.value),
+          assignment1: Number(formElements.assignment1.value),
+          assignment2: Number(formElements.assignment2.value),
+          total: Number(formElements.quiz1.value) + Number(formElements.test1.value) + Number(formElements.test2.value) + Number(formElements.assignment1.value) + Number(formElements.assignment2.value)
+      }];
+
+        console.log(data);
 
         const formAction = "http://localhost:1080/predict";
         const formMethod = "POST";
@@ -58,7 +53,7 @@ const Prediction = ({setGrade}:any) => {
         })
           .then((response) => response.json()).then((data) => {
             console.log(data)
-            setGrade(data.Prediction);
+            setGrade(data.Predictions[0].Prediction);
           })
 
           .catch((error) => {
