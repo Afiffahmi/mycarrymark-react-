@@ -17,7 +17,6 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
 
     const handleFormChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     
-
         let data = [...inputFields];
         if(event.target.name === 'assessmentname'){
         data[index].assessmentName = event.target.value;
@@ -30,7 +29,7 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
           setInputFields(data)
           }
     }
-
+    
     const addFields = () => {
         let newfield = {assessmentName: '',score:'',weighted:''};
         setInputFields([...inputFields, newfield])
