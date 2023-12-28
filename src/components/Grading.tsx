@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import Table from '@mui/joy/Table';
-import { Chip } from '@mui/joy';
+import { Button, Chip } from '@mui/joy';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Input from '@mui/joy/Input';
+import Modal from '@mui/joy/Modal';
+import ModalDialog from '@mui/joy/ModalDialog';
+import DialogTitle from '@mui/joy/DialogTitle';
+import DialogContent from '@mui/joy/DialogContent';
+import Add from '@mui/icons-material/Add';
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
 
 type Assessment = {
     score: string;
@@ -39,6 +49,7 @@ type Assessment = {
 
 const GradingView = ({selectedId}:any) => {
     const [data, setData] = useState<Data>({ grading: [], coursework: [], student: [] });
+    const [open, setOpen] = React.useState(false);
 
 useEffect(() => {
   fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading`)
@@ -56,7 +67,34 @@ useEffect(() => {
 
   return (
     <Box sx={{ maxWidth: '100%', minWidth: 'auto' }}>
-
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <ModalDialog>
+          <DialogTitle>Create new project</DialogTitle>
+          <DialogContent>Fill in the information of the project.</DialogContent>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              setOpen(false);
+            }}
+          >
+            <Stack spacing={2}>
+              <FormControl>
+              <Select placeholder="Choose one…">
+              {data.student.map((item, index) => (
+                <Option value={item.studentid}>{item.studentid}</Option>
+              ))}
+              
+              </Select>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Description</FormLabel>
+                <Input required />
+              </FormControl>
+              <Button type="submit">Submit</Button>
+            </Stack>
+          </form>
+        </ModalDialog>
+      </Modal>
       <Table
       stickyHeader
       sx={(theme) => ({
@@ -66,6 +104,14 @@ useEffect(() => {
       })}
     >
       <caption>Class Grading</caption>
+      <Button
+        variant="outlined"
+        color="neutral"
+        startDecorator={<Add />}
+        onClick={() => setOpen(true)}
+      >
+        Grade
+      </Button>
       <tbody>
       <th scope="col">Student</th>
         {data.coursework.map((item, index) => (
@@ -81,8 +127,6 @@ useEffect(() => {
        {data.student.map((item, index) => (
        <tr>
           <th scope="row">{item.name}</th>
-          <td>7</td>
-          <td>4,569</td>
         </tr>
         ))}
         

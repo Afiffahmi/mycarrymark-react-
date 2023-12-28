@@ -27,6 +27,7 @@ import { useContext } from 'react';
 import { AuthProvider } from './AuthProvider';
 import Stash from './components/Stash';
 import GradePrediction from './components/GradePrediction';
+import Dashboard from './components/Dashboard';
 
 
 const useEnhancedEffect =
@@ -81,7 +82,7 @@ export default function JoyOrderDashboardTemplate() {
   const renderComponent = () => {
     switch(activeComponent){
       case 'Home' :
-        return <GradePrediction token={token} />
+        return <Dashboard token={token}/>
       case 'Class' :
         return <ClassList token={token}/>
       case 'Profile':
