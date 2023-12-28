@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Stack } from '@mui/material';
+import Table from '@mui/joy/Table';
+import { Chip } from '@mui/joy';
 
 type Assessment = {
     score: string;
@@ -35,29 +37,58 @@ type Assessment = {
   };
 
 
-const GradingView = () => {
+const GradingView = ({selectedId}:any) => {
     const [data, setData] = useState<Data>({ grading: [], coursework: [], student: [] });
 
-  useEffect(() => {
-    const classId = '1ggfJ0eRxkdu132uB8dj'; // replace with your class id
-
-    fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${classId}/grading`)
-      .then(response => response.json())
-      .then(data => {setData(data)
-       })
-      .catch(error => console.error(error));
-  }, []);
+useEffect(() => {
+  fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading`)
+    .then(response => response.json())
+    .then(data => {
+      if (data && data.coursework) {
+        setData(data);
+        console.log(data.student);
+      } else {
+        console.error('Invalid data:', data);
+      }
+    })
+    .catch(error => console.error(error));
+}, [selectedId]);
 
   return (
     <Box sx={{ maxWidth: '100%', minWidth: 'auto' }}>
-      <Stack direction="column" justifyContent="space-between" spacing={2} sx={{ mb: 0.25 }}>
+
+      <Table
+      stickyHeader
+      sx={(theme) => ({
+        '& tr > *:first-child': { bgcolor: 'success.softBg' },
+        '& th[scope="col"]': theme.variants.solid.neutral,
+        '& td': theme.variants.soft.neutral,
+      })}
+    >
+      <caption>Class Grading</caption>
+      <tbody>
+      <th scope="col">Student</th>
         {data.coursework.map((item, index) => (
-          <Typography key={index}>
-            {item.coursework[index].assessmentName}
-          </Typography>
+          <th scope="col">
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {item.coursework[0].assessmentName}
+            <Chip style={{ marginLeft: '10px' }}>
+              {item.coursework[0].score} ({item.coursework[0].weighted}%)
+            </Chip>
+          </div>
+        </th>
         ))}
-        {/* Render coursework and student data similarly */}
-      </Stack>
+       {data.student.map((item, index) => (
+       <tr>
+          <th scope="row">{item.name}</th>
+          <td>7</td>
+          <td>4,569</td>
+        </tr>
+        ))}
+        
+
+      </tbody>
+    </Table>
 
       
     </Box>

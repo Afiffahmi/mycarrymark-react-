@@ -88,6 +88,8 @@ export default function JoyOrderDashboardTemplate() {
           return <MyProfile token={token} />
       case 'Stash':
           return <Stash token={token}/>
+      case 'Prediction':
+          return <GradePrediction token={token}/>
       default :
         return <GradePrediction/>
     }

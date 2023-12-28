@@ -37,9 +37,11 @@ import SmartToy from '@mui/icons-material/SmartToy';
 let classSelect:boolean = false;
 let homeSelect:boolean = true;
 let stashSelect:boolean = false;
+let predictionSelect:boolean = false;
 
 function onSelected(select:string){
 
+  predictionSelect = false;
   homeSelect = false;
   classSelect = false;
   stashSelect = false;
@@ -52,6 +54,9 @@ function onSelected(select:string){
       break;
     case 'stash':
       stashSelect = true;
+      break;
+    case 'prediction':
+      predictionSelect = true;
       break;
     default :
       homeSelect = true;
@@ -263,13 +268,12 @@ console.log(user);
           }}
         >
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => {onSelected('prediction');handleSideBtn('Prediction')}} selected={predictionSelect}>
               <ScienceRoundedIcon/>
               Grade prediction
               <Chip size='sm' color='primary' variant='solid' >
                 Beta
               </Chip>
-              {/* <ScienceRoundedIcon /> */}
             </ListItemButton>
           </ListItem>
           <ListItem>
