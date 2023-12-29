@@ -46,10 +46,10 @@ type Assessment = {
     student: StudentItem[];
   };
 
-
 const GradingView = ({selectedId}:any) => {
     const [data, setData] = useState<Data>({ grading: [], coursework: [], student: [] });
     const [open, setOpen] = React.useState(false);
+    const [formData, setFormData] = useState({ studentId: '',  grades: [] as { assessmentName: string, grade: string }[] ,assessmentName: ''});
 
 useEffect(() => {
   fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading`)
@@ -65,31 +65,59 @@ useEffect(() => {
     .catch(error => console.error(error));
 }, [selectedId]);
 
+
+const handleSelectChange = (event:any) => {
+  setFormData({ ...formData, studentId: event.target.value });
+};
+
+const handleInputChange = (assessmentName: string, index: number, event: any) => {
+  const grades = [...formData.grades];
+  grades[index] = { assessmentName: assessmentName, grade: event.target.value };
+  setFormData({ ...formData, grades });
+};
+
+const handleSubmit = (event:any) => {
+  event.preventDefault();
+  console.log(formData);
+  setOpen(false);
+};
+
   return (
     <Box sx={{ maxWidth: '100%', minWidth: 'auto' }}>
       <Modal open={open} onClose={() => setOpen(false)}>
         <ModalDialog>
-          <DialogTitle>Create new project</DialogTitle>
-          <DialogContent>Fill in the information of the project.</DialogContent>
+          <DialogTitle>Start grade a student</DialogTitle>
+          <DialogContent>select a student and grade based on assessment</DialogContent>
           <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              setOpen(false);
-            }}
+            onSubmit={handleSubmit}
           >
             <Stack spacing={2}>
-              <FormControl>
-              <Select placeholder="Choose one…">
-              {data.student.map((item, index) => (
-                <Option value={item.studentid}>{item.studentid}</Option>
+            <FormControl>
+              <select 
+                value={formData.studentId} 
+                onChange={handleSelectChange}
+              >
+                <option>Select student</option>
+                {data.student.map((item, index) => (
+                  <option key={index} value={item.studentid}>
+                    {item.studentid} &nbsp; {item.name}
+                  </option>
+                  
+                ))}
+              </select>
+
+           
+            </FormControl>
+              <Stack direction={'row'} spacing={2}>
+              {data.coursework.map((item, index) => (
+                <FormControl>
+                <FormLabel>{item.coursework[0].assessmentName}<Chip>{item.coursework[0].weighted}%</Chip></FormLabel>
+                <Input required  onChange={(event) => handleInputChange(item.coursework[0].assessmentName, index, event)}/>
+              </FormControl>
               ))}
+              </Stack>
+
               
-              </Select>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Description</FormLabel>
-                <Input required />
-              </FormControl>
               <Button type="submit">Submit</Button>
             </Stack>
           </form>
