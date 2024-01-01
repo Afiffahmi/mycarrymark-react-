@@ -226,7 +226,7 @@ export default function Classes({token,selectedId}:any) {
           },
         }}
       >
-        <FormControl sx={{ flex: 1 }} size="sm">
+        {/* <FormControl sx={{ flex: 1 }} size="sm">
           <FormLabel>Search for class</FormLabel>
           <Input
             size="sm"
@@ -234,7 +234,7 @@ export default function Classes({token,selectedId}:any) {
             startDecorator={<SearchIcon />}
           />
         </FormControl>
-        {renderFilters()}
+        {renderFilters()} */}
       </Box>
       <Sheet
         className="OrderTableContainer"

@@ -41,7 +41,7 @@ const Prediction = ({setGrade}:any) => {
 
         console.log(data);
 
-        const formAction = "http://localhost:1080/predict";
+        const formAction = "https://grade-prediction-api.onrender.com/predict";
         const formMethod = "POST";
 
         fetch(formAction, {

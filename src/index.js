@@ -6,7 +6,7 @@ import { BrowserRouter,Routes, Route } from 'react-router-dom';
 import JoyOrderDashboardTemplate from './App.tsx';
 import {store} from './redux/store';
 import {Provider} from 'react-redux';
-
+import SignUp from './SignUp.tsx';
 
 
 
@@ -18,7 +18,7 @@ root.render(
   <Provider store={store}>
   <Routes>
     <Route path="/" element={<JoyOrderDashboardTemplate/>}/>
-    
+    <Route path="/signup" element={<SignUp/>}/>
   </Routes>
   </Provider>
   </BrowserRouter>

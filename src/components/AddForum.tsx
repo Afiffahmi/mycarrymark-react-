@@ -58,8 +58,8 @@ export default function AddForum({token,selectedId,setReload}:any) {
           },
 
         }}>
-          <DialogTitle>Add Student</DialogTitle>
-          <DialogContent>Fill in the information of the student.</DialogContent>
+          <DialogTitle>Add Forum</DialogTitle>
+          <DialogContent>Fill in the information of the forum.</DialogContent>
           <form
             onSubmit={async(event: React.FormEvent<AddClassFormElement>) => {
               event.preventDefault();
@@ -99,7 +99,7 @@ export default function AddForum({token,selectedId,setReload}:any) {
               </FormControl>
               <FormControl>
                 <FormLabel>Content</FormLabel>
-                <Input name="content"  required />
+                <Input name="content" type="textarea"  required />
               </FormControl>
               <Button type="submit">Submit</Button>
               </Stack>

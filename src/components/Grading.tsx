@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import Table from '@mui/joy/Table';
-import { Button, Chip } from '@mui/joy';
+import { Button, Chip, IconButton } from '@mui/joy';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
@@ -13,6 +13,7 @@ import Add from '@mui/icons-material/Add';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import axios from 'axios';
+import EditRounded from '@mui/icons-material/EditRounded';
 
 type Assessment = {
     score: string;
@@ -56,6 +57,7 @@ const GradingView = ({selectedId}:any) => {
     const [formData, setFormData] = useState({ studentId: '',  grades: [] as { assessmentName: string, grade: string }[] ,assessmentName: ''});
     const [selectedStudentId, setSelectedStudentId] = useState('');
     const [grades, setGrades] = useState<{ [key: string]: string }>({});
+    const [reload, setReload] = useState(false);
 
 
 
@@ -67,12 +69,15 @@ useEffect(() => {
       if (data && data.coursework) {
         setData(data);
         console.log(data.student);
+        
       } else {
         console.error('Invalid data:', data);
       }
     })
     .catch(error => console.error(error));
-}, [selectedId]);
+
+    setReload(false);
+}, [selectedId,reload]);
 
 
 const handleSelectChange = (event:any) => {
@@ -96,7 +101,7 @@ const handleEditClick = async (studentId:any) => {
   // Fetch the grades
   const response = await fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading/${studentId}`);
   const data = await response.json();
-
+  
   console.log(data); // Log the data to the console
 
   // Transform the grades into the format that your state expects
@@ -104,8 +109,9 @@ const handleEditClick = async (studentId:any) => {
     acc[grade.assessmentName] = grade.grade;
     return acc;
   }, {});
-
+  
   setGrades(grades);
+  setReload(true);
 };
 
 
@@ -123,6 +129,7 @@ const handleSubmit = (event:any) => {
   .then(response => response.json())
   .then(data => {
     console.log(data);
+    setReload(true);
   })
   .catch((error) => {
     console.error('Error:', error);
@@ -154,6 +161,7 @@ const handleEdit = async (event:any) => {
   .then(response => response.json())
   .then(data => {
     console.log(data);
+    setReload(true);
   })
   .catch((error) => {
     console.error('Error:', error);
@@ -249,40 +257,43 @@ const handleEdit = async (event:any) => {
         Grade
       </Button>
       <tbody>
-      <th scope="col">Student</th>
-        {data.coursework.map((item, index) => (
-          <th scope="col">
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {item.coursework[0].assessmentName}
-            <Chip style={{ marginLeft: '10px' }}>
-              {item.coursework[0].score} ({item.coursework[0].weighted}%)
-            </Chip>
-          </div>
-        </th>
-        ))}
-       {data.student.map((student, index) => {
-  // Find the grading object for this student
-  const grading = data.grading.find(g => g.studentId === student.studentid);
-
-  return (
-    <tr key={index}>
-      
-      <th scope="row">
-      <Button style={{ marginLeft: '10px' }} onClick={() => {setOpenE(true);setSelectedStudentId(student.studentid);handleEditClick(student.studentid)}}>Edit</Button>
-        {student.name}
+  <tr>
+    <th scope="col">Student</th>
+    {data.coursework.map((item, index) => (
+      <th key={index} scope="col">
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          {item.coursework[0].assessmentName}
+          <Chip style={{ marginLeft: '10px' }}>
+            {item.coursework[0].score} ({item.coursework[0].weighted}%)
+          </Chip>
+        </div>
       </th>
-      
-      {grading && grading.grades.map((grade, gradeIndex) => (
-        <td key={gradeIndex}>
-          {grade.grade}
-        </td>
-      ))}
-    </tr>
-  );
-})}
-        
+    ))}
+  </tr>
+  {data.student.map((student, index) => {
+    // Find the grading object for this student
+    const grading = data.grading.find(g => g.studentId === student.studentid);
 
-      </tbody>
+    return (
+      <tr key={index}>
+        <th scope="row">
+          <IconButton onClick={() => {setOpenE(true);setSelectedStudentId(student.studentid);handleEditClick(student.studentid)}} ><EditRounded/></IconButton>
+          {student.name}
+        </th>
+        {data.coursework.map((item, courseworkIndex) => {
+          // Find the grade for this coursework
+          const grade = grading ? grading.grades.find(g => g.assessmentName === item.coursework[0].assessmentName) : null;
+
+          return (
+            <td key={courseworkIndex}>
+              {grade ? grade.grade : ''}
+            </td>
+          );
+        })}
+      </tr>
+    );
+  })}
+</tbody>
     </Table>
 
       

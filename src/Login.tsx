@@ -187,20 +187,11 @@ export default function JoySignInSideTemplate({setToken}) {
                   <Typography level="h3">Sign in</Typography>
                   <Typography level="body-sm">
                     New to Mycarrymark?{' '}
-                    <Link href="#replace-with-a-link" level="title-sm">
+                    <Link href="/signup" level="title-sm">
                       Sign up!
                     </Link>
                   </Typography>
                 </Stack>
-
-                <Button
-                  variant="soft"
-                  color="neutral"
-                  fullWidth
-                  startDecorator={<GoogleIcon />}
-                >
-                  Continue with Google
-                </Button>
               </Stack>
               <Divider
                 sx={(theme) => ({

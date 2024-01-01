@@ -152,7 +152,6 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
         </FormControl>
         <Box height={10}></Box>
         <Stack direction='row' spacing={2}>
-        <Button onClick={addFields} >Add</Button>
         <Button type="submit" onSubmit={submit}>Submit</Button></Stack>
     </form>
     </Box>)
