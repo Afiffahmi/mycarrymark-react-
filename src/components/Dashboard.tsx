@@ -7,6 +7,7 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Sheet,CardCover } from '@mui/joy';
 
 interface Lecturer {
     email: string;
@@ -38,7 +39,34 @@ export default function Dashboard({token}:any) {
         
       }, []);
       
-  return (
+  return (<Sheet>
+                <Card sx={{ minHeight: '180px' }}>
+            <CardCover>
+                <img
+                src="https://i.pinimg.com/originals/34/1e/80/341e800b1f29d3e34ea2eba5a6af205c.gif"
+                loading="lazy"
+                alt=""
+                />
+            </CardCover>
+            <CardCover
+                sx={{
+                background:
+                    'linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 20px), linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 300px)',
+                }}
+            />
+            <CardContent sx={{ justifyContent: 'flex-end' }}>
+                <Typography fontWeight={500} fontSize={50} textColor="#fff">
+                Hi, Welcome to MyCarrymark!
+                </Typography>
+                <Typography
+                textColor="neutral.300"
+                fontWeight={300} 
+                fontSize={30}
+                >
+                {user.email}
+                </Typography>
+            </CardContent>
+            </Card>
     <Card
       size="lg"
       variant="plain"
@@ -75,5 +103,6 @@ export default function Dashboard({token}:any) {
         </Typography>
       </CardOverflow>
     </Card>
+    </Sheet>
   );
 }

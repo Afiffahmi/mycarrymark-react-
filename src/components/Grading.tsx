@@ -12,6 +12,7 @@ import DialogContent from '@mui/joy/DialogContent';
 import Add from '@mui/icons-material/Add';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
+import axios from 'axios';
 
 type Assessment = {
     score: string;
@@ -38,6 +39,8 @@ type Assessment = {
     assessmentName: string;
     score: number;
     weighted: number;
+    studentId: string;
+    grades: { assessmentName: string, grade: string }[];
   };
   
   type Data = {
@@ -49,7 +52,13 @@ type Assessment = {
 const GradingView = ({selectedId}:any) => {
     const [data, setData] = useState<Data>({ grading: [], coursework: [], student: [] });
     const [open, setOpen] = React.useState(false);
+    const [openE, setOpenE] = React.useState(false);
     const [formData, setFormData] = useState({ studentId: '',  grades: [] as { assessmentName: string, grade: string }[] ,assessmentName: ''});
+    const [selectedStudentId, setSelectedStudentId] = useState('');
+    const [grades, setGrades] = useState<{ [key: string]: string }>({});
+
+
+
 
 useEffect(() => {
   fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading`)
@@ -74,7 +83,32 @@ const handleInputChange = (assessmentName: string, index: number, event: any) =>
   const grades = [...formData.grades];
   grades[index] = { assessmentName: assessmentName, grade: event.target.value };
   setFormData({ ...formData, grades });
+  setGrades(prevGrades => ({
+    ...prevGrades,
+    [assessmentName]: event.target.value,
+  }));
 };
+
+const handleEditClick = async (studentId:any) => {
+  setSelectedStudentId(studentId);
+  setOpenE(true);
+
+  // Fetch the grades
+  const response = await fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading/${studentId}`);
+  const data = await response.json();
+
+  console.log(data); // Log the data to the console
+
+  // Transform the grades into the format that your state expects
+  const grades = data.grades.reduce((acc:any, grade:any) => {
+    acc[grade.assessmentName] = grade.grade;
+    return acc;
+  }, {});
+
+  setGrades(grades);
+};
+
+
 
 const handleSubmit = (event:any) => {
   event.preventDefault();
@@ -88,7 +122,7 @@ const handleSubmit = (event:any) => {
   })
   .then(response => response.json())
   .then(data => {
-    console.log('Success:', data);
+    console.log(data);
   })
   .catch((error) => {
     console.error('Error:', error);
@@ -97,8 +131,40 @@ const handleSubmit = (event:any) => {
   setOpen(false);
 };
 
+const handleEdit = async (event:any) => {
+  event.preventDefault();
+
+  const gradesArray = Object.entries(grades).map(([assessmentName, grade]) => ({
+    assessmentName,
+    grade,
+  }));
+
+  const dataToSend = {
+    studentId: selectedStudentId,
+    grades: gradesArray,
+  };
+
+  fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(dataToSend),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+
+  setOpenE(false);
+};
+
   return (
     <Box sx={{ maxWidth: '100%', minWidth: 'auto' }}>
+      {/* grade modal */}
       <Modal open={open} onClose={() => setOpen(false)}>
         <ModalDialog>
           <DialogTitle>Start grade a student</DialogTitle>
@@ -138,6 +204,33 @@ const handleSubmit = (event:any) => {
           </form>
         </ModalDialog>
       </Modal>
+      
+      {/* edit modal */}
+      <Modal open={openE} onClose={() => setOpenE(false)}>
+  <ModalDialog>
+    <DialogTitle>Edit Grade</DialogTitle>
+    <DialogContent>add new grading score</DialogContent>
+    <form onSubmit={handleEdit}>
+      <Stack spacing={2}>
+        <FormControl>
+          <Input value={selectedStudentId} disabled/>
+        </FormControl>
+        <Stack direction={'row'} spacing={2}>
+          {data.coursework.map((item, index) => (
+            <FormControl key={index}>
+              <FormLabel>{item.coursework[0].assessmentName}<Chip>{item.coursework[0].weighted}%</Chip></FormLabel>
+              <Input 
+                value={grades[item.coursework[0].assessmentName]} 
+                onChange={(event) => handleInputChange(item.coursework[0].assessmentName,index,event)}
+              />
+            </FormControl>
+          ))}
+        </Stack>
+        <Button type="submit">Submit</Button>
+      </Stack>
+    </form>
+  </ModalDialog>
+</Modal>
       <Table
       stickyHeader
       sx={(theme) => ({
@@ -167,11 +260,26 @@ const handleSubmit = (event:any) => {
           </div>
         </th>
         ))}
-       {data.student.map((item, index) => (
-       <tr>
-          <th scope="row">{item.name}</th>
-        </tr>
-        ))}
+       {data.student.map((student, index) => {
+  // Find the grading object for this student
+  const grading = data.grading.find(g => g.studentId === student.studentid);
+
+  return (
+    <tr key={index}>
+      
+      <th scope="row">
+      <Button style={{ marginLeft: '10px' }} onClick={() => {setOpenE(true);setSelectedStudentId(student.studentid);handleEditClick(student.studentid)}}>Edit</Button>
+        {student.name}
+      </th>
+      
+      {grading && grading.grades.map((grade, gradeIndex) => (
+        <td key={gradeIndex}>
+          {grade.grade}
+        </td>
+      ))}
+    </tr>
+  );
+})}
         
 
       </tbody>

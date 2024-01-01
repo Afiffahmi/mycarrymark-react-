@@ -170,7 +170,7 @@ export default function FetchCM({token,selectedId}:any) {
         </Tab>
       </TabList>
       <TabPanel value={0}>
-        <ClassMonitor />
+        <ClassMonitor selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={1}>
 

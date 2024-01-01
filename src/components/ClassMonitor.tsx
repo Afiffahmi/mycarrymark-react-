@@ -7,33 +7,33 @@ import Tooltip from "@mui/joy/Tooltip";
 import Badge, { badgeClasses } from "@mui/joy/Badge";
 import AvatarGroup from "@mui/joy/AvatarGroup";
 import Slider from "@mui/joy/Slider";
+import { useState,useEffect } from "react";
 
-const marks = [
-    {
-      value: 0,
-      label: "Quiz 1",
-    },
-    {
-      value: 30,
-      label: "Test 1",
-    },
-    {
-      value: 60,
-      label: "Test 2",
-    },
-    {
-      value: 90,
-      label: "Project",
-    },
-  ];
-  
-  function valueText(value: number) {
-    return `${value}°C`;
-  }
+interface Student {
+  studentName: string;
+  studentId: string;
+  studentEmail: string;
+  avatar: string;
+  totalGrade: string;
+  worstGrade: string;
+  totalWeighted: number;
+}
+export const ClassMonitor = ({selectedId,token}:any) => {
+  const [students, setStudents] = useState<Student[]>([]);
 
-  
-export const ClassMonitor = () => {
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch( `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/bad-performance`);
+        const data = await response.json();
+        setStudents(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
 
+    fetchStudents();
+  }, [selectedId]);
     return (
         <Stack
         spacing={1}
@@ -50,39 +50,6 @@ export const ClassMonitor = () => {
           },
         }}
       >
-        <Card size="lg">
-          
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Track your progress</Typography>
-            <Stack direction='row'>
-            <Chip variant="outlined" color="danger" size="sm">CSC662</Chip>
-            <Chip color="danger" size="sm">Test 1 due 12 November 2023</Chip>
-            </Stack>
-          </Box>
-          <Divider />
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
-          >
-            <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <Stack spacing={1}></Stack>
-              <Typography>Progression</Typography>
-              <div>
-                <Box sx={{ width: 400 }}>
-                  <Slider
-                    aria-label="Always visible"
-                    defaultValue={30}
-                    getAriaValueText={valueText}
-                    step={30}
-                    marks={marks}
-                    disabled
-                  />
-                </Box>
-              </div>
-            </Stack>
-          </Stack>
-        </Card>
         <Card variant="outlined" color="neutral">
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Assignment Submmission</Typography>
@@ -157,9 +124,9 @@ export const ClassMonitor = () => {
         
 
         <Card variant="outlined" color="danger">
-          
+           
           <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Performance Monitoring</Typography>
+            <Typography level="title-md">Bad Performance Students</Typography>
             <Typography level="body-sm">
               Shown students currently in <Typography variant="solid" color="danger" noWrap>
     Poor performance
@@ -177,7 +144,9 @@ export const ClassMonitor = () => {
       >
         Students
       </Typography>
-      <List aria-labelledby="ellipsis-list-demo"
+      {students && students.map((student:any) => (
+      <List 
+      aria-labelledby="ellipsis-list-demo"
         sx={{ '--ListItemDecorator-size': '56px' }}>
         <ListItem>
           <ListItemDecorator>
@@ -212,46 +181,49 @@ export const ClassMonitor = () => {
           },
         }}
       >
-        <Avatar alt="Remy Sharp" src="https://cdn.uitm.edu.my/gambar_warga/4a975a190f7459aaf9ecd73fa5ab5f02.png" />
+        <Avatar alt="Remy Sharp" src={student.avatar} />
       </Badge>
           </ListItemDecorator>
+          
           <ListItemContent>
-          <Typography level="title-sm">Muhammad Afif Fahmi</Typography>
+          <Typography level="title-sm">{student.studentName}</Typography>
             <Stack direction='row'>
             <Typography level="body-sm" noWrap>
-              Current Assesment Score 
+            {student.studentId}
             </Typography>
-            <Chip color="danger" size="sm">6/15</Chip>
             </Stack>
           </ListItemContent>
         </ListItem>
         <ListItem>
-          <ListItemDecorator>
-          <Tooltip title="Quiz 1" variant="soft">
-            <Button variant="soft" color="danger">3/5</Button>
-          </Tooltip>
-          </ListItemDecorator>
+
           <Box height={40}></Box>
           <ListItemContent>
         
-          <Typography>Quiz 1</Typography>
+          <Typography>Current Carrymark</Typography>
         
           </ListItemContent>
+          <ListItemDecorator>
+          <Tooltip title="Quiz 1" variant="soft">
+            <Button variant="soft" color="danger">{student.totalGrade}/{student.totalWeighted}</Button>
+          </Tooltip>
+          </ListItemDecorator>
         </ListItem>
         <ListItem>
-          <ListItemDecorator>
-          <Tooltip title="Quiz 1" variant="soft">
-            <Button variant="soft" color="danger">3/10</Button>
-          </Tooltip>
-          </ListItemDecorator>
+
           <Box height={40}></Box>
           <ListItemContent>
         
-          <Typography>Test 1</Typography>
-        
+          <Typography>Worst Carrymark</Typography>
+          <Chip>{student.worstAssessmentName}</Chip>
           </ListItemContent>
+          <ListItemDecorator>
+          <Tooltip title="Quiz 1" variant="soft">
+            
+            <Button variant="soft" color="danger"> {student.worstGrade}</Button>
+          </Tooltip>
+          </ListItemDecorator>
         </ListItem>
-      </List>
+      </List>))}
     </Box>
 
           </Stack>
