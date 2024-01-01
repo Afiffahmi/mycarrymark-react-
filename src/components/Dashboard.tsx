@@ -56,14 +56,14 @@ export default function Dashboard({token}:any) {
             />
             <CardContent sx={{ justifyContent: 'flex-end' }}>
                 <Typography fontWeight={500} fontSize={50} textColor="#fff">
-                Hi, Welcome to MyCarrymark!
+                Hey, Scholars! 
                 </Typography>
                 <Typography
                 textColor="neutral.300"
                 fontWeight={300} 
                 fontSize={30}
                 >
-                {user.email}
+                Welcome aboard MyCarrymark, your pathway to academic excellence.
                 </Typography>
             </CardContent>
             </Card>

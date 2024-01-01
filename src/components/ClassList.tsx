@@ -46,6 +46,7 @@ interface Item {
   group: string;
   nStudent: number;
   lecturers: Lecturer[];
+  selectedImage : string;
 }
 
 export default function ClassList({ token }: any) {
@@ -222,7 +223,7 @@ export default function ClassList({ token }: any) {
                       <CardOverflow>
                         <AspectRatio ratio="2">
                           <img
-                            src="https://media.tenor.com/4-oYk1qhxPkAAAAd/forrest-landscape.gif"
+                            src={item.selectedImage || "https://media.tenor.com/4-oYk1qhxPkAAAAd/forrest-landscape.gif"}
                             loading="lazy"
                             alt=""
                           />

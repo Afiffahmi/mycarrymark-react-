@@ -18,8 +18,16 @@ interface Student {
   worstGrade: string;
   totalWeighted: number;
 }
+
+interface Performance {
+  averageGrade: number;
+  totalWeighted: number;
+  totalWeightedAll: number;
+  performanceRating : number;
+}
 export const ClassMonitor = ({selectedId,token}:any) => {
   const [students, setStudents] = useState<Student[]>([]);
+  const [performance, setPerformance] = useState<Performance>({averageGrade:0.0,totalWeighted:0,totalWeightedAll:0,performanceRating:0.0});
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -32,6 +40,16 @@ export const ClassMonitor = ({selectedId,token}:any) => {
       }
     };
 
+    const fetchPerformance = async () => {
+      try{
+        const response = await fetch( `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/average-grade`);
+        const data = await response.json();
+        setPerformance(data);
+      }catch(e){
+        console.error('Error:', e);
+      }
+    }
+    fetchPerformance();
     fetchStudents();
   }, [selectedId]);
     return (
@@ -52,7 +70,7 @@ export const ClassMonitor = ({selectedId,token}:any) => {
       >
         <Card variant="outlined" color="neutral">
           <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Assignment Submmission</Typography>
+            <Typography level="title-md">Class Monitor Performance</Typography>
             <Typography level="body-sm">
               Students <Typography variant="solid" color="success" noWrap>
     turned in
@@ -61,15 +79,16 @@ export const ClassMonitor = ({selectedId,token}:any) => {
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
-          <Box sx={{ width: 240 , height: 100 }}>
+          <Box sx={{ width: 240 , height: 150 }}>
       <Typography
         id="ellipsis-list-demo"
         level="body-xs"
         textTransform="uppercase"
         sx={{ letterSpacing: '0.15rem' }}
       >
-        Students
+        Score
       </Typography>
+      
       <List
         aria-labelledby="ellipsis-list-demo"
         sx={{ '--ListItemDecorator-size': '56px' }}
@@ -77,46 +96,44 @@ export const ClassMonitor = ({selectedId,token}:any) => {
       >
         <ListItem>
           <ListItemDecorator>
-            <Avatar src="https://cdn.uitm.edu.my/gambar_warga/3fcc9a6758c8adca9d980bb1a012d075.png" />
+            <Chip>{performance.performanceRating ? performance.performanceRating.toFixed(1) : 0}</Chip>
           </ListItemDecorator>
           <ListItemContent>
-            <Typography level="title-sm">Muhammad Syafiq Kheruddin</Typography>
+            <Typography level="title-sm">Rating</Typography>
             <Stack direction='row'>
-            <Chip color="primary" size="sm">CSC662</Chip>
             <Typography level="body-sm" noWrap>
-              Submited assignment 1
+              
             </Typography>
             </Stack>
           </ListItemContent>
         </ListItem>
         <ListItem>
           <ListItemDecorator>
-            <Avatar src="https://cdn.uitm.edu.my/gambar_warga/c4bf2caecaed27a931c1f3968ad74cc9.png" />
+            <Chip>{performance.averageGrade ? performance.averageGrade.toFixed(1) : 0}</Chip>
           </ListItemDecorator>
           <ListItemContent>
-            <Typography level="title-sm">Nur Anis Khairina</Typography>
+            <Typography level="title-sm">Average Grade</Typography>
             <Stack direction='row'>
-            <Chip color="primary" size="sm">CSC662</Chip>
             <Typography level="body-sm" noWrap>
-              Submited assignment 1
+            
             </Typography>
             </Stack>
-            
           </ListItemContent>
-          
-         
+        </ListItem>
+        <ListItem>
+          <ListItemDecorator>
+            <Chip>{performance.totalWeighted}</Chip>
+          </ListItemDecorator>
+          <ListItemContent>
+            <Typography level="title-sm">Total Carrymark</Typography>
+            <Stack direction='row'>
+            <Typography level="body-sm" noWrap>
+            sum of all assessment
+            </Typography>
+            </Stack>
+          </ListItemContent>
         </ListItem>
         <Box height={10}></Box>
-         <ListItem>
-          <ListItemContent>
-          <AvatarGroup size="sm" sx={{ flexDirection: 'row-reverse' }}>
-      <Avatar>+3</Avatar>
-      <Avatar alt="Cindy Baker" src="https://cdn.uitm.edu.my/gambar_warga/92f42034219a8d85cac7c21169e8b1c4.png" />
-      <Avatar alt="Travis Howard" src="https://cdn.uitm.edu.my/gambar_warga/f4251db8ceea3f3f2eb6a79bfc4d8282.png" />
-      <Avatar alt="Remy Sharp" src="https://cdn.uitm.edu.my/gambar_warga/c4db5493fa57464b8c9e020aec691ab0.png" />
-    </AvatarGroup>
-          </ListItemContent>
-         </ListItem>
       </List>
     </Box>
           </Stack>

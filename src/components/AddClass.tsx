@@ -10,7 +10,7 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import Box from '@mui/joy/Box';
-import { Alert, Typography } from '@mui/joy';
+import { Alert, Select, Typography,Option } from '@mui/joy';
 import LinearProgress from '@mui/joy/LinearProgress';
 
 
@@ -33,6 +33,7 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
   const [coursecode, setCoursecode] = React.useState(false);
   const [group, setGroup] = React.useState(false);
   const [part, setPart] = React.useState(false);
+  const [selectedValue, setSelectedValue] = React.useState('');
 
 
   function progressBar(event:any) {
@@ -111,7 +112,8 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
                 coursecode : formElements.coursecode.value,
                 coursename : formElements.coursename.value,
                 group : formElements.group.value,
-                part : formElements.part.value
+                part : formElements.part.value,
+                selectedImage : selectedValue
 
               };
 
@@ -162,6 +164,19 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
                 <FormLabel>Part</FormLabel>
                 <Input name="part" onChange={(e) => {progressBar(e.currentTarget)}} required />
               </FormControl>
+              <FormControl>
+              <FormLabel>Theme</FormLabel>
+              <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)}>
+              <option value={'https://media.tenor.com/4-oYk1qhxPkAAAAd/forrest-landscape.gif'}>Forest Sunset</option>
+              <option value={'https://24.media.tumblr.com/ea4f6b4c7182fc4a9658cb67012de3b9/tumblr_mgnlcpCprv1rjg1qso1_500.gif'}>Snow Trees</option>
+              <option value={'https://i.redd.it/ddnm7kmznqd71.gif'}>Lofi City</option>
+              <option value={'https://i.gifer.com/embedded/download/T2v6.gif'}>Foggy Mountain</option>
+              <option value={'https://windowscustomization.com/wp-content/uploads/2018/12/Ninja-Landscape.gif'}>Lost in Japan</option>
+              <option value={'https://miro.medium.com/v2/resize:fit:1280/1*B4NL8NsOivEV0UUx8CdYZg.gif'}>Artificial Intelligence</option>
+              <option value={'https://png.pngitem.com/pimgs/s/571-5712802_after-school-kids-kindergarten-clipart-hd-png-download.png'}>Kindergarten</option>
+              </select>
+              </FormControl>
+              
                 
               </Stack>
               

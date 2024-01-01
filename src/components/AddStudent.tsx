@@ -82,7 +82,7 @@ export default function AddStudent({token,selectedId,setReload}:any) {
                 },
               }).then((response)=>response.json())
               .then((responseData)=>{
-                
+                console.log(responseData);
               })
               .catch((error)=>{
                 console.log(error);
