@@ -24,12 +24,47 @@ interface Item {
   nStudent: number;
   lecturers: Lecturer[];
 }
+type Assessment = {
+  score: string;
+  weighted: string;
+  assessmentName: string;
+};
+
+type CourseworkItem = {
+  id: string;
+  coursework: Assessment[];
+};
+
+type StudentItem = {
+  id: string;
+  avatar: string;
+  studentid: string;
+  email: string;
+  online: boolean;
+  name: string;
+};
+
+type GradingItem = {
+  id: string;
+  assessmentName: string;
+  score: number;
+  weighted: number;
+  studentId: string;
+  grades: { assessmentName: string, grade: string }[];
+};
+
+type Data = {
+  grading: GradingItem[];
+  coursework: CourseworkItem[];
+  student: StudentItem[];
+};
 
 
 function GradePrediction({token}:any) {
 const [grade, setGrade] = React.useState('');
 const [data, setData] = useState<Item[]>([]);
 const [loading, setLoading] = React.useState(true);
+const [studentGrade, setStudentGrade] = useState<Data>({ grading: [], coursework: [], student: [] });
 
 useEffect(() => {
   axios({
@@ -46,6 +81,34 @@ useEffect(() => {
   })
 
 }, [token]);
+
+const handleCM = (classId:any) => {
+  axios({
+    method: 'get',
+    url: `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${classId}/grading`,
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    
+  }).then(response => {
+    setStudentGrade(response.data)
+  })
+
+
+    const formattedData = studentGrade.grading.map((student) => {
+      const studentData: any = {
+        student_id: student.studentId,
+      };
+    
+      student.grades.forEach((grade) => {
+        studentData[grade.assessmentName] = Number(grade.grade);
+      });
+    
+      return studentData;
+    });
+    console.log(formattedData);
+
+}
 
 
 
@@ -106,6 +169,7 @@ const user = JSON.parse(token);
             <Card
       variant="outlined"
       orientation="horizontal"
+      onClick={() => handleCM(item.id)} 
       sx={{
         width: 320,
         '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
