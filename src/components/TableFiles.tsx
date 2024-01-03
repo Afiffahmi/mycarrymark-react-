@@ -62,7 +62,7 @@ function TableFiles({files,loading}:any) {
               <Typography level="body-sm">{file.type}</Typography>
             </td>
             <td>
-           <Link href={file.downloadURL} target="_blank" rel="noopener noreferrer" download>download</Link>
+           <Link href={file.downloadURL} target="_blank" rel="noopener noreferrer" download><Button>Download</Button></Link>
             </td>
           </tr>))}
         </tbody>}

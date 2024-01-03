@@ -282,7 +282,7 @@ export default function ClassList({ token }: any) {
                         <AspectRatio ratio="2">
                         <Box position="relative" display="flex" width="100%" height="100%">
     <img
-      src={item.selectedImage || "https://media.tenor.com/4-oYk1qhxPkAAAAd/forrest-landscape.gif"}
+      src={item.selectedImage || "https://wallpaperset.com/w/full/3/5/9/542838.jpg"}
       loading="lazy"
       alt=""
     />

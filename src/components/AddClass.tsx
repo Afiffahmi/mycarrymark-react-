@@ -34,7 +34,7 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
   const [coursecode, setCoursecode] = React.useState(false);
   const [group, setGroup] = React.useState(false);
   const [part, setPart] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState('');
+  const [selectedValue, setSelectedValue] = React.useState('https://windowscustomization.com/wp-content/uploads/2018/12/Ninja-Landscape.gif');
   const [isChecked, setIsChecked] = React.useState(false);
 
   function progressBar(event:any) {
@@ -181,6 +181,7 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
               
               <FormLabel>Theme</FormLabel>
               <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)}>
+              <option value={'https://wallpaperset.com/w/full/3/5/9/542838.jpg'}>Please select Theme</option>
               <option value={'https://e1.pxfuel.com/desktop-wallpaper/789/226/desktop-wallpaper-1920x1080-space-dark-red-space.jpg'}>Dark Red Space</option>
               <option value={'https://steamuserimages-a.akamaihd.net/ugc/791991374973253058/E3360BCEB1F1EC15FAC2B598B0E3169CF0AB0674/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false'}>Night City</option>
               <option value={'https://i.gifer.com/embedded/download/T2v6.gif'}>Foggy Mountain</option>

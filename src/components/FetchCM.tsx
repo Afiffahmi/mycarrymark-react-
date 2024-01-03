@@ -107,8 +107,8 @@ export default function FetchCM({token,selectedId}:any) {
           <Card orientation="horizontal" variant="outlined" sx={{ width: 340 }}>
           <CardCover>
           <img
-            src={data.selectedImage}
-            srcSet={data.selectedImage + ' 2x'}
+            src={data.selectedImage || 'https://windowscustomization.com/wp-content/uploads/2018/12/Ninja-Landscape.gif'}
+            srcSet={data.selectedImage + ' 2x' || 'https://windowscustomization.com/wp-content/uploads/2018/12/Ninja-Landscape.gif 2x'}
             loading="lazy"
             alt=""
           />
