@@ -221,7 +221,7 @@ export const ClassMonitor = ({selectedId,token}:any) => {
       >
         Students
       </Typography>
-      {students && students.map((student:any) => (
+      {students ? students.map((student:any) => (
       <List 
       aria-labelledby="ellipsis-list-demo"
         sx={{ '--ListItemDecorator-size': '56px' }}>
@@ -300,7 +300,7 @@ export const ClassMonitor = ({selectedId,token}:any) => {
           </Tooltip>
           </ListItemDecorator>
         </ListItem>
-      </List>))}
+      </List>)) : <Typography>All good here</Typography>}
     </Box>
 
           </Stack>
