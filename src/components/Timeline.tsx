@@ -4,6 +4,7 @@ import { Chrono } from "react-chrono";
 import Stack from "@mui/joy/Stack";
 import PartitionCM from "./PartitionCM";
 import axios from "axios";
+import { Box } from "@mui/joy";
 
 interface Item {
   coursework: [{ assessmentName: string; score: string; weighted: string }];
@@ -66,10 +67,18 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
 
   return (
     <Grid sx={{ width: "100%", height: 450 }}>
-      <Stack direction="row" spacing={3}>
-        <Card color="neutral" variant="plain">
-          <div style={{ height: "400px", overflow: "auto" }}>
-           
+       <div style={{ height: "400px" }}>
+      <Stack direction={{ xs: 'column', md: 'row', sm: 'row', lg:'column' }} spacing={3}>
+      <Box sx={{ width: { xs: '100%', sm: 'auto' } }}>
+        <Card>
+        <Box sx={{
+        flex: 'auto',
+        width: "100%",
+        display: 'flex',
+        overflow: 'auto',
+      }}>
+         
+   
               <Table>
                 <thead>
                   <tr>
@@ -88,13 +97,17 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
                   ))}
                 </tbody>
               </Table>
-         
-          </div>
+
+          
+          </Box>
         </Card>
+
         <Card>
           <PartitionCM selectedId={selectedId} token={token} setReload={setReload}/>
         </Card>
+        </Box>
       </Stack>
+      </div>
     </Grid>
   );
 }

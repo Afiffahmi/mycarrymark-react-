@@ -299,10 +299,10 @@ export default function JoySignInSideTemplate({setToken}) {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundImage:
-              `url(https://cdn.discordapp.com/attachments/1167483960692056216/1167496486884479067/2.png?ex=654e56d5&is=653be1d5&hm=74654ed39dc141f1a483a17ce4ad2526ca7f499f4e8fee4eb61209101a3d0248&)`,
+              `url(https://images.pexels.com/photos/3109850/pexels-photo-3109850.jpeg?cs=srgb&dl=pexels-anni-roenkae-3109850.jpg&fm=jpg)`,
             [theme.getColorSchemeSelector('dark')]: {
               backgroundImage:
-                'url(https://cdn.discordapp.com/attachments/1167483960692056216/1167496486435696871/1.png?ex=654e56d5&is=653be1d5&hm=2eec158740360660712a3000bcbd049e61511bcfdb93654c07d041d58ce6e3a0&)',
+                'url(https://img2.wallspic.com/crops/6/2/3/6/7/176326/176326-light-purple-automotive_lighting-violet-water-1920x1080.jpg)',
             },
           })}
         />

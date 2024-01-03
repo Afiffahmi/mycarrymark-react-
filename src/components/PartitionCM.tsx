@@ -43,8 +43,10 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
 
     return (
     <Box sx={{
-        flex: 1,
+        flex: 'auto',
         width: "100%",
+        display: 'flex',
+        overflow: 'auto',
       }}>
 
       
@@ -134,6 +136,7 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
           }}
         />
       </Snackbar>) : null)}
+      
         <FormControl>
         <FormLabel>Assessment Name</FormLabel>
         <Input name="assessmentname" value={input.assessmentName} onChange={event => handleFormChange(index,event)} required/></FormControl>

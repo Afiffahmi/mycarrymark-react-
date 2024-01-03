@@ -108,7 +108,7 @@ export default function SignUp() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        backgroundImage: `url(https://files.123freevectors.com/wp-content/original/143033-abstract-dark-red-wave-business-background.jpg)`,
+        backgroundImage: `url(https://wallpapers.com/images/hd/pretty-purple-1920-x-1080-background-wv2ne4hmioj2g3tt.jpg)`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         height: "100vh",
