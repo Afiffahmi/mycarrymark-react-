@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AspectRatio, Box, Button, Divider, FormControl, FormLabel, FormHelperText, Input, IconButton, Textarea, Stack, Typography, Card, Slider, ListDivider, Avatar, List, Alert, CardOverflow, Chip, Grid, ListItem, ListItemDecorator, Tooltip, ListItemContent, AvatarGroup, Badge, badgeClasses, Tabs, TabList, Tab, tabClasses, TabPanel } from "@mui/joy";
+import { AspectRatio, Box, Button, Divider, FormControl, FormLabel, FormHelperText, Input, IconButton, Textarea, Stack, Typography, Card, Slider, ListDivider, Avatar, List, Alert, CardOverflow, Chip, Grid, ListItem, ListItemDecorator, Tooltip, ListItemContent, AvatarGroup, Badge, badgeClasses, Tabs, TabList, Tab, tabClasses, TabPanel, CardCover } from "@mui/joy";
 import Classes from "./Classes";
 import OrderTable from "./OrderTable";
 import { ClassMonitor } from "./ClassMonitor";
@@ -10,6 +10,7 @@ import CardContent from "@mui/joy/CardContent";
 import {motion} from 'framer-motion';
 import Forum from './Forum'
 import GradingView from "./Grading";
+
 interface Item { 
   id: string;
   courseCode: string;
@@ -18,6 +19,8 @@ interface Item {
   nStudent: number;
   lecturers: Lecturer[];
   shortId: string;
+  predictive: boolean;
+  selectedImage: string;
 
 }
 interface Lecturer {
@@ -35,6 +38,8 @@ export default function FetchCM({token,selectedId}:any) {
   nStudent: 0,
   lecturers: [],
   shortId: '',
+  predictive: false,
+  selectedImage: ''
 });
 
 
@@ -100,11 +105,20 @@ export default function FetchCM({token,selectedId}:any) {
         }}>
           <motion.div  whileTap={{ scale: 0.97 }} >
           <Card orientation="horizontal" variant="outlined" sx={{ width: 340 }}>
+          <CardCover>
+          <img
+            src={data.selectedImage}
+            srcSet={data.selectedImage + ' 2x'}
+            loading="lazy"
+            alt=""
+          />
+        </CardCover>
       <CardContent>
-        <Typography fontWeight="md" textColor="success.plainColor">
+        <Typography fontWeight="md" textColor="white" >
           {data.shortId}
         </Typography>
-        <Typography level="body-sm">{data.groupClass}</Typography>
+        <Typography level="body-sm" textColor="white">{data.groupClass}</Typography>
+        {data.predictive ? <Chip color="danger">Predictive Class</Chip> : <Chip>Non-Predictive Class</Chip>}
       </CardContent>
       <CardOverflow
         variant="soft"
@@ -124,7 +138,7 @@ export default function FetchCM({token,selectedId}:any) {
         CLASS ID
       </CardOverflow>
     </Card></motion.div>
-   
+
         </Box>
         <Tabs
       variant="outlined"
@@ -163,17 +177,22 @@ export default function FetchCM({token,selectedId}:any) {
           Forum
         </Tab>
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
-          Carrymark Setup
+          Partition
         </Tab>
         <Tab disableIndicator variant="soft" sx={{ flexGrow: 1 }}>
           Grading
         </Tab>
       </TabList>
       <TabPanel value={0}>
+      <Typography level="inherit">
+          Shown performance of the class
+        </Typography>
         <ClassMonitor selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={1}>
-
+      <Typography level="inherit">
+          List of students in the class
+        </Typography>
         <Classes selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={2}>
@@ -181,16 +200,12 @@ export default function FetchCM({token,selectedId}:any) {
       </TabPanel>
       <TabPanel value={3}>
         <Typography level="inherit">
-          The most advanced features for data-rich applications, as well as the
-          highest priority for support.
+          <Alert color="danger" variant="soft">It is not advised that you alter or remove the any assessment on this partition if it is predictive class.</Alert>
         </Typography>
         <OppositeContentTimeline selectedId={selectedId} token={token}/>
       </TabPanel>
       <TabPanel value={4}>
-        <Typography level="inherit">
-          The most advanced features for data-rich applications, as well as the
-          highest priority for support.
-        </Typography>
+
         <GradingView selectedId={selectedId} token={token}/>
       </TabPanel>
     </Tabs>

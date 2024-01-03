@@ -23,6 +23,7 @@ interface Item {
   groupClass: string;
   nStudent: number;
   lecturers: Lecturer[];
+  predictive: boolean;
 }
 type Assessment = {
   score: string;
@@ -91,7 +92,17 @@ const handleCM = (classId:any) => {
     },
     
   }).then(response => {
+    if(response.status === 500){
+      alert("No grading data found. Please add grading data first.");
+    }else
     setStudentGrade(response.data)
+  }).catch((error) => {
+    if (error.response && error.response.status === 500) {
+      alert("No grading data found. Please add grading data first.");
+    } else {
+      // If the error status is not 500, or there is no response, display a generic error message
+      alert("An error occurred while fetching the data.");
+    }
   })
 
 
@@ -164,7 +175,7 @@ const user = JSON.parse(token);
             onSlideChange={() => console.log('slide change')}
             onSwiper={(swiper) => console.log(swiper)}
             >
-              {data.map((item,index) =>  (item.lecturers[0].email === user.email ? ( <SwiperSlide>
+              {data.map((item,index) =>  (item.lecturers[0].email === user.email && item.predictive === true ? ( <SwiperSlide>
                 
             <Card
       variant="outlined"
@@ -177,8 +188,7 @@ const user = JSON.parse(token);
     >
       <AspectRatio ratio="1" sx={{ width: 90 }}>
         <img
-          src="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90"
-          srcSet="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90&dpr=2 2x"
+          src="https://enterprisersproject.com/sites/default/files/images/cio_future_crystal_ball.png"
           loading="lazy"
           alt=""
         />

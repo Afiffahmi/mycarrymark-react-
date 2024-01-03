@@ -47,6 +47,7 @@ interface Item {
   nStudent: number;
   lecturers: Lecturer[];
   selectedImage : string;
+  predictive: boolean;
 }
 
 export default function ClassList({ token }: any) {
@@ -113,13 +114,18 @@ export default function ClassList({ token }: any) {
         )}
         {successful ? (
           <Snackbar
-            open={true}
+            open={reload}
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            autoHideDuration={1000}
+            autoHideDuration={3000}
             size="lg"
             color="success"
             variant="solid"
             invertedColors
+            onClose={(event, reason) => {
+              if (reason === 'clickaway') {
+                return;
+              }
+            }}
             startDecorator={
               <AspectRatio
                 variant="solid"
@@ -272,13 +278,20 @@ export default function ClassList({ token }: any) {
                       sx={{ width: 320 }}
                     >
                       <CardOverflow>
+                        
                         <AspectRatio ratio="2">
-                          <img
-                            src={item.selectedImage || "https://media.tenor.com/4-oYk1qhxPkAAAAd/forrest-landscape.gif"}
-                            loading="lazy"
-                            alt=""
-                          />
+                        <Box position="relative" display="flex" width="100%" height="100%">
+    <img
+      src={item.selectedImage || "https://media.tenor.com/4-oYk1qhxPkAAAAd/forrest-landscape.gif"}
+      loading="lazy"
+      alt=""
+    />
+    <Box position="absolute" top={2} right={5}>
+      {item.predictive ? <Chip color="success" size="sm">Predictive Class</Chip> : <Chip size="sm">Non-Predictive Class</Chip>}
+    </Box>
+  </Box>
                         </AspectRatio>
+                        
                       </CardOverflow>
                       <CardContent>
                         <motion.div
@@ -296,7 +309,7 @@ export default function ClassList({ token }: any) {
                           variants={items}
                         >
                           <Typography level="body-sm">
-                            {item.courseName}
+                            {item.courseName} 
                           </Typography>
                         </motion.div>
                       </CardContent>

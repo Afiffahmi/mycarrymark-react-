@@ -46,7 +46,7 @@ export default function Forum({token,selectedId}:any) {
         });
     
         
-      }, [token,selectedId,reload,selectedForum?.id,forum]);
+      }, [token,selectedId,reload]);
 
       const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -69,10 +69,10 @@ export default function Forum({token,selectedId}:any) {
       };
 
   return (
-    <Box><AddForum token={token} selectedId={selectedId} setReload = {setReload}/>
-      <Stack spacing={2} direction='row'>
+    <Box sx={{ width: '100%', overflow: 'auto' }}><AddForum token={token} selectedId={selectedId} setReload = {setReload}/>
+      <Stack spacing={6} direction='row'>
       
-      <Card>
+      <Card >
       <Typography
         id="ellipsis-list-demo"
         level="body-xs"
@@ -111,7 +111,7 @@ export default function Forum({token,selectedId}:any) {
         
       </List>
       </Card>
-      <Card sx={{width:1100}}>
+      <Card sx={{width:1100, overflow:'auto'}}>
         
        
   <Box sx={{ maxWidth: '100%', minWidth: 'auto' }}>
@@ -128,28 +128,30 @@ export default function Forum({token,selectedId}:any) {
             textTransform="uppercase"
             sx={{ letterSpacing: '0.15rem' }}>
             {selectedForum?.title}
-
-            <Typography level="body-md" textTransform='lowercase'>
-        {selectedForum?.sender === 'afiffahmi@gmail.com' ? selectedForum?.sender : null}
-      </Typography>
         </Typography>
       
-      {selectedForum?.messages.map((message: any) => (
-        <Card variant='solid' color='primary' style={{ display: 'inline-block',margin: '10px 0' }} >
-        <Typography level="body-xs" key={message.id} style={{ color: 'white' }}>
-          {message.content}
+        {selectedForum?.messages.map((message: any) => (
+  <Card variant='solid' color='primary' style={{ display: 'inline-block', margin: '15px' }}>
+    <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+      <Typography level="body-xs" key={message.id} style={{ color: 'white' }}>
+        {message.content}
+      </Typography>
+      <Box display="flex" justifyContent="flex-end">
+        <Typography level="body-xs" style={{ color: 'white' }}>
+          {new Date(message.timestamp).toLocaleString()}
         </Typography>
-        </Card>
-      ))}
+      </Box>
+    </Box>
+  </Card>
+))}
       <form onSubmit={handleSubmit}>
       <Input
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type your message here"
-
+        endDecorator={<Button type="submit">Send</Button>}
       />
-      <Button type="submit">Send</Button>
     </form>
     </Stack>
   </Box>

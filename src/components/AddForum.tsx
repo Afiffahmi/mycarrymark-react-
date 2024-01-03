@@ -9,6 +9,8 @@ import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
+import { Divider } from '@mui/material';
+import { Box } from '@mui/joy';
 
 
 
@@ -60,6 +62,8 @@ export default function AddForum({token,selectedId,setReload}:any) {
         }}>
           <DialogTitle>Add Forum</DialogTitle>
           <DialogContent>Fill in the information of the forum.</DialogContent>
+          <Divider />
+          <Box sx={{maxWidth:'100px'}}>
           <form
             onSubmit={async(event: React.FormEvent<AddClassFormElement>) => {
               event.preventDefault();
@@ -95,11 +99,11 @@ export default function AddForum({token,selectedId,setReload}:any) {
               <Stack spacing={2}>
               <FormControl>
                 <FormLabel>Title</FormLabel>
-                <Input name="title"  autoFocus required />
+                <Input size='lg' name="title"  autoFocus required />
               </FormControl>
               <FormControl>
                 <FormLabel>Content</FormLabel>
-                <Input name="content" type="textarea"  required />
+                <Input name="content" size='lg' type="textarea"  required />
               </FormControl>
               <Button type="submit">Submit</Button>
               </Stack>
@@ -109,6 +113,7 @@ export default function AddForum({token,selectedId,setReload}:any) {
               
             </Stack>
           </form>
+          </Box>
         </ModalDialog>
       </Modal>
       

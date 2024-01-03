@@ -10,8 +10,9 @@ import DialogContent from '@mui/joy/DialogContent';
 import Stack from '@mui/joy/Stack';
 import Add from '@mui/icons-material/Add';
 import Box from '@mui/joy/Box';
-import { Alert, Select, Typography,Option } from '@mui/joy';
+import { Alert, Select, Typography,Option, Checkbox, IconButton, Tooltip } from '@mui/joy';
 import LinearProgress from '@mui/joy/LinearProgress';
+import Info from '@mui/icons-material/Info';
 
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -34,7 +35,7 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
   const [group, setGroup] = React.useState(false);
   const [part, setPart] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
-
+  const [isChecked, setIsChecked] = React.useState(false);
 
   function progressBar(event:any) {
     console.log(event.value && event.name === 'coursename')
@@ -113,7 +114,8 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
                 coursename : formElements.coursename.value,
                 group : formElements.group.value,
                 part : formElements.part.value,
-                selectedImage : selectedValue
+                selectedImage : selectedValue,
+                predictive : isChecked
 
               };
 
@@ -153,6 +155,16 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
                 <FormLabel>Group</FormLabel>
                 <Input name="group" onChange={(e) => {progressBar(e.currentTarget)}} required />
               </FormControl>
+              <FormControl>
+               
+                <Checkbox label={"Predictive"} checked={isChecked}  onChange={(e) => setIsChecked(e.target.checked)}/>
+                <Tooltip title="Predictive grading will be enabled for this class. The courseworks will be auto-generated">
+                <IconButton>
+                  
+                <Info />
+              </IconButton>
+              </Tooltip>
+              </FormControl>
               <Button type="submit">Submit</Button>
               </Stack>
               <Stack spacing={2}>
@@ -162,18 +174,20 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
               </FormControl>
               <FormControl>
                 <FormLabel>Part</FormLabel>
-                <Input name="part" onChange={(e) => {progressBar(e.currentTarget)}} required />
+                <Input name="part" type="number" onChange={(e) => {progressBar(e.currentTarget)}} required />
               </FormControl>
+              
               <FormControl>
+              
               <FormLabel>Theme</FormLabel>
               <select value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)}>
-              <option value={'https://media.tenor.com/4-oYk1qhxPkAAAAd/forrest-landscape.gif'}>Forest Sunset</option>
-              <option value={'https://24.media.tumblr.com/ea4f6b4c7182fc4a9658cb67012de3b9/tumblr_mgnlcpCprv1rjg1qso1_500.gif'}>Snow Trees</option>
+              <option value={'https://e1.pxfuel.com/desktop-wallpaper/789/226/desktop-wallpaper-1920x1080-space-dark-red-space.jpg'}>Dark Red Space</option>
               <option value={'https://steamuserimages-a.akamaihd.net/ugc/791991374973253058/E3360BCEB1F1EC15FAC2B598B0E3169CF0AB0674/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false'}>Night City</option>
               <option value={'https://i.gifer.com/embedded/download/T2v6.gif'}>Foggy Mountain</option>
               <option value={'https://windowscustomization.com/wp-content/uploads/2018/12/Ninja-Landscape.gif'}>Lost in Japan</option>
               <option value={'https://miro.medium.com/v2/resize:fit:1280/1*B4NL8NsOivEV0UUx8CdYZg.gif'}>Artificial Intelligence</option>
-              <option value={'https://png.pngitem.com/pimgs/s/571-5712802_after-school-kids-kindergarten-clipart-hd-png-download.png'}>Kindergarten</option>
+              <option value={'https://img.freepik.com/free-photo/snowy-mountain-peak-starry-galaxy-majesty-generative-ai_188544-9650.jpg'}>The Cave</option>
+              <option value={'https://4kwallpapers.com/images/wallpapers/landscape-rocks-5120x2880-11016.jpg'}>Desert</option>
               </select>
               </FormControl>
               

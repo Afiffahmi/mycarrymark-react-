@@ -97,21 +97,32 @@ const handleInputChange = (assessmentName: string, index: number, event: any) =>
 const handleEditClick = async (studentId:any) => {
   setSelectedStudentId(studentId);
   setOpenE(true);
-
+try{
+  
   // Fetch the grades
   const response = await fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading/${studentId}`);
   const data = await response.json();
   
   console.log(data); // Log the data to the console
 
+  
+
   // Transform the grades into the format that your state expects
   const grades = data.grades.reduce((acc:any, grade:any) => {
     acc[grade.assessmentName] = grade.grade;
     return acc;
   }, {});
-  
   setGrades(grades);
   setReload(true);
+  
+} catch (error) {
+  if (error) {
+    alert('Please grade first before editing.');
+    setOpenE(false);
+    return;
+  }
+}
+  
 };
 
 
@@ -140,6 +151,8 @@ const handleSubmit = (event:any) => {
 
 const handleEdit = async (event:any) => {
   event.preventDefault();
+
+  
 
   const gradesArray = Object.entries(grades).map(([assessmentName, grade]) => ({
     assessmentName,

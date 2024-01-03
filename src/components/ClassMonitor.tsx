@@ -9,6 +9,54 @@ import AvatarGroup from "@mui/joy/AvatarGroup";
 import Slider from "@mui/joy/Slider";
 import { useState,useEffect } from "react";
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip as ChartTooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  ChartTooltip,
+  Legend
+);
+
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'Student Assessment Performance',
+    },
+  },
+};
+
+
+
+interface Chart {
+  labels : any[];
+  datasets: [
+    {
+      label: string,
+      data: [],
+      borderColor: string,
+      backgroundColor: string,
+    },
+  ],
+};
 interface Student {
   studentName: string;
   studentId: string;
@@ -25,9 +73,11 @@ interface Performance {
   totalWeightedAll: number;
   performanceRating : number;
 }
+
 export const ClassMonitor = ({selectedId,token}:any) => {
   const [students, setStudents] = useState<Student[]>([]);
   const [performance, setPerformance] = useState<Performance>({averageGrade:0.0,totalWeighted:0,totalWeightedAll:0,performanceRating:0.0});
+  const [data, setData] = useState<Chart>({labels:[],datasets:[{label:"",data:[],borderColor:"",backgroundColor:""}]});
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -35,6 +85,16 @@ export const ClassMonitor = ({selectedId,token}:any) => {
         const response = await fetch( `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/bad-performance`);
         const data = await response.json();
         setStudents(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    const fetchChart = async () => {
+      try {
+        const response = await fetch( `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/chart`);
+        const data = await response.json();
+        setData(data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -51,10 +111,11 @@ export const ClassMonitor = ({selectedId,token}:any) => {
     }
     fetchPerformance();
     fetchStudents();
+    fetchChart();
   }, [selectedId]);
     return (
         <Stack
-        spacing={1}
+        spacing={5}
         direction="row"
         sx={{
 
@@ -72,9 +133,9 @@ export const ClassMonitor = ({selectedId,token}:any) => {
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Class Monitor Performance</Typography>
             <Typography level="body-sm">
-              Students <Typography variant="solid" color="success" noWrap>
-    turned in
-  </Typography> the assignment
+              Monitor<Typography variant="solid" color="success" noWrap>
+    Overall
+  </Typography> class performance
             </Typography>
           </Box>
           <Divider />
@@ -102,7 +163,7 @@ export const ClassMonitor = ({selectedId,token}:any) => {
             <Typography level="title-sm">Rating</Typography>
             <Stack direction='row'>
             <Typography level="body-sm" noWrap>
-              
+              /10
             </Typography>
             </Stack>
           </ListItemContent>
@@ -128,7 +189,6 @@ export const ClassMonitor = ({selectedId,token}:any) => {
             <Typography level="title-sm">Total Carrymark</Typography>
             <Stack direction='row'>
             <Typography level="body-sm" noWrap>
-            sum of all assessment
             </Typography>
             </Stack>
           </ListItemContent>
@@ -244,6 +304,11 @@ export const ClassMonitor = ({selectedId,token}:any) => {
     </Box>
 
           </Stack>
+        </Card>
+        <Card >
+        <Box sx={{ width: 540 , height: 300 }}>
+          <Line options={options} data={data} />;
+          </Box>
         </Card>
       </Stack>
     )
