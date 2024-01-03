@@ -69,14 +69,9 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
     <Grid sx={{ width: "100%", height: 450 }}>
        <div style={{ height: "400px" }}>
       <Stack direction={{ xs: 'column', md: 'row', sm: 'row', lg:'column' }} spacing={3}>
-      <Box sx={{ width: { xs: '100%', sm: 'auto' } }}>
+      <Box sx={{ width: { xs: '100%', sm: 'auto', md: 'auto', lg: '100%' } }}>
         <Card>
-        <Box sx={{
-        flex: 'auto',
-        width: "100%",
-        display: 'flex',
-        overflow: 'auto',
-      }}>
+        <Box sx={{ width: { xs: '100%', sm: 'auto', md: 'auto', lg: '100%' } }}>
          
    
               <Table>
