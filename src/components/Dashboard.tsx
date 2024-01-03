@@ -63,7 +63,7 @@ export default function Dashboard({token}:any) {
                 fontWeight={300} 
                 fontSize={30}
                 >
-                Welcome aboard MyCarrymark, your pathway to academic excellence.
+                Step into MyCarrymark for an academic journey like never before.
                 </Typography>
             </CardContent>
             </Card>
