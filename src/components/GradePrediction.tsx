@@ -110,19 +110,31 @@ const handleCM = (classId:any) => {
       const studentData: any = {
         student_id: student.studentId,
       };
+
+      let carrymark = 0;
     
       student.grades.forEach((grade) => {
         studentData[grade.assessmentName] = Number(grade.grade);
+        carrymark += Number(grade.grade);
       });
     
+      studentData.carrymark = carrymark;
       return studentData;
     });
     console.log(formattedData);
 
-}
+    if(formattedData){
+      axios({
+        method: 'post',
+        url: 'https://grade-prediction-api.onrender.com/predict',
+        data: formattedData,
 
+      }).then((response) => {
+        console.log(response.data);
+      });
+    }
 
-
+  }
 const user = JSON.parse(token);
 
     return (

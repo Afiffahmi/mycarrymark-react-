@@ -261,7 +261,7 @@ export default function ClassList({ token }: any) {
           {data.map((item, index) =>
             item.lecturers[0].email === user.email ? (
               <React.Fragment key={item.id}>
-                <Grid xs={2} sm={4} md={4} key={index}>
+                <Grid xs={4} sm={6} md={4} key={index}>
                   <motion.ul
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
