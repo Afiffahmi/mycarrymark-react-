@@ -7,7 +7,7 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import Typography from "@mui/joy/Typography";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Sheet, CardCover, Stack, Chip, Grid } from "@mui/joy";
+import { Sheet, CardCover, Stack, Chip, Grid, Alert } from "@mui/joy";
 import Box from "@mui/joy/Box";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import Stepper from "@mui/joy/Stepper";
@@ -149,7 +149,7 @@ export default function Dashboard({ token }: any) {
                       <Step
                         orientation="vertical"
                         indicator={
-                          <StepIndicator variant="solid" color="neutral">
+                          <StepIndicator variant="solid" color="primary">
                             1
                           </StepIndicator>
                         }
@@ -192,7 +192,32 @@ export default function Dashboard({ token }: any) {
                     </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                    <Typography fontWeight="lg">980</Typography>
+                    <Stepper sx={{ width: "100%" }}>
+                      <Step
+                        orientation="vertical"
+                        indicator={
+                          <StepIndicator variant="solid" color="success">
+                            1
+                          </StepIndicator>
+                        }
+                      >
+                        Add new file
+                      </Step>
+                      <Step
+                        orientation="vertical"
+                        indicator={
+                          <StepIndicator variant="outlined">2</StepIndicator>
+                        }
+                      >
+                        Upload
+                      </Step>
+                      <Step
+                        orientation="vertical"
+                        indicator={<StepIndicator>3</StepIndicator>}
+                      >
+                        Download
+                      </Step>
+                    </Stepper>
                     </AccordionDetails>
                   </Accordion>
                   
@@ -203,7 +228,39 @@ export default function Dashboard({ token }: any) {
                     </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                    <Typography fontWeight="lg">8.9</Typography>
+                      <Alert color="danger">Grade prediction model may takes up to 3 minutes in order to run.</Alert>
+                    <Stepper sx={{ width: "100%" }}>
+                      <Step
+                        orientation="vertical"
+                        indicator={
+                          <StepIndicator variant="solid" color="warning">
+                            1
+                          </StepIndicator>
+                        }
+                      >
+                        Create predictive class
+                      </Step>
+                      <Step
+                        orientation="vertical"
+                        indicator={
+                          <StepIndicator variant="outlined">2</StepIndicator>
+                        }
+                      >
+                        Add student
+                      </Step>
+                      <Step
+                        orientation="vertical"
+                        indicator={<StepIndicator>3</StepIndicator>}
+                      >
+                        Grade
+                      </Step>
+                      <Step
+                        orientation="vertical"
+                        indicator={<StepIndicator>4</StepIndicator>}
+                      >
+                        Select class to Grade Prediction
+                      </Step>
+                    </Stepper>
                     </AccordionDetails>
                   </Accordion>
                   </AccordionGroup>
