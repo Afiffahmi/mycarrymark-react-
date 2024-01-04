@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Box  from "@mui/joy/Box";
-import { Button, FormControl, FormLabel, Input, Stack ,AspectRatio} from "@mui/joy";
+import { Button, FormControl, FormLabel, Input, Stack ,AspectRatio, Grid} from "@mui/joy";
 import { Snackbar, Typography } from "@mui/joy";
 import LinearProgress from "@mui/joy/LinearProgress";
 import Check from '@mui/icons-material/Check';
@@ -80,7 +80,7 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
     
     return (
         
-    <Stack direction='row' key={index} spacing={2}>
+    <Grid >
         {(successful ? (<Snackbar open={true}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         size="lg"
@@ -136,7 +136,7 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
           }}
         />
       </Snackbar>) : null)}
-      
+      <Stack direction={{ xs: 'column', sm: 'column', md: 'row' }} key={index} spacing={2}>
         <FormControl>
         <FormLabel>Assessment Name</FormLabel>
         <Input name="assessmentname" value={input.assessmentName} onChange={event => handleFormChange(index,event)} required/></FormControl>
@@ -147,12 +147,9 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
         <FormControl>
         <FormLabel>Weighted(%)</FormLabel>
         <Input name="weighted" value={input.weighted}  onChange={event => handleFormChange(index,event)} required/>
-        </FormControl>
-        </Stack>
+        </FormControl></Stack>
+        </Grid>
         )})}
-        <FormControl>
-        <FormLabel>Score</FormLabel>
-        </FormControl>
         <Box height={10}></Box>
         <Stack direction='row' spacing={2}>
         <Button type="submit" onSubmit={submit}>Submit</Button></Stack>

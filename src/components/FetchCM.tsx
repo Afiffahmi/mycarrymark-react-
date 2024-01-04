@@ -200,7 +200,7 @@ export default function FetchCM({token,selectedId}:any) {
       </TabPanel>
       <TabPanel value={3}>
         <Typography level="inherit">
-          <Alert color="danger" variant="soft">It is not advised that you alter or remove the any assessment on this partition if it is predictive class.</Alert>
+          <Alert color="danger" variant="soft">It is not advised that you add or remove the any assessment on this partition if it is predictive class.</Alert>
         </Typography>
         <OppositeContentTimeline selectedId={selectedId} token={token}/>
       </TabPanel>
