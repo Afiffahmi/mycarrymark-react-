@@ -231,7 +231,7 @@ const [opens, setOpens] = React.useState(false);
             <div>
               <Typography level="title-lg">Success</Typography>
               <Typography level="body-sm">
-                ^Your action successfully done.
+                Your action successfully done.
               </Typography>
             </div>
             <LinearProgress

@@ -10,6 +10,8 @@ import {
   CardOverflow,
   AspectRatio,
   CardContent,
+  Typography,
+  Chip,
 } from "@mui/joy";
 import { Divider } from "@mui/material";
 
@@ -78,6 +80,7 @@ const Prediction = ({setGrade}:any) => {
         />
         <CardContent sx={{ display: "flex", px: { xs: 2, md: 2 } }}>
           <Stack spacing={2} direction="column">
+            <Typography level="h1" textColor='white'>Grade Prediction <Typography level='h2' variant="soft">Playground</Typography></Typography>
             <Stack spacing={2}>
               <FormControl>
                 <FormLabel
@@ -85,7 +88,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                  Quiz 1
+                  <Box component="span" mr={34}>Quiz 1</Box> <Chip>5%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="quiz1" autoFocus required />
               </FormControl>
@@ -95,7 +98,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                  Test 1
+                  <Box component="span" mr={34}>Test 1</Box> <Chip>10%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="test1" required />
               </FormControl>
@@ -105,7 +108,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                  Test 2
+                  <Box component="span" mr={34}>Test 2</Box> <Chip>10%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="test2" required />
               </FormControl>
@@ -117,7 +120,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                  Assignment 1
+                  <Box component="span" mr={28}>Assignment 1</Box> <Chip>10%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="assignment1" required />
               </FormControl>
@@ -127,7 +130,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                  Assignment 2
+                 <Box component="span" mr={28}>Assignment 2</Box> <Chip>15%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="assignment2" required />
               </FormControl>

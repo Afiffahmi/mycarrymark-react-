@@ -32,7 +32,7 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import JoyOrderDashboardTemplate from '../App';
 import MuiLogo from './MuiLogo';
-import SmartToy from '@mui/icons-material/SmartToy';
+import axios from 'axios';
 
 let classSelect:boolean = false;
 let homeSelect:boolean = true;
@@ -77,6 +77,7 @@ function Toggler({
   }) => React.ReactNode;
 }) {
   const [open, setOpen] = React.useState(defaultExpanded);
+
   return (
     <React.Fragment>
       {renderToggle({ open, setOpen })}
@@ -97,7 +98,16 @@ function Toggler({
 }
 //@ts-ignore
 export default function Sidebar({handleLogout,setActiveComponent,token}:SidebarProps) {
-const handleSideBtn:any = (componentName:string) =>{
+  const [inputValues, setInputValues] = React.useState({
+    firstName: '',
+    lastName: '',
+    role: '',
+  });
+  React.useEffect(() => {
+    fetchData();
+    
+  }, []); 
+  const handleSideBtn:any = (componentName:string) =>{
   setActiveComponent(componentName);
 }
 
@@ -106,6 +116,21 @@ React.useEffect(() => {
   homeSelect= true;
 
 })
+
+const fetchData = async () => {
+  try {
+    const response = await axios.get(`https://mycarrymark-node-afiffahmis-projects.vercel.app/carrymark/${user.providerData[0].uid}/profile`);
+    const data = response.data;
+    setInputValues({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      role: data.role,
+    });
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const user = JSON.parse(token);
 console.log(user);
@@ -246,11 +271,8 @@ console.log(user);
                     onClick={() => handleSideBtn('Profile')}
                   >
                     My profile 
-                    {user.providerData[0].displayName && user.providerData[0].photoURL ?  '' : <Chip size='sm' variant='solid' color='primary'>1</Chip> }
+                    {inputValues.firstName ?  '' : <Chip size='sm' variant='solid' color='primary'>1</Chip> }
                   </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Roles & permission</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -290,10 +312,10 @@ console.log(user);
         <Avatar
           variant="outlined"
           size="sm"
-          src={user.providerData[0].photoURL ? user.providerData[0].photoURL : 'https://cdn.stockmediaserver.com/smsimg35/pv/IsignstockContributors/ISS_25205_05557.jpg?token=kc5yi-VnuHFbAdHnvqM23y_gUHlcbgRXgO0EF9gnqh0&class=pv&smss=53&expires=4102358400'}
+          src={user.providerData[0].photoURL ? user.providerData[0].photoURL : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiqFXMci09aURe0zxu_kJflYFJ2PefRiVyyA&usqp=CAU'}
         />
         <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">{user.providerData[0].displayName ? user.providerData[0].displayName : <Chip size='sm' color='danger'>Please update profile</Chip>}</Typography>
+          <Typography level="title-sm">{inputValues.firstName ? inputValues.firstName : <Chip size='sm' color='danger'>Please update profile</Chip>}</Typography>
           <Typography level="body-xs">{user.providerData[0].uid}</Typography>
         </Box>
         <Button size="sm" variant="plain" color="neutral" onClick={handleLogout}>

@@ -5,38 +5,77 @@ import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import FormHelperText from '@mui/joy/FormHelperText';
 import Input from '@mui/joy/Input';
 import IconButton from '@mui/joy/IconButton';
-import Textarea from '@mui/joy/Textarea';
 import Stack from '@mui/joy/Stack';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import Typography from '@mui/joy/Typography';
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab, { tabClasses } from '@mui/joy/Tab';
-import Breadcrumbs from '@mui/joy/Breadcrumbs';
-import Link from '@mui/joy/Link';
 import Card from '@mui/joy/Card';
 import CardActions from '@mui/joy/CardActions';
 import CardOverflow from '@mui/joy/CardOverflow';
-
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
-import VideocamRoundedIcon from '@mui/icons-material/VideocamRounded';
-import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import axios from 'axios';
+import Snackbar from '@mui/joy/Snackbar';
+import LinearProgress from '@mui/joy/LinearProgress';
+import Check from "@mui/icons-material/Check";
+import Close from "@mui/icons-material/Close";
 
-import DropZone from './DropZone';
-import FileUpload from './FileUpload';
-import CountrySelector from './CountrySelector';
-import EditorToolbar from './EditorToolbar';
 
 export default function MyProfile({token}:any) {
     const user = JSON.parse(token);
+    const [inputValues, setInputValues] = React.useState({
+      firstName: '',
+      lastName: '',
+      role: '',
+    });
+    const [reload, setReload] = React.useState(false);
+    const [successful, setSuccessful] = React.useState(false);
+
+
+
+    React.useEffect(() => {
+      fetchData();
+      
+    }, [reload]); 
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://mycarrymark-node-afiffahmis-projects.vercel.app/carrymark/${user.providerData[0].uid}/profile`);
+        const data = response.data;
+        setInputValues({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          role: data.role,
+        });
+        console.log(data);
+        setReload(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+
+    
+    const handleInputChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValues({
+        ...inputValues,
+        [field]: event.target.value,
+      });
+    };
+
+    const updateData = async () => {
+      try {
+        const response = await axios.post(`https://mycarrymark-node-afiffahmis-projects.vercel.app/carrymark/${user.providerData[0].uid}/profile`, inputValues);
+        console.log(response.data);
+        setSuccessful(true);
+        setReload(true);
+        
+      } catch (error) {
+        console.error(error);
+      }
+
+    };
 
   return (
     <Box
@@ -56,50 +95,71 @@ export default function MyProfile({token}:any) {
           zIndex: 9995,
         }}
       >
-        
-         
-        <Tabs
-          defaultValue={0}
-          sx={{
-            bgcolor: 'transparent',
-          }}
-        >
-          <TabList
-            tabFlex={1}
-            size="sm"
-            sx={{
-              pl: {
-                xs: 0,
-                md: 4,
-              },
-              justifyContent: 'left',
-              [`&& .${tabClasses.root}`]: {
-                flex: 'initial',
-                bgcolor: 'transparent',
-                [`&.${tabClasses.selected}`]: {
-                  fontWeight: '600',
-                  '&::after': {
-                    height: '2px',
-                    bgcolor: 'primary.500',
-                  },
-                },
-              },
+               {successful ? (
+          <Snackbar
+            open={reload}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            autoHideDuration={3000}
+            size="lg"
+            color="success"
+            variant="solid"
+            invertedColors
+            onClose={(event, reason) => {
+              if (reason === 'clickaway') {
+                return;
+              }
             }}
+            startDecorator={
+              <AspectRatio
+                variant="solid"
+                ratio="1"
+                sx={{
+                  minWidth: 40,
+                  borderRadius: "50%",
+                  boxShadow: "0 2px 12px 0 rgb(0 0 0/0.2)",
+                }}
+              >
+                <div>
+                  <Check />
+                </div>
+              </AspectRatio>
+            }
+            endDecorator={
+              <IconButton
+                onClick={() => {
+                  setSuccessful(false);
+                }}
+                variant="plain"
+                sx={{
+                  "--IconButton-size": "32px",
+                  transform: "translate(0.5rem, -0.5rem)",
+                }}
+              >
+                <Close />
+              </IconButton>
+            }
+            sx={{ alignItems: "flex-start", overflow: "hidden" }}
           >
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
-              Settings
-            </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
-              Team
-            </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
-              Plan
-            </Tab>
-            <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
-              Billing
-            </Tab>
-          </TabList>
-        </Tabs>
+            <div>
+              <Typography level="title-lg">Success</Typography>
+              <Typography level="body-sm">
+                Done editing your profile
+              </Typography>
+            </div>
+            <LinearProgress
+              variant="solid"
+              color="success"
+              value={40}
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                borderRadius: 0,
+              }}
+            />
+          </Snackbar>
+        ) : null} 
       </Box>
 
       <Stack
@@ -138,28 +198,12 @@ export default function MyProfile({token}:any) {
                 sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
               >
                 <img
-                  src="https://cdn4.sharechat.com/img_467054_855c14b_1677775143880_sc.jpg?tenant=sc&referrer=pwa-sharechat-service&f=880_sc.jpg"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiqFXMci09aURe0zxu_kJflYFJ2PefRiVyyA&usqp=CAU"
                   loading="lazy"
                   alt=""
                 />
               </AspectRatio>
-              <IconButton
-                aria-label="upload new picture"
-                size="sm"
-                variant="outlined"
-                color="neutral"
-                sx={{
-                  bgcolor: 'background.body',
-                  position: 'absolute',
-                  zIndex: 2,
-                  borderRadius: '50%',
-                  left: 100,
-                  top: 170,
-                  boxShadow: 'sm',
-                }}
-              >
-                <EditRoundedIcon />
-              </IconButton>
+
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>
@@ -173,116 +217,18 @@ export default function MyProfile({token}:any) {
                     gap: 2,
                   }}
                 >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
+                  <Input size="sm" placeholder="First name" value={inputValues.firstName} onChange={handleInputChange('firstName')} required/>
+                  <Input size="sm" placeholder="Last name" value={inputValues.lastName} onChange={handleInputChange('lastName')} sx={{ flexGrow: 1 }} required/>
                 </FormControl>
               </Stack>
               <Stack direction="row" spacing={2}>
                 <FormControl>
                   <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="Senior Lecturer" />
+                  <Input size="sm" defaultValue="Senior Lecturer" value={inputValues.role} onChange={handleInputChange('role')} required/>
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Email</FormLabel>
                   <Input
-                    size="sm"
-                    type="email"
-                    startDecorator={<EmailRoundedIcon />}
-                    placeholder="email"
-                    defaultValue="afiffahmi@gmail.com"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-              </Stack>
-              <div>
-                <CountrySelector />
-              </div>
-              <div>
-                <FormControl sx={{ display: { sm: 'contents' } }}>
-                  <FormLabel>Timezone</FormLabel>
-                  <Select
-                    size="sm"
-                    startDecorator={<AccessTimeFilledRoundedIcon />}
-                    defaultValue="1"
-                  >
-                    <Option value="1">
-                      Indochina Time (Bangkok){' '}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                    <Option value="2">
-                      Indochina Time (Ho Chi Minh City){' '}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                  </Select>
-                </FormControl>
-              </div>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="column"
-            spacing={2}
-            sx={{ display: { xs: 'flex', md: 'none' }, my: 1 }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Stack direction="column" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={108}
-                  sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                    loading="lazy"
-                    alt=""
-                  />
-                </AspectRatio>
-                <IconButton
-                  aria-label="upload new picture"
-                  size="sm"
-                  variant="outlined"
-                  color="neutral"
-                  sx={{
-                    bgcolor: 'background.body',
-                    position: 'absolute',
-                    zIndex: 2,
-                    borderRadius: '50%',
-                    left: 85,
-                    top: 180,
-                    boxShadow: 'sm',
-                  }}
-                >
-                  <EditRoundedIcon />
-                </IconButton>
-              </Stack>
-              <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{
-                    display: {
-                      sm: 'flex-column',
-                      md: 'flex-row',
-                    },
-                    gap: 2,
-                  }}
-                >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" />
-                </FormControl>
-              </Stack>
-            </Stack>
-
-            <FormControl>
-              <FormLabel>Role</FormLabel>
-              <Input size="sm" defaultValue="UI Developer" />
-            </FormControl>
-            <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Email</FormLabel>
-              <Input
                 size="sm"
                 type="email"
                 startDecorator={<EmailRoundedIcon />}
@@ -291,41 +237,13 @@ export default function MyProfile({token}:any) {
                 sx={{ flexGrow: 1 }}
                 disabled
               />
-            </FormControl>
-
-            <div>
-              <CountrySelector />
-            </div>
-            <div>
-              <FormControl sx={{ display: { sm: 'contents' } }}>
-                <FormLabel>Timezone</FormLabel>
-                <Select
-                  size="sm"
-                  startDecorator={<AccessTimeFilledRoundedIcon />}
-                  defaultValue="1"
-                >
-                  <Option value="1">
-                    Indochina Time (Bangkok){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                  <Option value="2">
-                    Indochina Time (Ho Chi Minh City){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                </Select>
-              </FormControl>
-            </div>
+                </FormControl>
+              </Stack>
+            </Stack>
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
+              <Button size="sm" variant="solid" onClick={updateData}>
                 Save
               </Button>
             </CardActions>

@@ -1,4 +1,4 @@
-import { Sheet,Box,Stack, Typography,Card,Chip,AspectRatio,Link ,Button,CardActions, Divider} from "@mui/joy";
+import { Sheet,Box,Stack, Typography,Card,Chip,AspectRatio,Link ,Button,CardActions, Divider, Alert, Badge} from "@mui/joy";
 import Prediction from "./Prediction";
 import CardCover from '@mui/joy/CardCover';
 import CardContent from '@mui/joy/CardContent';
@@ -11,6 +11,23 @@ import axios from "axios";
 import { LazyMotion, m } from "framer-motion"
 import { domAnimation } from "framer-motion"
 import Skeleton from "@mui/joy/Skeleton";
+import Modal from '@mui/joy/Modal';
+import ModalClose from '@mui/joy/ModalClose';
+import ModalDialog, { ModalDialogProps } from '@mui/joy/ModalDialog';
+import ModalOverflow from '@mui/joy/ModalOverflow';
+import SettingsRounded from "@mui/icons-material/SettingsRounded";
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton, Input } from '@mui/joy';
+import FormLabel from '@mui/joy/FormLabel';
+import FormControl from '@mui/joy/FormControl';
+import Avatar from '@mui/joy/Avatar';
+
+import ButtonGroup from '@mui/joy/ButtonGroup';
+
+
+import CardOverflow from '@mui/joy/CardOverflow';
+import SvgIcon from '@mui/joy/SvgIcon';
+
 
 interface Lecturer {
   email: string;
@@ -24,6 +41,7 @@ interface Item {
   nStudent: number;
   lecturers: Lecturer[];
   predictive: boolean;
+  selectedImage: string;
 }
 type Assessment = {
   score: string;
@@ -66,6 +84,8 @@ const [grade, setGrade] = React.useState('');
 const [data, setData] = useState<Item[]>([]);
 const [loading, setLoading] = React.useState(true);
 const [studentGrade, setStudentGrade] = useState<Data>({ grading: [], coursework: [], student: [] });
+const [classGrade, setClassGrade] = useState([])
+const [open, setOpen] = React.useState(false);
 
 useEffect(() => {
   axios({
@@ -130,7 +150,11 @@ const handleCM = (classId:any) => {
         data: formattedData,
 
       }).then((response) => {
-        console.log(response.data);
+        if(response.data){
+          setClassGrade(response.data.Predictions)
+          if(classGrade.length > 0){
+            setOpen(true)
+          }}
       });
     }
 
@@ -139,7 +163,110 @@ const user = JSON.parse(token);
 
     return (
         <Sheet >
-           
+              <React.Fragment>
+      <Modal
+        open={open}
+        sx={{ 
+            display: 'flex', 
+            justifyContent: 'flex-end', // Aligns the modal to the right
+            overflow: 'auto' // Allows scrolling if the content overflows
+          }}
+      >
+        <Box sx={{ width: '100%' }}>
+        <ModalOverflow >
+          <ModalDialog aria-labelledby="modal-dialog-overflow" minWidth={700} sx={{ 
+    width: '60%', 
+    marginRight: 0, 
+    maxHeight: '100%', 
+    overflow: 'auto',
+    display: 'flex', 
+    flexDirection: 'column', 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    backgroundImage: `url(https://i.pinimg.com/originals/a9/4a/ee/a94aee835e16cff4f14c83dac8ffbe10.gif)`, // Sets the background image of the ModalDialog
+    backgroundSize: 'cover', // Makes the background image cover the entire ModalDialog
+    backgroundPosition: 'center' // Centers the background image
+        }} >
+            <IconButton variant='soft' onClick={()=>setOpen(false)} sx={{ 
+      position: 'absolute', // Add this
+      top:5, // Add this
+      right: 5, // Add this
+    }}><CloseIcon/></IconButton>
+            
+            <Typography id="modal-dialog-overflow" level="h2">
+              
+            </Typography>
+            <Stack direction='row' spacing={3}>
+
+            { classGrade ? classGrade.map((item:any) => (
+       
+               <Card
+               sx={{
+                 width: 320,
+                 maxWidth: '100%',
+                 boxShadow: 'lg',
+               }}
+             >
+               <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
+                 <Avatar src="https://i.pinimg.com/236x/9c/36/b1/9c36b1fd301f7d8b5c810e6bfaa2bf1a.jpg" sx={{ '--Avatar-size': '4rem' }} />
+                 <Typography level="title-lg">{item['Student ID']}</Typography>
+                 <Typography level="h1" sx={{ maxWidth: '24ch' }}>
+                   {item.Prediction} 
+                 </Typography>
+                 <Box
+                   sx={{
+                     display: 'flex',
+                     gap: 2,
+                     mt: 2,
+                     '& > button': { borderRadius: '2rem' },
+                   }}
+                 >
+                  <Stack direction='column'>
+                    <Box>
+                    <IconButton size="sm" variant="plain" color="neutral">
+                   
+                     <Chip size='sm'>Quiz 1 <Chip color="danger">{item.Input.quiz1}%</Chip></Chip>
+                    
+                   </IconButton>
+                   <IconButton size="sm" variant="plain" color="neutral">
+                  
+                     <Chip size='sm'>Test 1 <Chip color="danger">{item.Input.test1}%</Chip></Chip>
+                  
+                   </IconButton>
+                   <IconButton size="sm" variant="plain" color="neutral">
+              
+                     <Chip size='sm'>Test 2 <Chip color="danger">{item.Input.test2}%</Chip></Chip>
+                    
+                   </IconButton></Box><Box>
+                   <IconButton size="sm" variant="plain" color="neutral">
+                  
+                     <Chip size='sm'>Assignment 1 <Chip color="danger">{item.Input.assignment1}%</Chip></Chip>
+                 
+                   </IconButton>
+                   <IconButton size="sm" variant="plain" color="neutral">
+                
+                     <Chip size='sm'>Assignment 2 <Chip color="danger">{item.Input.assignment2}%</Chip></Chip>
+                    
+                   </IconButton></Box></Stack>
+                 </Box>
+               </CardContent>
+               <CardOverflow sx={{ bgcolor: 'background.level1' }}>
+                 <CardActions buttonFlex="1">
+                   <ButtonGroup variant="outlined" sx={{ bgcolor: 'background.surface' }}>
+                     <Button>Carrymark : {item.Input.carrymark}%</Button>
+                     <Button>Prediction Value : {item.predictionvalue.toFixed(3)}</Button>
+                   </ButtonGroup>
+                 </CardActions>
+               </CardOverflow>
+             </Card>
+            )) : null}</Stack>
+         
+          </ModalDialog>
+        </ModalOverflow>
+        </Box>
+      </Modal>
+    </React.Fragment>
+           <Alert>Grade Prediction The free instance that powers the API will shut off after inactivity. It can take up to <Typography variant="solid">3 minutes</Typography> for the first time.</Alert>
             <Stack direction='row' alignItems='center' justifyContent='flex-start' spacing={5}  >
             
             <LazyMotion features={domAnimation}>
@@ -200,7 +327,7 @@ const user = JSON.parse(token);
     >
       <AspectRatio ratio="1" sx={{ width: 90 }}>
         <img
-          src="https://enterprisersproject.com/sites/default/files/images/cio_future_crystal_ball.png"
+          src={item.selectedImage || "https://enterprisersproject.com/sites/default/files/images/cio_future_crystal_ball.png"} 
           loading="lazy"
           alt=""
         />
@@ -260,6 +387,7 @@ const user = JSON.parse(token);
                 </Stack>
             </Card>
             </LazyMotion>
+            
             <Prediction setGrade = {setGrade} />
 
             
