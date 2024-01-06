@@ -23,7 +23,7 @@ interface AddClassFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-export default function AddStudent({token,selectedId,setReload}:any) {
+export default function AddStudent({token,selectedId,setReload,setSucessful}:any) {
   const [open, setOpen] = React.useState<boolean>(false);
     
   
@@ -83,11 +83,12 @@ export default function AddStudent({token,selectedId,setReload}:any) {
               }).then((response)=>response.json())
               .then((responseData)=>{
                 console.log(responseData);
+                setReload(true);
+              setSucessful(true);
               })
               .catch((error)=>{
                 console.log(error);
               })
-              setReload(true);
               setOpen(false);
             }}
           >

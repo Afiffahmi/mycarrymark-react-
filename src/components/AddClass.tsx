@@ -85,7 +85,7 @@ export default function BasicModalDialog({setSuccessful,token,setReload}:any) {
       </Button>
       </Stack>
       
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal open={open} onClose={() => setOpen(false)} >
         <ModalDialog size='lg' sx={{
           px: {
             xs: 10,

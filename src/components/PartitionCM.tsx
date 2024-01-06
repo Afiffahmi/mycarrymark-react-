@@ -9,7 +9,7 @@ import Info from '@mui/icons-material/Info';
 import { IconButton } from "@mui/joy";
 
  
-export default function PartitionCM({selectedId,token,setReload}:any) {
+export default function PartitionCM({selectedId,token,setReload,reload}:any) {
     const [ inputFields, setInputFields] = useState([
         {assessmentName: '',score:'',weighted:''}
     ])
@@ -81,7 +81,7 @@ export default function PartitionCM({selectedId,token,setReload}:any) {
     return (
         
     <Grid >
-        {(successful ? (<Snackbar open={true}
+        {(successful ? (<Snackbar open={reload}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         size="lg"
         color="success"

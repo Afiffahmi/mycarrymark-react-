@@ -101,7 +101,7 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
   };
 
   return (
-    <Grid sx={{ width: "100%", height: 450 }}>
+    <Grid sx={{ width: "100%", height: 400 }}>
       <div style={{ height: "400px" }}>
         <React.Fragment>
           <Modal open={open} onClose={() => setOpen(false)}>
@@ -190,6 +190,7 @@ export default function OppositeContentTimeline({ selectedId, token }: any) {
                 selectedId={selectedId}
                 token={token}
                 setReload={setReload}
+                reload={reload}
               />
             </Card>
           </Box>

@@ -10,6 +10,14 @@ import CardContent from "@mui/joy/CardContent";
 import {motion} from 'framer-motion';
 import Forum from './Forum'
 import GradingView from "./Grading";
+import SettingsRounded from "@mui/icons-material/SettingsRounded";
+import ClassSetting from "./ClassSetting";
+import { Snackbar } from "@mui/joy";
+import LinearProgress from "@mui/joy/LinearProgress";
+import Check from '@mui/icons-material/Check';
+import Close from '@mui/icons-material/Close';
+import Skeleton from "@mui/joy/Skeleton";
+
 
 interface Item { 
   id: string;
@@ -41,6 +49,9 @@ export default function FetchCM({token,selectedId}:any) {
   predictive: false,
   selectedImage: ''
 });
+const [reload, setReload] = React.useState(false);
+const [successful,setSuccessful] = useState(false);
+const [loading, setLoading] = React.useState(true);
 
 
   React.useEffect(() => {
@@ -52,13 +63,15 @@ export default function FetchCM({token,selectedId}:any) {
       },
     }).then(response => {
       setData(response.data);
+      setLoading(false);
       console.log(response.data);
+      setReload(false);
     })
     
 
     
   
-  },[token,selectedId])
+  },[token,selectedId,reload])
 
   return (
     
@@ -70,7 +83,71 @@ export default function FetchCM({token,selectedId}:any) {
         
       }}
     >
-      
+      {successful ? (
+          <Snackbar
+            open={reload}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            autoHideDuration={3000}
+            size="lg"
+            color="success"
+            variant="solid"
+            invertedColors
+            onClose={(event, reason) => {
+              if (reason === 'clickaway') {
+                return;
+              }
+            }}
+            startDecorator={
+              <AspectRatio
+                variant="solid"
+                ratio="1"
+                sx={{
+                  minWidth: 40,
+                  borderRadius: "50%",
+                  boxShadow: "0 2px 12px 0 rgb(0 0 0/0.2)",
+                }}
+              >
+                <div>
+                  <Check />
+                </div>
+              </AspectRatio>
+            }
+            endDecorator={
+              <IconButton
+                onClick={() => {
+                  setSuccessful(false);
+                }}
+                variant="plain"
+                sx={{
+                  "--IconButton-size": "32px",
+                  transform: "translate(0.5rem, -0.5rem)",
+                }}
+              >
+                <Close />
+              </IconButton>
+            }
+            sx={{ alignItems: "flex-start", overflow: "hidden" }}
+          >
+            <div>
+              <Typography level="title-lg">Success</Typography>
+              <Typography level="body-sm">
+                Successful updated class detail
+              </Typography>
+            </div>
+            <LinearProgress
+              variant="solid"
+              color="success"
+              value={40}
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                borderRadius: 0,
+              }}
+            />
+          </Snackbar>
+        ) : null} 
       <Grid>
      
       <Grid>
@@ -92,7 +169,9 @@ export default function FetchCM({token,selectedId}:any) {
       }}
       >
         <Stack direction='row' alignItems='center' spacing={1}>
+        <Skeleton variant="text" loading={loading} width={100}/>
         <Typography level="title-lg">{data.courseCode} |</Typography>
+        <Skeleton variant="text" loading={loading} width={150}/>
         <Typography level="title-md" color="neutral">{data.courseName}</Typography>
         </Stack>
       </Box>
@@ -106,17 +185,28 @@ export default function FetchCM({token,selectedId}:any) {
           <motion.div  whileTap={{ scale: 0.97 }} >
           <Card orientation="horizontal" variant="outlined" sx={{ width: 340 }}>
           <CardCover>
+          {loading ? <Skeleton>
+          <img
+            src="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286"
+            srcSet="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286&dpr=2 2x"
+            loading="lazy"
+            alt=""
+          />
+        </Skeleton>
+        :
           <img
             src={data.selectedImage || 'https://windowscustomization.com/wp-content/uploads/2018/12/Ninja-Landscape.gif'}
             srcSet={data.selectedImage + ' 2x' || 'https://windowscustomization.com/wp-content/uploads/2018/12/Ninja-Landscape.gif 2x'}
             loading="lazy"
             alt=""
-          />
+          />}
         </CardCover>
       <CardContent>
+        <Skeleton loading={loading} variant="text" />
         <Typography fontWeight="md" textColor="white" >
           {data.shortId}
         </Typography>
+        <Skeleton loading={loading} variant="text" />
         <Typography level="body-sm" textColor="white">{data.groupClass}</Typography>
         {data.predictive ? <Chip color="danger">Predictive Class</Chip> : <Chip>Non-Predictive Class</Chip>}
       </CardContent>
@@ -139,6 +229,10 @@ export default function FetchCM({token,selectedId}:any) {
       </CardOverflow>
     </Card></motion.div>
 
+    <Box display="flex" justifyContent="flex-end">
+      <IconButton variant="soft"><ClassSetting images= {data.selectedImage} data={data} selectedId = {selectedId} setReload = {setReload} setSuccessful ={setSuccessful}/></IconButton>
+  
+</Box>
         </Box>
         <Tabs
       variant="outlined"

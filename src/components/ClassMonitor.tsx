@@ -300,7 +300,7 @@ export const ClassMonitor = ({selectedId,token}:any) => {
           </Tooltip>
           </ListItemDecorator>
         </ListItem>
-      </List>)) : <Typography>All good here</Typography>}
+      </List>)) :<ListItemContent> </ListItemContent>}
     </Box>
 
           </Stack>

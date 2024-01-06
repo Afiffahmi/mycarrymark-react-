@@ -30,8 +30,17 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import axios from "axios";
+import { Snackbar,AspectRatio } from "@mui/joy";
+import { LinearProgress } from "@mui/joy";
 import AddStudent from "./AddStudent";
+import Check from "@mui/icons-material/Check";
+import Close from "@mui/icons-material/Close";
+import { Pagination } from "@mui/material";
+import DialogActions from "@mui/joy/DialogActions";
+import DialogContent from "@mui/joy/DialogContent";
+import DialogTitle from "@mui/joy/DialogTitle";
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -76,25 +85,7 @@ function stableSort<T>(
   return stabilizedThis.map((el) => el[0]);
 }
 
-function RowMenu() {
-  return (
-    <Dropdown>
-      <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: "plain", color: "neutral", size: "sm" } }}
-      >
-        <MoreHorizRoundedIcon />
-      </MenuButton>
-      <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Edit</MenuItem>
-        <MenuItem>Rename</MenuItem>
-        <MenuItem>Move</MenuItem>
-        <Divider />
-        <MenuItem color="danger">Delete</MenuItem>
-      </Menu>
-    </Dropdown>
-  );
-}
+
 
 interface Student {
   id: string;
@@ -111,6 +102,11 @@ export default function Classes({token,selectedId}:any) {
   const [open, setOpen] = React.useState(false);
   const [rows, setRows] = React.useState<Student[]>([]);
   const [reload, setReload] = React.useState(false);
+  const [successful, setSuccessful] = React.useState(false);
+  const [page, setPage] = React.useState(1);
+  const [selectedStudent, setSelectedStudent] = React.useState('');
+const itemsPerPage = 10;
+const [opens, setOpens] = React.useState(false);
 
   React.useEffect(() => {
     fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/student`, {
@@ -134,8 +130,32 @@ export default function Classes({token,selectedId}:any) {
       .catch(error => console.error('Error:', error));
   }, [reload, selectedId]);
 
+  const handleChange = (event:any, value:any) => {
+    setPage(value);
+  };
+
+  const handleDelete = (id: any) => {
+    const formAction = `https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/student/${id}`;
+    const formMethod = "DELETE";
+
+    fetch(formAction, {
+      method: formMethod,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response)
+      .then((responseData) => {
+        setReload(true);
+        setSuccessful(true)
+      });
+  };
+
   const renderFilters = () => (
     <React.Fragment>
+    
+    
+
       <FormControl size="sm">
         <FormLabel>Status</FormLabel>
         <Select
@@ -163,6 +183,71 @@ export default function Classes({token,selectedId}:any) {
   );
   return (
     <React.Fragment>
+       {successful ? (
+          <Snackbar
+            open={reload}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            autoHideDuration={3000}
+            size="lg"
+            color="success"
+            variant="solid"
+            invertedColors
+            onClose={(event, reason) => {
+              if (reason === 'clickaway') {
+                return;
+              }
+            }}
+            startDecorator={
+              <AspectRatio
+                variant="solid"
+                ratio="1"
+                sx={{
+                  minWidth: 40,
+                  borderRadius: "50%",
+                  boxShadow: "0 2px 12px 0 rgb(0 0 0/0.2)",
+                }}
+              >
+                <div>
+                  <Check />
+                </div>
+              </AspectRatio>
+            }
+            endDecorator={
+              <IconButton
+                onClick={() => {
+                  setSuccessful(false);
+                }}
+                variant="plain"
+                sx={{
+                  "--IconButton-size": "32px",
+                  transform: "translate(0.5rem, -0.5rem)",
+                }}
+              >
+                <Close />
+              </IconButton>
+            }
+            sx={{ alignItems: "flex-start", overflow: "hidden" }}
+          >
+            <div>
+              <Typography level="title-lg">Success</Typography>
+              <Typography level="body-sm">
+                ^Your action successfully done.
+              </Typography>
+            </div>
+            <LinearProgress
+              variant="solid"
+              color="success"
+              value={40}
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                borderRadius: 0,
+              }}
+            />
+          </Snackbar>
+        ) : null} 
       <Sheet
         className="SearchAndFilters-mobile"
         sx={{
@@ -189,7 +274,40 @@ export default function Classes({token,selectedId}:any) {
         >
           <FilterAltIcon />
         </IconButton>
-        
+        <React.Fragment>
+          <Modal open={opens} onClose={() => setOpen(false)}>
+            <ModalDialog variant="outlined" role="alertdialog">
+              <DialogTitle>
+                <WarningRoundedIcon />
+                Confirmation
+              </DialogTitle>
+              <Divider />
+              <DialogContent>
+                <p>Are you sure you want to remove this student?</p>
+                <p>This will also delete his/her data on grading.</p>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  variant="solid"
+                  color="danger"
+                  onClick={() => {
+                    handleDelete(selectedStudent);
+                    setOpens(false);
+                  }}
+                >
+                  Discard
+                </Button>
+                <Button
+                  variant="plain"
+                  color="neutral"
+                  onClick={() => setOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </DialogActions>
+            </ModalDialog>
+          </Modal>
+        </React.Fragment>
         <Modal open={open} onClose={() => setOpen(false)}>
           <ModalDialog aria-labelledby="filter-modal" layout="fullscreen">
             <ModalClose />
@@ -206,7 +324,7 @@ export default function Classes({token,selectedId}:any) {
           </ModalDialog>
         </Modal>
       </Sheet>
-      <AddStudent token={token} selectedId={selectedId} setReload = {setReload}/>
+      <AddStudent token={token} selectedId={selectedId} setReload = {setReload} setSucessful = {setSuccessful}/>
       <Box
         className="SearchAndFilters-tabletUp"
         sx={{
@@ -226,15 +344,6 @@ export default function Classes({token,selectedId}:any) {
           },
         }}
       >
-        {/* <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for class</FormLabel>
-          <Input
-            size="sm"
-            placeholder="Search"
-            startDecorator={<SearchIcon />}
-          />
-        </FormControl>
-        {renderFilters()} */}
       </Box>
       <Sheet
         className="OrderTableContainer"
@@ -306,12 +415,13 @@ export default function Classes({token,selectedId}:any) {
                 </Link>
               </th>
               <th style={{ width: 140, padding: "12px 6px" }}>Student Name</th>
-              <th style={{ width: 240, padding: "12px 6px" }}>Status</th>
+              <th style={{ width: 240, padding: "12px 6px" }}></th>
               <th style={{ width: 140, padding: "12px 6px" }}> </th>
             </tr>
           </thead>
           <tbody>
             {stableSort(rows, getComparator(order, "id")).map((row) => (
+              
               <tr key={row.id}>
                 <td style={{ textAlign: "center", width: 120 }}>
                   <Checkbox
@@ -351,11 +461,23 @@ export default function Classes({token,selectedId}:any) {
                   <Typography>{row.status}</Typography>
                 </td>
                 <td>
-                  <RowMenu />
+                <Dropdown>
+      <MenuButton
+        slots={{ root: IconButton }}
+        slotProps={{ root: { variant: "plain", color: "neutral", size: "sm" } }}
+      >
+        <MoreHorizRoundedIcon />
+      </MenuButton>
+      <Menu size="sm" sx={{ minWidth: 140 }}>
+        <Divider />
+        <MenuItem color="danger" onClick={() => {setSelectedStudent(row.id); setOpens(true)}}>Delete</MenuItem>
+      </Menu>
+    </Dropdown>
                 </td>
               </tr>
             ))}
           </tbody>
+
         </Table>
       </Sheet>
       <Box

@@ -7,7 +7,7 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import Typography from "@mui/joy/Typography";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Sheet, CardCover, Stack, Chip, Grid, Alert } from "@mui/joy";
+import { Sheet, CardCover, Stack, Chip, Grid, Alert, CircularProgress } from "@mui/joy";
 import Box from "@mui/joy/Box";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import Stepper from "@mui/joy/Stepper";
@@ -37,6 +37,7 @@ interface Item {
 export default function Dashboard({ token }: any) {
   const [data, setData] = useState<Item[]>([]);
   const [index, setIndex] = React.useState(0);
+  const [loading, setLoading] = React.useState(true);
   const user = JSON.parse(token);
   useEffect(() => {
     axios({
@@ -45,6 +46,7 @@ export default function Dashboard({ token }: any) {
       headers: {},
     }).then((response) => {
       setData(response.data);
+      setLoading(false);
     });
   }, []);
 
@@ -245,6 +247,7 @@ export default function Dashboard({ token }: any) {
                         indicator={
                           <StepIndicator variant="outlined">2</StepIndicator>
                         }
+                        
                       >
                         Add student
                       </Step>
@@ -256,7 +259,8 @@ export default function Dashboard({ token }: any) {
                       </Step>
                       <Step
                         orientation="vertical"
-                        indicator={<StepIndicator>4</StepIndicator>}
+                        indicator={<StepIndicator></StepIndicator>}
+                        
                       >
                         Select class to Grade Prediction
                       </Step>
@@ -321,19 +325,19 @@ export default function Dashboard({ token }: any) {
                 Assigned class :
               </Typography>
       <Grid sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <Chip color="primary" size="lg">{data.reduce(
+      {loading ? <CircularProgress size="sm" variant="plain"/> : <Chip color="primary" size="lg">{data.reduce(
               (count, item) =>
                 item.lecturers[0].email === user.email ? count + 1 : count,
               0
-            )}</Chip>
+            )}</Chip>}
       <Typography>Total class</Typography>
       </Grid>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <Chip color="primary" size="lg">{data.reduce(
+      {loading ? <CircularProgress size="sm" variant="plain"/> : <Chip color="primary" size="lg">{data.reduce(
               (count, item) =>
                 (item.lecturers[0].email === user.email && item.predictive === true) ? count + 1 : count,
               0
-            )}</Chip>
+            )}</Chip>}
       <Typography>Total predictive class</Typography>
       </Box>
       </Stack>
