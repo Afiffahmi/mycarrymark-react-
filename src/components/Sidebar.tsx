@@ -105,17 +105,14 @@ export default function Sidebar({handleLogout,setActiveComponent,token}:SidebarP
   });
   React.useEffect(() => {
     fetchData();
+    homeSelect= true;
     
-  }, []); 
+  }); 
   const handleSideBtn:any = (componentName:string) =>{
   setActiveComponent(componentName);
 }
 
-React.useEffect(() => {
 
-  homeSelect= true;
-
-})
 
 const fetchData = async () => {
   try {
