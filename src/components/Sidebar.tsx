@@ -105,7 +105,7 @@ export default function Sidebar({handleLogout,setActiveComponent,token}:SidebarP
   });
   React.useEffect(() => {
     fetchData();
-    homeSelect= true;
+    
     
   }); 
   const handleSideBtn:any = (componentName:string) =>{
