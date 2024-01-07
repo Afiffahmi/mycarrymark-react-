@@ -103,6 +103,11 @@ export default function Sidebar({handleLogout,setActiveComponent,token}:SidebarP
     lastName: '',
     role: '',
   });
+  React.useEffect(() => {
+    fetchData();
+    
+    
+  },[token]); 
   const handleSideBtn:any = (componentName:string) =>{
   setActiveComponent(componentName);
 }
