@@ -9,9 +9,6 @@ import {Provider} from 'react-redux';
 import SignUp from './SignUp.tsx';
 
 
-
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
@@ -19,6 +16,7 @@ root.render(
   <Routes>
     <Route path="/" element={<JoyOrderDashboardTemplate/>}/>
     <Route path="/signup" element={<SignUp/>}/>
+    <Route path="*" element={<h1>Not Found</h1>}/>
   </Routes>
   </Provider>
   </BrowserRouter>
