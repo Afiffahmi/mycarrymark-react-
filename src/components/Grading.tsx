@@ -271,7 +271,7 @@ const handleEdit = async (event:any) => {
               <Input
   required
   placeholder={((Number(inputValues[index])/Number(item.coursework[0].weighted)) * Number(item.coursework[0].score)).toString() || ''}
-  value={inputValues[index]}
+  value={(Number(inputValues[index])).toFixed(2)}
   onChange={(event) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = event.target.value;
