@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Stack } from '@mui/material';
 import Table from '@mui/joy/Table';
-import { Button, Chip, IconButton } from '@mui/joy';
+import { Alert, Button, Chip, IconButton } from '@mui/joy';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
@@ -58,6 +58,8 @@ const GradingView = ({selectedId}:any) => {
     const [selectedStudentId, setSelectedStudentId] = useState('');
     const [grades, setGrades] = useState<{ [key: string]: string }>({});
     const [reload, setReload] = useState(false);
+    const [inputValues, setInputValues] = useState<string[]>([]);
+
 
 
 
@@ -68,7 +70,6 @@ useEffect(() => {
     .then(data => {
       if (data && data.coursework) {
         setData(data);
-        console.log(data.student);
         
       } else {
         console.error('Invalid data:', data);
@@ -79,18 +80,34 @@ useEffect(() => {
     setReload(false);
 }, [selectedId,reload]);
 
+useEffect(() => {
+  if (openE) {
+    fetchGradingData(selectedStudentId)
+      .then(data => {
+        setFormData(data);
+        // Set inputValues to the previous grades
+        setInputValues(data.grades.map((grade: any) => grade.grade));
+      });
+  }
+}, [openE, selectedStudentId]);
+
+const fetchGradingData = async (studentId: string) => {
+  const response = await fetch(`https://mycarrymark-node-afiffahmis-projects.vercel.app/class/${selectedId}/grading/${studentId}`);
+  const data = await response.json();
+  return data;
+};
 
 const handleSelectChange = (event:any) => {
   setFormData({ ...formData, studentId: event.target.value });
 };
 
-const handleInputChange = (assessmentName: string, index: number, event: any) => {
+const handleInputChange = (assessmentName: string, index: number, event: any,weightedScore :any) => {
   const grades = [...formData.grades];
-  grades[index] = { assessmentName: assessmentName, grade: event.target.value };
+  grades[index] = { assessmentName: assessmentName, grade: weightedScore };
   setFormData({ ...formData, grades });
   setGrades(prevGrades => ({
     ...prevGrades,
-    [assessmentName]: event.target.value,
+    [assessmentName]: weightedScore,
   }));
 };
 
@@ -139,7 +156,6 @@ const handleSubmit = (event:any) => {
   })
   .then(response => response.json())
   .then(data => {
-    console.log(data);
     setReload(true);
   })
   .catch((error) => {
@@ -151,7 +167,7 @@ const handleSubmit = (event:any) => {
 
 const handleEdit = async (event:any) => {
   event.preventDefault();
-
+  console.log("handleEdit called");
   
 
   const gradesArray = Object.entries(grades).map(([assessmentName, grade]) => ({
@@ -173,7 +189,7 @@ const handleEdit = async (event:any) => {
   })
   .then(response => response.json())
   .then(data => {
-    console.log(data);
+    console.log('Success:', data);
     setReload(true);
   })
   .catch((error) => {
@@ -213,8 +229,14 @@ const handleEdit = async (event:any) => {
               <Stack direction={'row'} spacing={2}>
               {data.coursework.map((item, index) => (
                 <FormControl>
-                <FormLabel>{item.coursework[0].assessmentName}<Chip>{item.coursework[0].weighted}%</Chip></FormLabel>
-                <Input required  onChange={(event) => handleInputChange(item.coursework[0].assessmentName, index, event)}/>
+                <FormLabel>{item.coursework[0].assessmentName}<Chip>{item.coursework[0].score}</Chip></FormLabel>
+                <Input required 
+                 onChange={(event) => {
+                  const score = Number(event.target.value);
+                  const weight = Number(item.coursework[0].weighted);
+                  const totalscore = Number(item.coursework[0].score);
+                  const weightedScore = (score/totalscore * weight).toString();
+                  handleInputChange(item.coursework[0].assessmentName, index,event ,weightedScore)}}/>
               </FormControl>
               ))}
               </Stack>
@@ -226,11 +248,17 @@ const handleEdit = async (event:any) => {
         </ModalDialog>
       </Modal>
       
-      {/* edit modal */}
+      {/* edit modal */} 
       <Modal open={openE} onClose={() => setOpenE(false)}>
   <ModalDialog>
+    
     <DialogTitle>Edit Grade</DialogTitle>
-    <DialogContent>add new grading score</DialogContent>
+    <DialogContent>
+    <Alert color='danger'>You may see the % marks, but edit and enter the one you selected, using a score instead of a percentage like the others.</Alert>
+      edit grading score
+
+      
+    </DialogContent>
     <form onSubmit={handleEdit}>
       <Stack spacing={2}>
         <FormControl>
@@ -239,11 +267,22 @@ const handleEdit = async (event:any) => {
         <Stack direction={'row'} spacing={2}>
           {data.coursework.map((item, index) => (
             <FormControl key={index}>
-              <FormLabel>{item.coursework[0].assessmentName}<Chip>{item.coursework[0].weighted}%</Chip></FormLabel>
-              <Input 
-                value={grades[item.coursework[0].assessmentName]} 
-                onChange={(event) => handleInputChange(item.coursework[0].assessmentName,index,event)}
-              />
+              <FormLabel>{item.coursework[0].assessmentName}<Chip>{item.coursework[0].score}</Chip></FormLabel>
+              <Input
+  required
+  placeholder={((Number(inputValues[index])/Number(item.coursework[0].weighted)) * Number(item.coursework[0].score)).toString() || ''}
+  value={inputValues[index]}
+  onChange={(event) => {
+    const newInputValues = [...inputValues];
+    newInputValues[index] = event.target.value;
+    setInputValues(newInputValues);
+    const score =  Number(event.target.value); // Use the new input value
+    const weight = Number(item.coursework[0].weighted);
+    const totalscore = Number(item.coursework[0].score);
+    const weightedScore = (score/totalscore * weight).toString();
+    handleInputChange(item.coursework[0].assessmentName, index, event,weightedScore);
+  }}
+/>
             </FormControl>
           ))}
         </Stack>
@@ -273,6 +312,7 @@ const handleEdit = async (event:any) => {
   <tr>
     <th scope="col">Student</th>
     {data.coursework.map((item, index) => (
+
       <th key={index} scope="col">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           {item.coursework[0].assessmentName}
@@ -281,29 +321,46 @@ const handleEdit = async (event:any) => {
           </Chip>
         </div>
       </th>
+    
     ))}
+    <th scope="col">Total Carrymark 
+    <Chip style={{ marginLeft: '10px' }}>
+    {data.coursework.reduce((carrymarkTotal, item) => carrymarkTotal + Number(item.coursework[0].weighted), 0)}%
+  </Chip></th>
+    
   </tr>
+  
+  
   {data.student.map((student, index) => {
     // Find the grading object for this student
     const grading = data.grading.find(g => g.studentId === student.studentid);
-
-    return (
+    let total = 0;
+    if (grading) {
+      total = grading.grades.reduce((sum, grade) => sum + Number(grade.grade), 0);
+    }
+    return (<>
       <tr key={index}>
         <th scope="row">
           <IconButton onClick={() => {setOpenE(true);setSelectedStudentId(student.studentid);handleEditClick(student.studentid)}} ><EditRounded/></IconButton>
           {student.name}
         </th>
+        
         {data.coursework.map((item, courseworkIndex) => {
           // Find the grade for this coursework
+          
           const grade = grading ? grading.grades.find(g => g.assessmentName === item.coursework[0].assessmentName) : null;
-
           return (
             <td key={courseworkIndex}>
-              {grade ? grade.grade : ''}
+              {grade ? Number(grade.grade).toFixed(2) : ''}
             </td>
           );
         })}
+       <td>
+          {Number(total).toFixed(2)}
+        </td>
       </tr>
+      </>
+      
     );
   })}
 </tbody>
