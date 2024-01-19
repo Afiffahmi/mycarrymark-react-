@@ -77,6 +77,8 @@ export default function FilesExample({token}:any) {
     if(!file){
       console.error("Please select a file");
       return;
+    }else{
+      console.log(file);
     }
 
     const formData = new FormData();
