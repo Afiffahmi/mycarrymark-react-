@@ -1,4 +1,4 @@
-import { Sheet,Box,Stack, Typography,Card,Chip,AspectRatio,Link ,Button,CardActions, Divider, Alert, Badge} from "@mui/joy";
+import { Sheet,Box,Stack, Typography,Card,Chip,AspectRatio,Link ,Button,CardActions, Divider, Alert, Badge, CircularProgress} from "@mui/joy";
 import Prediction from "./Prediction";
 import CardCover from '@mui/joy/CardCover';
 import CardContent from '@mui/joy/CardContent';
@@ -86,6 +86,8 @@ const [loading, setLoading] = React.useState(true);
 const [studentGrade, setStudentGrade] = useState<Data>({ grading: [], coursework: [], student: [] });
 const [classGrade, setClassGrade] = useState([])
 const [open, setOpen] = React.useState(false);
+const [prediction, setPrediction] = useState(false);
+
 
 useEffect(() => {
   axios({
@@ -144,6 +146,7 @@ const handleCM = (classId:any) => {
     console.log(formattedData);
 
     if(formattedData){
+      setPrediction(true);
       axios({
         method: 'post',
         url: 'https://grade-prediction-api.onrender.com/predict',
@@ -154,6 +157,7 @@ const handleCM = (classId:any) => {
           setClassGrade(response.data.Predictions)
           if(classGrade.length > 0){
             setOpen(true)
+            setPrediction(false);
           }}
       });
     }
@@ -198,6 +202,7 @@ const user = JSON.parse(token);
             </Typography>
             <Stack direction='row' spacing={3}>
 
+    
             { classGrade ? classGrade.map((item:any) => (
        
                <Card
@@ -225,27 +230,27 @@ const user = JSON.parse(token);
                     <Box>
                     <IconButton size="sm" variant="plain" color="neutral">
                    
-                     <Chip size='sm'>Quiz 1 <Chip color="danger">{item.Input.quiz1}%</Chip></Chip>
+                     <Chip size='sm'>Quiz 1 <Chip color="danger">{item.Input.quiz1.toFixed(2)}%</Chip></Chip>
                     
                    </IconButton>
                    <IconButton size="sm" variant="plain" color="neutral">
                   
-                     <Chip size='sm'>Test 1 <Chip color="danger">{item.Input.test1}%</Chip></Chip>
+                     <Chip size='sm'>Test 1 <Chip color="danger">{item.Input.test1.toFixed(2)}%</Chip></Chip>
                   
                    </IconButton>
                    <IconButton size="sm" variant="plain" color="neutral">
               
-                     <Chip size='sm'>Test 2 <Chip color="danger">{item.Input.test2}%</Chip></Chip>
+                     <Chip size='sm'>Test 2 <Chip color="danger">{item.Input.test2.toFixed(2)}%</Chip></Chip>
                     
                    </IconButton></Box><Box>
                    <IconButton size="sm" variant="plain" color="neutral">
                   
-                     <Chip size='sm'>Assignment 1 <Chip color="danger">{item.Input.assignment1}%</Chip></Chip>
+                     <Chip size='sm'>Assignment 1 <Chip color="danger">{item.Input.assignment1.toFixed(2)}%</Chip></Chip>
                  
                    </IconButton>
                    <IconButton size="sm" variant="plain" color="neutral">
                 
-                     <Chip size='sm'>Assignment 2 <Chip color="danger">{item.Input.assignment2}%</Chip></Chip>
+                     <Chip size='sm'>Assignment 2 <Chip color="danger">{item.Input.assignment2.toFixed(2)}%</Chip></Chip>
                     
                    </IconButton></Box></Stack>
                  </Box>
@@ -253,7 +258,7 @@ const user = JSON.parse(token);
                <CardOverflow sx={{ bgcolor: 'background.level1' }}>
                  <CardActions buttonFlex="1">
                    <ButtonGroup variant="outlined" sx={{ bgcolor: 'background.surface' }}>
-                     <Button>Carrymark : {item.Input.carrymark}%</Button>
+                     <Button>Carrymark : {item.Input.carrymark.toFixed(2)}%</Button>
                      <Button>Prediction Value : {item.predictionvalue.toFixed(3)}</Button>
                    </ButtonGroup>
                  </CardActions>
@@ -379,6 +384,7 @@ const user = JSON.parse(token);
         <Typography level="title-lg">Shown predicted result below</Typography>
         <Divider />
         <Typography fontSize={90}>
+        { prediction ? <CircularProgress size="lg" /> : null }
           {grade}
         </Typography>
       </CardContent>
@@ -388,7 +394,7 @@ const user = JSON.parse(token);
             </Card>
             </LazyMotion>
             
-            <Prediction setGrade = {setGrade} />
+            <Prediction setGrade = {setGrade} setPrediction = {setPrediction}/>
 
             
             </Stack>

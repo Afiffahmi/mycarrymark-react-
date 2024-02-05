@@ -376,33 +376,15 @@ const [opens, setOpens] = React.useState(false);
               <th
                 style={{ width: 48, textAlign: "center", padding: "12px 6px" }}
               >
-                <Checkbox
-                  size="sm"
-                  indeterminate={
-                    selected.length > 0 && selected.length !== rows.length
-                  }
-                  checked={selected.length === rows.length}
-                  onChange={(event) => {
-                    setSelected(
-                      event.target.checked ? rows.map((row) => row.id) : []
-                    );
-                  }}
-                  color={
-                    selected.length > 0 || selected.length === rows.length
-                      ? "primary"
-                      : undefined
-                  }
-                  sx={{ verticalAlign: "text-bottom" }}
-                />
+              
               </th>
               <th style={{ width: 120, padding: "12px 6px" }}>
                 <Link
                   underline="none"
                   color="primary"
                   component="button"
-                  onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
                   fontWeight="lg"
-                  endDecorator={<ArrowDropDownIcon />}
+                  
                   sx={{
                     "& svg": {
                       transition: "0.2s",
@@ -424,20 +406,7 @@ const [opens, setOpens] = React.useState(false);
               
               <tr key={row.id}>
                 <td style={{ textAlign: "center", width: 120 }}>
-                  <Checkbox
-                    size="sm"
-                    checked={selected.includes(row.id)} // Changed rows.id to row.id
-                    color={selected.includes(row.id) ? "primary" : undefined} // Changed rows.id to row.id
-                    onChange={(event) => {
-                      setSelected((ids) =>
-                        event.target.checked
-                          ? ids.concat(row.id) // Changed rows.id to row.id
-                          : ids.filter((itemId) => itemId !== row.id)
-                      );
-                    }}
-                    slotProps={{ checkbox: { sx: { textAlign: "left" } } }}
-                    sx={{ verticalAlign: "text-bottom" }}
-                  />
+                
                 </td>
                 <td>
                   <Typography level="body-xs">{row.studentid}</Typography>

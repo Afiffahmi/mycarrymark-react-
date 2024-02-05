@@ -130,7 +130,7 @@ export default function Forum({token,selectedId}:any) {
             {selectedForum?.title}
         </Typography>
       
-        {selectedForum?.messages.map((message: any) => (
+        {selectedForum?.messages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()).map((message: any) => (
   <Card variant='solid' color='primary' style={{ display: 'inline-block', margin: '15px' }}>
     <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
       <Typography level="body-xs" key={message.id} style={{ color: 'white' }}>

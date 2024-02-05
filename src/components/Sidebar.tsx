@@ -193,7 +193,7 @@ console.log(user);
         <Typography level="title-lg">MyCarrymark</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
+  
       <Box
         sx={{
           minHeight: 0,
@@ -293,12 +293,6 @@ console.log(user);
               <Chip size='sm' color='primary' variant='solid' >
                 Beta
               </Chip>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <SettingsRoundedIcon />
-              Settings
             </ListItemButton>
           </ListItem>
         </List>

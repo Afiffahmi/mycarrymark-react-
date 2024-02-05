@@ -26,7 +26,7 @@ interface AddClassFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-const Prediction = ({setGrade}:any) => {
+const Prediction = ({setGrade,setPrediction}:any) => {
   return (
     <form
       onSubmit={async (event: React.FormEvent<AddClassFormElement>) => {
@@ -41,7 +41,7 @@ const Prediction = ({setGrade}:any) => {
           total: Number(formElements.quiz1.value) + Number(formElements.test1.value) + Number(formElements.test2.value) + Number(formElements.assignment1.value) + Number(formElements.assignment2.value)
       }];
 
-        console.log(data);
+        setPrediction(true)
 
         const formAction = "https://grade-prediction-api.onrender.com/predict";
         const formMethod = "POST";
@@ -54,8 +54,8 @@ const Prediction = ({setGrade}:any) => {
           },
         })
           .then((response) => response.json()).then((data) => {
-            console.log(data)
             setGrade(data.Predictions[0].Prediction);
+            setPrediction(false)
           })
 
           .catch((error) => {
@@ -98,7 +98,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                  <Box component="span" mr={34}>Test 1</Box> <Chip>10%</Chip>
+                  <Box component="span" mr={33}>Test 1</Box> <Chip>10%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="test1" required />
               </FormControl>
@@ -108,7 +108,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                  <Box component="span" mr={34}>Test 2</Box> <Chip>10%</Chip>
+                  <Box component="span" mr={33}>Test 2</Box> <Chip>10%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="test2" required />
               </FormControl>
@@ -120,7 +120,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                  <Box component="span" mr={28}>Assignment 1</Box> <Chip>10%</Chip>
+                  <Box component="span" mr={27}>Assignment 1</Box> <Chip>10%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="assignment1" required />
               </FormControl>
@@ -130,7 +130,7 @@ const Prediction = ({setGrade}:any) => {
                     "--FormLabel-color": "white",
                   })}
                 >
-                 <Box component="span" mr={28}>Assignment 2</Box> <Chip>15%</Chip>
+                 <Box component="span" mr={27}>Assignment 2</Box> <Chip>15%</Chip>
                 </FormLabel>
                 <Input color="neutral" variant="soft" name="assignment2" required />
               </FormControl>

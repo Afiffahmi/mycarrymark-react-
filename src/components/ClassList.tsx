@@ -48,6 +48,7 @@ interface Item {
   lecturers: Lecturer[];
   selectedImage : string;
   predictive: boolean;
+  students : [{}];
 }
 
 export default function ClassList({ token }: any) {
@@ -337,7 +338,7 @@ export default function ClassList({ token }: any) {
                               fontWeight="md"
                               textColor="text.secondary"
                             >
-                              {item.nStudent} Students
+                              {item.students.length} Students
                             </Typography>
                           </motion.div>
                         </CardContent>
